@@ -1139,8 +1139,7 @@
                     <select id="regFonction" onchange="toggleCustomFonction()"
                         style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--input-border); margin-bottom: 10px;">
                         <option value="Analyste Microbiologie">Analyste Microbiologie</option>
-                        <option value="Technicien Laboratoire">Technicien Laboratoire</option>
-                        <option value="Responsable Qualité">Responsable Qualité</option>
+                        <option value="Responsable ">Responsable CQ</option>
                         <option value="AUTRE">Autre (Saisir manuellement)</option>
                     </select>
                     <input type="text" id="regCustomFonction" placeholder="Précisez votre fonction"
@@ -1198,14 +1197,14 @@
                     <span class="icon">📦</span>
                     <span style="font-weight: 700;">Inventaire</span>
                 </button>
+                <button class="sidebar-btn" id="btn-sterilisation" onclick="showSection('sterilisation')">
+                    <span class="icon">🔥</span>
+                    <span style="font-weight: 700;">Stérilisation</span>
+                </button>
                 <button class="sidebar-btn" id="btn-history" onclick="showSection('history')">
                     <span class="icon">📜</span>
                     <span style="font-weight: 700;">Historique</span>
                 </button>
-                <button class="sidebar-btn">Prélèvement d'eau</button>
-                <button class="sidebar-btn">Standard PH</button>
-                <button class="sidebar-btn">Prélèvement PF/MP</button>
-                <button class="sidebar-btn">Stérilisation</button>
                 <div id="admin-sidebar" class="admin-section" style="display: none;">
                     <p
                         style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 10px; font-weight: 700; padding-left: 10px;">
@@ -1292,6 +1291,14 @@
                             <h3>Historique</h3>
                             <p>Consultation et export de l'historique complet des étiquettes.</p>
                         </div>
+
+                        <div class="dashboard-card" onclick="showSection('sterilisation')"
+                            style="border-color: #e74c3c;">
+                            <div class="icon-circle" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">🔥
+                            </div>
+                            <h3>Stérilisation</h3>
+                            <p>Génération d'étiquettes de stérilisation conformes aux normes CQ.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -1302,7 +1309,7 @@
                             <label>Date de création</label>
                             <input type="date" id="dateInput">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="designationGroup">
                             <label>Désignation de produit</label>
                             <input list="designationList" id="designationInput" placeholder="Saisir ou choisir...">
                             <datalist id="designationList">
@@ -1312,7 +1319,7 @@
                                 <option value="SOLUTION RINCAGE">
                             </datalist>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="codeGroup">
                             <label>Code interne</label>
                             <input type="text" id="codeInput" placeholder="ex: LRESOTRY063/002">
                         </div>
@@ -1324,7 +1331,7 @@
                             <label>DDF (Péremption)</label>
                             <input type="date" id="expDateInput">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="conservationGroup">
                             <label id="label-conservation">Condition de conservation</label>
                             <div style="display: flex; gap: 8px;">
                                 <select id="conservationSelect" onchange="toggleConservationInput()"
@@ -1340,11 +1347,11 @@
                             <label>Préparé par (Initiales)</label>
                             <input type="text" id="preparatorInput" placeholder="ex: CHS">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="locationGroup">
                             <label>Emplacement:</label>
                             <input type="text" id="locationInput" placeholder="ex: ARMOIRE01">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="quantityGroup">
                             <label>Quantité:</label>
                             <input type="text" id="quantityInput" placeholder="ex: 500 GR">
                         </div>
@@ -1363,6 +1370,146 @@
                             </select>
                         </div>
                     </div>
+
+                    <!-- Champs spécifiques pour Stérilisation (Layout Capture 2 Premium) -->
+                    <div id="sterilisation-fields-custom"
+                        style="display: none; background: #0c0c0c; padding: 40px; border-radius: 24px; margin-top: 20px; color: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;">
+                        <div
+                            style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,0,0,0.15) 0%, transparent 70%); pointer-events: none;">
+                        </div>
+                        <div
+                            style="position: absolute; bottom: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(231, 76, 60, 0.1) 0%, transparent 70%); pointer-events: none;">
+                        </div>
+
+                        <style>
+                            .ster-form-premium .form-group {
+                                margin-bottom: 25px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 8px;
+                            }
+
+                            .ster-form-premium label {
+                                color: #ff3333 !important;
+                                font-weight: 700;
+                                font-size: 0.95rem;
+                                text-transform: uppercase;
+                                letter-spacing: 1px;
+                            }
+
+                            .ster-form-premium input,
+                            .ster-form-premium select {
+                                background: rgba(255, 255, 255, 0.05);
+                                border: 1px solid rgba(255, 255, 255, 0.1);
+                                border-radius: 12px;
+                                padding: 14px 18px;
+                                color: #fff;
+                                font-size: 1rem;
+                                transition: all 0.3s ease;
+                                outline: none;
+                            }
+
+                            .ster-form-premium input:focus,
+                            .ster-form-premium select:focus {
+                                border-color: #ff3333;
+                                background: rgba(255, 255, 255, 0.08);
+                                box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+                            }
+
+                            .ster-form-premium .grid-2 {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr;
+                                gap: 20px;
+                            }
+
+                            .ster-form-premium .btn-action-container {
+                                margin-top: 30px;
+                                display: flex;
+                                justify-content: flex-end;
+                            }
+
+                            .ster-form-premium .btn-submit {
+                                background: linear-gradient(135deg, #ff3333 0%, #a00000 100%);
+                                color: #fff;
+                                border: none;
+                                padding: 16px 40px;
+                                border-radius: 14px;
+                                font-weight: 800;
+                                cursor: pointer;
+                                text-transform: uppercase;
+                                letter-spacing: 2px;
+                                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                                box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+                            }
+
+                            .ster-form-premium .btn-submit:hover {
+                                transform: translateY(-3px) scale(1.02);
+                                box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
+                            }
+
+                            .ster-form-premium .btn-submit:active {
+                                transform: translateY(0);
+                            }
+                        </style>
+
+                        <div class="ster-form-premium">
+                            <h3
+                                style="margin-bottom: 30px; color: #fff; font-size: 1.5rem; border-left: 4px solid #f00; padding-left: 15px;">
+                                Configuration de Stérilisation</h3>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Date du Cycle</label>
+                                    <input type="date" id="ster-date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Équipement utilisé</label>
+                                    <select id="ster-equip">
+                                        <option value="">--- Choisir l'autoclave ---</option>
+                                        <option value="LAUTO057">🔥 LAUTO057 (Grand)</option>
+                                        <option value="LAUTO056">🔥 LAUTO056 (Petit)</option>
+                                        <option value="ETS005">⚙️ ETS005 / Étuve</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Batch N° (Cycle 057)</label>
+                                    <input type="text" id="ster-cycle-057" placeholder="Ex: 2024-123">
+                                </div>
+                                <div class="form-group">
+                                    <label>Batch N° (Cycle 056)</label>
+                                    <input type="text" id="ster-cycle-056" placeholder="Ex: 2024-ABC">
+                                </div>
+                            </div>
+
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label>Date de Préparation (DDP)</label>
+                                    <input type="date" id="ster-ddp">
+                                </div>
+                                <div class="form-group">
+                                    <label>Date de Validité (DDV)</label>
+                                    <input type="date" id="ster-ddv">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Effectué par (Initiales)</label>
+                                <div style="display: flex; gap: 15px; align-items: center;">
+                                    <input type="text" id="ster-user" placeholder="Saisir vos initiales (ex: SC, AB...)"
+                                        style="max-width: 300px;">
+                                    <div class="btn-action-container" style="margin-top: 0; flex: 1;">
+                                        <button class="btn-submit" onclick="addLabel()" style="width: 100%;">Générer
+                                            l'Étiquette</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Champs spécifiques pour l'Inventaire -->
 
                     <!-- Champs spécifiques pour l'Inventaire -->
                     <div id="inventory-fields" class="form-grid"
@@ -1412,6 +1559,10 @@
                             </path>
                         </svg>
                         Aperçu & Imprimer
+                    </button>
+                    <button class="btn-modern btn-print" id="printBlankSterBtn" onclick="printBlankSterilisation()"
+                        style="display:none; background: #e67e22;">
+                        🖨️ Modèle Vierge
                     </button>
                     <button class="btn-modern"
                         onclick="document.getElementById('print-settings-modal').style.display='flex'; updatePrintPreview();"
@@ -1551,8 +1702,7 @@
                             <select id="m-fonction" onchange="toggleMemberCustomFonction()"
                                 style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--input-border);">
                                 <option value="Analyste Microbiologie">Analyste Microbiologie</option>
-                                <option value="Technicien Laboratoire">Technicien Laboratoire</option>
-                                <option value="Responsable Qualité">Responsable Qualité</option>
+                                <option value="Responsable CQ">Responsable CQ</option>
                                 <option value="AUTRE">Autre (Saisir...)</option>
                             </select>
                             <input type="text" id="m-custom-fonction" placeholder="Précisez..."
@@ -1970,25 +2120,57 @@
         onSnapshot(collection(db, "users"), (snapshot) => {
             users = snapshot.docs.map(doc => doc.data());
             if (typeof renderUserTable === 'function') renderUserTable();
+
+            // Populate Sterilisation User Dropdown
+            const sterUserSelect = document.getElementById('ster-user');
+            if (sterUserSelect) {
+                const current = sterUserSelect.value;
+                sterUserSelect.innerHTML = '<option value="">Sélectionner...</option>' +
+                    users.filter(u => u.status === 'approved').map(u => `<option value="${u.nom || ''}">${u.nom || ''} ${u.prenom || ''}</option>`).join('');
+                sterUserSelect.value = current;
+            }
         });
-
-        // Legacy migration placeholder (future)
-
 
         // --- NETTOYAGE AUTOMATIQUE DES DONNÉES CORROMPUES ---
         function isValidEntry(entry) {
-            // Vérifier que la désignation existe et n'est pas undefined/null/vide
+            if (entry.type === 'sterilisation') {
+                return !!(entry.date && entry.sterEquipment);
+            }
+            // Pour les autres, on vérifie désignation et code
             if (!entry.designation || entry.designation === 'undefined' || entry.designation === 'null') return false;
-            // Vérifier que le code existe et n'est pas undefined/null/vide
             if (!entry.code || entry.code === 'undefined' || entry.code === 'null') return false;
             // Vérifier que la désignation ne contient pas de caractères corrompus (mojibake)
             if (/[\x00-\x08\x0E-\x1F]/.test(entry.designation)) return false;
-            if (entry.designation.includes('�')) return false;
+            if (entry.designation.includes('')) return false;
             // Vérifier que les dates sont valides (si elles existent)
             if (entry.date && isNaN(new Date(entry.date).getTime())) return false;
             if (entry.expDate && isNaN(new Date(entry.expDate).getTime())) return false;
             if (entry.prepDate && isNaN(new Date(entry.prepDate).getTime())) return false;
             return true;
+        }
+
+        async function cleanDataManual() {
+            if (!confirm("Voulez-vous vraiment supprimer les données potentiellement corrompues ?")) return;
+
+            let count = 0;
+            const pools = [
+                { col: "labels", data: labels },
+                { col: "inventory", data: inventoryData }
+            ];
+
+            for (const pool of pools) {
+                for (const item of pool.data) {
+                    if (item.docId && !isValidEntry(item)) {
+                        try {
+                            await deleteDoc(doc(db, pool.col, item.docId));
+                            count++;
+                        } catch (e) {
+                            console.error("Clean error:", e);
+                        }
+                    }
+                }
+            }
+            alert(`${count} entrées corrompues supprimées.`);
         }
 
         // Initialisation de l'application
@@ -2112,7 +2294,7 @@
             const funcSelect = document.getElementById('m-fonction');
             const customInput = document.getElementById('m-custom-fonction');
 
-            const standardRoles = ["Analyste Microbiologie", "Technicien Laboratoire", "Responsable Qualité"];
+            const standardRoles = ["Analyste Microbiologie", "Responsable CQ"];
             if (standardRoles.includes(user.fonction)) {
                 funcSelect.value = user.fonction;
                 customInput.style.display = 'none';
@@ -2884,7 +3066,7 @@
 
         function showSection(sectionId) {
             currentSection = sectionId;
-            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb'];
+            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation'];
             sections.forEach(s => {
                 const panel = document.getElementById(`${s}-panel`);
                 if (panel) panel.style.display = 'none';
@@ -2898,7 +3080,8 @@
                 'history': 'Historique complet des étiquettes',
                 'expiry': 'Alertes de Péremption',
                 'admin': 'Administration du système',
-                'admindb': 'Gestion Base de Données'
+                'admindb': 'Gestion Base de Données',
+                'sterilisation': 'Etiquettes de Stérilisation'
             };
 
             // Titre dynamique pour l'inventaire
@@ -2927,7 +3110,12 @@
                 if (labelDate) labelDate.innerText = "Date de réception:";
                 if (labelDesig) labelDesig.innerText = "Désignation:";
                 if (labelCode) labelCode.innerText = "Code:";
-                if (labelExp) labelExp.innerText = "Date de péremtion:";
+                if (labelExp) labelExp.innerText = "Date de péremption:";
+            } else if (sectionId === 'sterilisation') {
+                if (labelDate) labelDate.innerText = "Date";
+                if (labelDesig) labelDesig.innerText = "Nom du charge (ou LAISSER VIDE pour écrire au stylo)";
+                if (labelCode) labelCode.innerText = "Code interne (Optionnel)";
+                if (labelExp) labelExp.innerText = "Date de péremption";
             } else {
                 if (labelDate) labelDate.innerText = "Date";
                 if (labelDesig) labelDesig.innerText = "Désignation de produit";
@@ -2935,14 +3123,38 @@
                 if (labelExp) labelExp.innerText = "DDF (Péremption)";
             }
 
-            document.getElementById('prepDateGroup').style.display = (sectionId === 'inventory') ? 'none' : 'flex';
+            document.getElementById('prepDateGroup').style.display = (sectionId === 'inventory' || sectionId === 'sterilisation') ? 'none' : 'flex';
             document.getElementById('preparatorGroup').style.display = (sectionId === 'inventory') ? 'none' : 'flex';
             document.getElementById('petri-link-row').style.display = (sectionId === 'petri') ? 'flex' : 'none';
-            document.getElementById('inventory-fields').style.display = (sectionId === 'inventory') ? 'flex' : 'none';
+
+            const sterFields = document.getElementById('sterilisation-fields-custom');
+            if (sterFields) sterFields.style.display = (sectionId === 'sterilisation') ? 'block' : 'none';
+
+            const btnBlank = document.getElementById('printBlankSterBtn');
+            if (btnBlank) btnBlank.style.display = (sectionId === 'sterilisation') ? 'inline-flex' : 'none';
+
+            // Masquer certains champs pour sterilisation
+            const formGrid = document.querySelector('.glass-card .form-grid');
+            if (sectionId === 'sterilisation') {
+                if (formGrid) formGrid.style.display = 'none';
+                document.getElementById('petri-link-row').style.display = 'none';
+                document.getElementById('inventory-fields').style.display = 'none';
+            } else {
+                if (formGrid) formGrid.style.display = 'grid';
+                const consGrp = document.getElementById('conservationGroup');
+                if (consGrp) consGrp.style.display = 'block';
+                const locGrp = document.getElementById('locationGroup');
+                if (locGrp) locGrp.style.display = 'block';
+                const qtyGrp = document.getElementById('quantityGroup');
+                if (qtyGrp) qtyGrp.style.display = 'block';
+            }
 
             if (sectionId === 'petri') {
-                document.getElementById('linkedMilieuSearch').value = '';
-                filterLinkedMilieux();
+                const searchEl = document.getElementById('linkedMilieuSearch');
+                if (searchEl) {
+                    searchEl.value = '';
+                    filterLinkedMilieux();
+                }
             }
 
             // Affichage / Masquage des éléments généraux selon la section
@@ -2953,11 +3165,11 @@
                 } else if (child.classList.contains('glass-card')) {
                     // Formula card
                     if (child.querySelector('.form-grid')) {
-                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'inventory') ? 'block' : 'none';
+                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'inventory' || sectionId === 'sterilisation') ? 'block' : 'none';
                     }
                     // Main Table card (labelTableBody)
                     else if (child.querySelector('#labelTableBody')) {
-                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri') ? 'block' : 'none';
+                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'sterilisation') ? 'block' : 'none';
                     }
                     // Panels
                     else if (child.id && child.id.includes('-panel')) {
@@ -2969,6 +3181,34 @@
                 } else if (child.classList.contains('table-wrapper')) {
                     child.style.display = 'none'; // Should be inside glass cards
                 }
+            }
+
+            if (currentSection === 'sterilisation') {
+                const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
+                theadTr.innerHTML = `
+                    <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
+                    <th style="width: 120px; cursor: pointer;" onclick="handleSort('main', 'date')" title="Trier par date">Date <span class="sort-icon-main" data-col="date">⬇️</span></th>
+                    <th style="width: 150px;">Equipment de sté</th>
+                    <th style="width: 100px;">N° de cycle</th>
+                    <th style="width: 120px;">DDP</th>
+                    <th style="width: 120px;">DDV</th>
+                    <th style="width: 120px;">Effectué par</th>
+                    <th style="text-align: center; width: 140px;">Action</th>
+                `;
+            } else if (currentSection === 'milieux' || currentSection === 'petri') {
+                // Restore default milieux/petri
+                const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
+                theadTr.innerHTML = `
+                    <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
+                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')" title="Trier par date">Date <span class="sort-icon-main" data-col="date">⬇️</span></th>
+                    <th style="width: 250px;">Désignation</th>
+                    <th style="width: 130px;">Code interne</th>
+                    <th style="width: 100px;">DDP</th>
+                    <th style="width: 100px;">DDF</th>
+                    <th>Condition de conservation</th>
+                    <th style="width: 90px;">Visa</th>
+                    <th style="text-align: center; width: 140px;">Action</th>
+                `;
             }
 
             const targetPanel = document.getElementById(`${sectionId}-panel`);
@@ -3018,6 +3258,8 @@
                     dataPool = dataPool.filter(l => l.type === 'milieux' || !l.type);
                 } else if (currentSection === 'petri') {
                     dataPool = dataPool.filter(l => l.type === 'petri');
+                } else if (currentSection === 'sterilisation') {
+                    dataPool = dataPool.filter(l => l.type === 'sterilisation');
                 }
             }
 
@@ -3086,6 +3328,26 @@
                                     <button class="btn-modern" onclick="event.stopPropagation(); previewLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #2ecc71; color: white;" title="Aperçu">🔍</button>
                                     <button class="btn-modern" onclick="event.stopPropagation(); exportSinglePdf(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #9b59b6; color: white;" title="PDF">📄</button>
                                     <button class="btn-modern" onclick="event.stopPropagation(); printSingleLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #3498db; color: white;" title="Imprimer">🖨️</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); editLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #f39c12; color: white;" title="Modifier">✏️</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); deleteLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #e74c3c; color: white;" title="Supprimer">🗑️</button>
+                                </td>
+                            `;
+                } else if (currentSection === 'sterilisation') {
+                    const cycleInfo = (label.sterEquipment === 'LAUTO057' ? label.sterCycle057 : (label.sterEquipment === 'LAUTO056' ? label.sterCycle056 : '---'));
+                    const ddp = label.prepDate ? new Date(label.prepDate).toLocaleDateString('fr-FR') : '---';
+                    const ddv = label.expDate ? new Date(label.expDate).toLocaleDateString('fr-FR') : '---';
+                    tr.innerHTML = `
+                                <td style="text-align:center;"><input type="checkbox" class="row-checkbox" data-id="${label.id}" onchange="handleRowSelect(this)" ${selectedBulkIds.has(String(label.id)) ? 'checked' : ''}></td>
+                                <td>${dispDate}</td>
+                                <td>${label.sterEquipment || '---'}</td>
+                                <td>${cycleInfo || '---'}</td>
+                                <td>${ddp}</td>
+                                <td>${ddv}</td>
+                                <td>${label.preparator || '---'}</td>
+                                <td style="text-align: center; display: flex; gap: 5px; justify-content: center;">
+                                    <button class="btn-modern" onclick="event.stopPropagation(); previewLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #2ecc71; color: white;" title="Aperçu">🔍</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); printSingleLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #3498db; color: white;" title="Imprimer">🖨️</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); exportSinglePdf(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #9b59b6; color: white;" title="PDF">📄</button>
                                     <button class="btn-modern" onclick="event.stopPropagation(); editLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #f39c12; color: white;" title="Modifier">✏️</button>
                                     <button class="btn-modern" onclick="event.stopPropagation(); deleteLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #e74c3c; color: white;" title="Supprimer">🗑️</button>
                                 </td>
@@ -3198,16 +3460,44 @@
             document.getElementById('prepDateInput').value = label.prepDate || '';
             document.getElementById('expDateInput').value = label.expDate || '';
             const cons = label.conservation || '';
-            if (cons === 'T° ambiante' || cons === 'Température ambiante' || cons === '') {
-                document.getElementById('conservationSelect').value = 'T° ambiante';
-                document.getElementById('conservationInput').style.display = 'none';
-                document.getElementById('conservationInput').value = '';
-            } else {
-                document.getElementById('conservationSelect').value = 'Autre';
-                document.getElementById('conservationInput').style.display = 'block';
-                document.getElementById('conservationInput').value = cons;
+            const consSel = document.getElementById('conservationSelect');
+            const consInp = document.getElementById('conservationInput');
+            if (consSel && consInp) {
+                if (cons === 'T° ambiante' || cons === 'Température ambiante' || cons === '') {
+                    consSel.value = 'T° ambiante';
+                    consInp.style.display = 'none';
+                    consInp.value = '';
+                } else {
+                    consSel.value = 'Autre';
+                    consInp.style.display = 'block';
+                    consInp.value = cons;
+                }
             }
-            document.getElementById('preparatorInput').value = label.preparator || '';
+            const prepInp = document.getElementById('preparatorInput');
+            if (prepInp) prepInp.value = label.preparator || '';
+
+            // Check for obsolote IDs before setting value
+            const oldSterEquip = document.getElementById('sterEquipmentInput');
+            if (oldSterEquip) oldSterEquip.value = label.sterEquipment || '';
+            const oldSterCycle = document.getElementById('sterCycleInput');
+            if (oldSterCycle) oldSterCycle.value = label.sterCycle || '';
+
+            // Custom Sterilisation Form
+            const sDate = document.getElementById('ster-date');
+            const sEquip = document.getElementById('ster-equip');
+            const sCycle057 = document.getElementById('ster-cycle-057');
+            const sCycle056 = document.getElementById('ster-cycle-056');
+            const sDDP = document.getElementById('ster-ddp');
+            const sDDV = document.getElementById('ster-ddv');
+            const sUser = document.getElementById('ster-user');
+
+            if (sDate) sDate.value = label.date || '';
+            if (sEquip) sEquip.value = label.sterEquipment || '';
+            if (sCycle057) sCycle057.value = label.sterCycle057 || '';
+            if (sCycle056) sCycle056.value = label.sterCycle056 || '';
+            if (sDDP) sDDP.value = label.prepDate || '';
+            if (sDDV) sDDV.value = label.expDate || '';
+            if (sUser) sUser.value = label.preparator || '';
 
             if (isInv) {
                 document.getElementById('lotInput').value = label.lotNumber || '';
@@ -3311,13 +3601,22 @@
             const openDate = gVal('openDateInput');
             const lotNumber = gVal('lotInput');
 
+            // Stérilisation (Formulaire Custom Capture 2)
+            const sterDate = gVal('ster-date');
+            const sterEquip = gVal('ster-equip');
+            const sterCycle057 = gVal('ster-cycle-057');
+            const sterCycle056 = gVal('ster-cycle-056');
+            const sterDDP = gVal('ster-ddp');
+            const sterDDV = gVal('ster-ddv');
+            const sterUser = gVal('ster-user');
+
             let invGroup = gVal('inventoryGroupInput');
             if (invGroup === 'NEW') {
                 invGroup = gVal('customGroupInput').trim();
                 if (!invGroup) { alert("Veuillez saisir le nom de la nouvelle classe."); return; }
             }
 
-            if (!code || !expDate) {
+            if (currentSection !== 'sterilisation' && (!code || !expDate)) {
                 alert("Veuillez remplir au moins le code de produit et la date de péremption.");
                 return;
             }
@@ -3326,12 +3625,24 @@
                 const isInv = (currentSection === 'inventory');
                 const colName = isInv ? "inventory" : "labels";
 
+                let typeVal = currentSection === 'petri' ? 'petri' : (currentSection === 'sterilisation' ? 'sterilisation' : 'milieux');
+                if (isInv) typeVal = 'inventory';
+
                 const data = {
                     id: editingLabelId || Date.now(),
-                    date, designation, code, prepDate, expDate, conservation, preparator,
+                    date: currentSection === 'sterilisation' ? sterDate : date,
+                    designation: currentSection === 'sterilisation' ? '' : designation,
+                    code: currentSection === 'sterilisation' ? '' : code,
+                    prepDate: currentSection === 'sterilisation' ? sterDDP : prepDate,
+                    expDate: currentSection === 'sterilisation' ? sterDDV : expDate,
+                    conservation,
+                    preparator: currentSection === 'sterilisation' ? sterUser : preparator,
                     supplier, location, quantity, openDate, lotNumber,
+                    sterEquipment: sterEquip,
+                    sterCycle057,
+                    sterCycle056,
                     inventoryGroup: invGroup || '',
-                    type: isInv ? 'inventory' : (currentSection === 'petri' ? 'petri' : 'milieux'),
+                    type: typeVal,
                     updatedAt: new Date().toISOString()
                 };
 
@@ -3350,14 +3661,17 @@
                         'dateInput', 'designationInput', 'codeInput', 'prepDateInput',
                         'expDateInput', 'conservationInput', 'preparatorInput',
                         'supplierInput', 'locationInput', 'quantityInput',
-                        'openDateInput', 'linkedMilieuSelect', 'lotInput', 'customGroupInput'
+                        'openDateInput', 'linkedMilieuSelect', 'lotInput', 'customGroupInput',
+                        'sterCycleInput', 'sterEquipmentInput',
+                        'ster-date', 'ster-equip', 'ster-cycle-057', 'ster-cycle-056',
+                        'ster-ddp', 'ster-ddv', 'ster-user'
                     ];
                     fields.forEach(f => {
                         const el = document.getElementById(f);
                         if (el) {
-                            if (f === 'preparatorInput' && el.value !== '') {
+                            if ((f === 'preparatorInput' || f === 'ster-user') && el.value !== '') {
                                 // Keep preparator
-                            } else if (f === 'dateInput' || f === 'prepDateInput') {
+                            } else if (f === 'dateInput' || f === 'prepDateInput' || f === 'ster-date' || f === 'ster-ddp') {
                                 el.valueAsDate = new Date();
                             } else {
                                 el.value = '';
@@ -3419,13 +3733,95 @@
                                 <span class="data-label" style="font-weight: bold;">N° de lot :</span> <span class="data-value">${label.lotNumber || ''}</span>
                                 <span class="data-label" style="font-weight: bold;">Fournisseur :</span> <span class="data-value">${label.supplier || ''}</span>
                                 <span class="data-label" style="font-weight: bold;">Quantité:</span> <span class="data-value">${label.quantity || ''}</span>
-                                <span class="data-label" style="font-weight: bold;">Date de péremption:</span> <span class="data-value">${expDate}</span>
+                                <span class="data-label" style="font-weight: bold;">Date de péremption:</span> <span class="data-value">${expDate !== 'Invalid Date' ? expDate : '---'}</span>
                                 <span class="data-label" style="font-weight: bold;">Date d'ouverture:</span> <span class="data-value">${openDate}</span>
                                 <span class="data-label" style="font-weight: bold;">Condition de conservation:</span> <span class="data-value">${label.conservation || ''}</span>
                                 <span class="data-label" style="font-weight: bold;">Emplacement :</span> <span class="data-value">${label.location || ''}</span>
                             </div>
                         </div>
                     `;
+            }
+
+            if (label.type === 'sterilisation') {
+                const ddp = label.prepDate ? new Date(label.prepDate).toLocaleDateString('fr-FR') : '---';
+                const ddv = label.expDate ? new Date(label.expDate).toLocaleDateString('fr-FR') : '---';
+
+                const items = [
+                    "FLACON", "ENTONNOIRES", "TENUE B", "TUYAU", "LINGETTES",
+                    "PIPETTES", "RAMPE", "TENUE C", "PLATEAU", "COMPRESSE",
+                    "CISEAUX", "TUBES A VIS", "SURBOTTES", "LUNETTES", "PINCES",
+                    "EMBOUT", "SPATULE", "BECHER"
+                ];
+
+                let gridHtml = '<table style="width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 7.8pt; table-layout: fixed;"><tr>';
+                items.forEach((item, idx) => {
+                    gridHtml += `
+                        <td style="width: 33.33%; padding: 4px 0; vertical-align: middle;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding-right: 15px;">
+                                <span style="font-weight: 700; white-space: nowrap;">- ${item}</span>
+                                <div style="width: 12px; height: 12px; border: 1.5px solid #000; flex-shrink: 0; background: #fff;"></div>
+                            </div>
+                        </td>`;
+                    if ((idx + 1) % 3 === 0 && idx !== items.length - 1) gridHtml += '</tr><tr>';
+                });
+                gridHtml += '</tr></table>';
+
+                return `
+                    <div class="etiquette" style="border: 3px solid #000; padding: 25px; width: 14.5cm; min-height: 9.5cm; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; display: flex; flex-direction: column;">
+                        <!-- Header Section (3-column layout) -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px;">
+                            <div style="width: 100px; flex-shrink: 0; display: flex; align-items: center;">
+                                <img src="logo.PNG" alt="Logo" style="width: 85px; height: auto;" onerror="this.src='logo.png'">
+                            </div>
+                            <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                <div style="font-weight: 700; font-size: 10pt; margin-bottom: 4px;">-FE001/CQ-SOP004-</div>
+                                <div style="font-weight: 900; font-size: 16pt; text-decoration: underline; text-transform: uppercase; letter-spacing: 0.5px;">Etiquette de stérilisation</div>
+                            </div>
+                            <div style="width: 100px; flex-shrink: 0;"></div> <!-- Spacer -->
+                        </div>
+
+                        <div style="font-weight: 800; font-size: 11pt; margin-bottom: 6px;">Désignation :</div>
+
+                        <!-- Grid -->
+                        <div style="flex: 1; padding-left: 5px;">
+                            ${gridHtml}
+                        </div>
+
+                        <div style="font-weight: 800; font-size: 11pt; margin-bottom: 12px; margin-top: 15px;">Équipement de stérilisation :</div>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 6px; font-size: 10.5pt; font-weight: 700; padding-left: 10px; margin-bottom: 15px;">
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 17px; height: 17px; border: 2.2px solid #000; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 11pt;">
+                                    ${label.sterEquipment === 'ETS005' ? 'X' : ''}
+                                </div>
+                                <span style="min-width: 180px;">ETS005 / N° D'ACTION :</span>
+                                <span style="font-weight: 900; font-size: 12pt; margin-left: 15px;">${label.sterEquipment === 'ETS005' ? (label.sterCycleInput || label.sterCycle057 || '') : ''}</span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 17px; height: 17px; border: 2.2px solid #000; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 11pt;">
+                                    ${label.sterEquipment === 'LAUTO057' ? 'X' : ''}
+                                </div>
+                                <span style="min-width: 180px;">LAUTO057 / N° DE CYCLE :</span>
+                                <span style="font-weight: 900; font-size: 12pt; margin-left: 15px;">${label.sterEquipment === 'LAUTO057' ? (label.sterCycleInput || label.sterCycle057 || '') : ''}</span>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div style="width: 17px; height: 17px; border: 2.2px solid #000; margin-right: 15px; display: flex; align-items: center; justify-content: center; font-size: 11pt;">
+                                    ${label.sterEquipment === 'LAUTO056' ? 'X' : ''}
+                                </div>
+                                <span style="min-width: 180px;">LAUTO056 / N° DE CYCLE :</span>
+                                <span style="font-weight: 900; font-size: 12pt; margin-left: 15px;">${label.sterEquipment === 'LAUTO056' ? (label.sterCycleInput || label.sterCycle056 || '') : ''}</span>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px; font-size: 11.5pt; font-weight: 800; line-height: 1.6; border-top: 2px solid #000; padding-top: 12px;">
+                            <div style="display: flex; justify-content: flex-start; gap: 70px;">
+                                <span>DDP : ${ddp}</span>
+                                <span>Effectué par : ${label.preparator || ''}</span>
+                            </div>
+                            <div style="margin-top: 5px;">DDV : ${ddv}</div>
+                        </div>
+                    </div>
+                `;
             }
 
             if (label.type === 'petri') {
@@ -3530,6 +3926,46 @@
             modal.style.display = 'flex';
         }
 
+        function printBlankSterilisation() {
+            const blankLabel = {
+                type: 'sterilisation',
+                date: '',
+                prepDate: '', // DDP
+                expDate: '',  // DDV
+                sterEquipment: '',
+                sterCycle057: '',
+                sterCycle056: '',
+                designation: '',
+                preparator: ''
+            };
+
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = '';
+
+            const settings = JSON.parse(localStorage.getItem('labo_print_settings') || '{"width":450, "height":280, "marginTop":0, "align":"flex-start"}');
+
+            printArea.style.display = 'flex';
+            printArea.style.flexDirection = 'column';
+            printArea.style.alignItems = settings.align || 'flex-start';
+            printArea.style.paddingTop = settings.marginTop + 'px';
+
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = generateLabelHTML(blankLabel);
+            const etiq = wrapper.querySelector('.etiquette');
+            if (etiq) {
+                etiq.style.width = settings.width + 'px';
+                etiq.style.minHeight = settings.height + 'px';
+            }
+
+            printArea.appendChild(wrapper);
+            window.print();
+            setTimeout(() => {
+                printArea.innerHTML = '';
+                printArea.style.paddingTop = '0';
+                printArea.style.alignItems = 'flex-start';
+            }, 1000);
+        }
+
         function printSingleLabel(id) {
             const isInv = (currentSection === 'inventory');
             const dataPool = isInv ? inventoryData : labels;
@@ -3562,6 +3998,9 @@
             }, 1000);
         }
 
+        // All printLabels functionality moved to later consolidated version
+
+
         function exportSinglePdf(id) {
             const isInv = (currentSection === 'inventory');
             const dataPool = isInv ? inventoryData : labels;
@@ -3583,7 +4022,7 @@
 
         function exportTableToPdf(panelId) {
             const element = document.getElementById(panelId);
-            
+
             const iframe = document.createElement('iframe');
             iframe.style.position = 'fixed';
             iframe.style.width = '0';
@@ -3599,7 +4038,7 @@
             const tableRows = clone.querySelectorAll('tr');
             tableRows.forEach(tr => {
                 const lastCell = tr.lastElementChild;
-                if(lastCell) lastCell.remove();
+                if (lastCell) lastCell.remove();
             });
 
             const docFrame = iframe.contentWindow.document;
@@ -3928,7 +4367,7 @@
                     loader.style.display = 'none';
                     iframe.contentWindow.focus();
                     iframe.contentWindow.print();
-                    
+
                     // Nettoyage de l'iframe après impression/annulation
                     setTimeout(() => {
                         document.body.removeChild(iframe);
@@ -4015,6 +4454,20 @@
         if (document.getElementById('inventoryGroupInput')) {
             document.getElementById('inventoryGroupInput').addEventListener('change', () => {
                 if (currentSection === 'inventory') showSection('inventory');
+            });
+        }
+
+        // Auto-calculer DDV (DDP + 7 jours) pour la stérilisation
+        const sterDdpInput = document.getElementById('ster-ddp');
+        const sterDdvInput = document.getElementById('ster-ddv');
+        if (sterDdpInput && sterDdvInput) {
+            sterDdpInput.addEventListener('change', () => {
+                const ddpDate = new Date(sterDdpInput.value);
+                if (!isNaN(ddpDate)) {
+                    const ddvDate = new Date(ddpDate);
+                    ddvDate.setDate(ddvDate.getDate() + 7);
+                    sterDdvInput.value = ddvDate.toISOString().split('T')[0];
+                }
             });
         }
 
@@ -4521,6 +4974,12 @@
             bulkDelete,
             bulkPrint,
             bulkExport,
+            printLabels,
+            printBlankSterilisation,
+            importData,
+            generateDetailedReport,
+            exportToCsv,
+            cleanDataManual,
             handleAuth,
             toggleAuthMode,
             logout,
@@ -4543,7 +5002,6 @@
             showNearExpiry,
             exportTableToPdf,
             exportLabelsToPdf,
-            generateDetailedReport,
             renderAdminDbTable,
             deleteAdminDbLabel,
             editAdminDbLabel,
