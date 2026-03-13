@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion de Laboratoire CQ3</title>
+    <!-- Firebase SDKs -->
+    <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js",
+        "firebase/auth": "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"
+      }
+    }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
@@ -1484,1260 +1494,56 @@
     <!-- ZONE D'IMPRESSION CACHÉE -->
     <div id="print-area"></div>
 
-    <script>
-        // --- AUTH & LOGIN SYSTEM ---
-        let users = JSON.parse(localStorage.getItem('etiq_users') || '[]');
-        let currentUser = JSON.parse(localStorage.getItem('etiq_current_user') || 'null');
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getFirestore, collection, addDoc, getDocs, onSnapshot, query, orderBy, deleteDoc, doc, updateDoc, setDoc, getDoc } from "firebase/firestore";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGegoUv1mwcxCtmssP2MBT_3RRIIWyYtA",
+            authDomain: "etiq-chs.firebaseapp.com",
+            projectId: "etiq-chs",
+            storageBucket: "etiq-chs.firebasestorage.app",
+            messagingSenderId: "430451080731",
+            appId: "1:430451080731:web:3d8ee352bb6708f03782be",
+            measurementId: "G-1DCTQ2GJ46"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // --- GLOBAL STATE ---
+        let labels = [];
+        let inventoryData = [];
+        let users = [];
+        let currentUser = null;
         let isLoginMode = true;
 
-        // BASES DE DONNÉES SÉPARÉES
-        let labels = JSON.parse(localStorage.getItem('etiq_culture_v2') || '[]');
-        if (!localStorage.getItem('legacy_data_injected_v1')) {
-            const legacyData = [
-                {
-                    "id": 1773371485305,
-                    "type": "milieux",
-                    "date": "2025-11-25",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY079/002",
-                    "prepDate": "2025-11-25",
-                    "expDate": "2025-12-25",
-                    "conservation": "Température ambiante",
-                    "preparator": "MBO"
-                },
-                {
-                    "id": 1773371485306,
-                    "type": "milieux",
-                    "date": "2025-11-25",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM006/004",
-                    "prepDate": "2025-11-25",
-                    "expDate": "2025-12-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "MBO"
-                },
-                {
-                    "id": 1773371485307,
-                    "type": "milieux",
-                    "date": "2025-12-02",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/026",
-                    "prepDate": "2025-12-02",
-                    "expDate": "2025-12-17",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485308,
-                    "type": "milieux",
-                    "date": "2025-12-03",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESITRY080/001",
-                    "prepDate": "2025-12-03",
-                    "expDate": "2026-01-03",
-                    "conservation": "Température ambiante",
-                    "preparator": "MBO"
-                },
-                {
-                    "id": 1773371485309,
-                    "type": "milieux",
-                    "date": "2025-12-08",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY081/001",
-                    "prepDate": "2025-12-08",
-                    "expDate": "2026-01-07",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485310,
-                    "type": "milieux",
-                    "date": "2025-12-08",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY082/001",
-                    "prepDate": "2025-12-08",
-                    "expDate": "2026-01-07",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485311,
-                    "type": "milieux",
-                    "date": "2025-12-09",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM006/005",
-                    "prepDate": "2025-12-09",
-                    "expDate": "2025-12-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485312,
-                    "type": "milieux",
-                    "date": "2025-12-17",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY082/002",
-                    "prepDate": "2025-12-17",
-                    "expDate": "2026-01-16",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485313,
-                    "type": "milieux",
-                    "date": "2025-12-17",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/004",
-                    "prepDate": "2025-12-17",
-                    "expDate": "2026-01-01",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485315,
-                    "type": "milieux",
-                    "date": "2025-12-22",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY083/001",
-                    "prepDate": "2025-12-22",
-                    "expDate": "2026-01-22",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHS"
-                },
-                {
-                    "id": 1773371485316,
-                    "type": "milieux",
-                    "date": "2025-12-24",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/005",
-                    "prepDate": "2025-12-22",
-                    "expDate": "2026-01-06",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHS"
-                },
-                {
-                    "id": 1773371485317,
-                    "type": "milieux",
-                    "date": "2025-12-24",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS023/001",
-                    "prepDate": "2025-12-24",
-                    "expDate": "2026-01-08",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHS"
-                },
-                {
-                    "id": 1773371485318,
-                    "type": "milieux",
-                    "date": "2025-12-24",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH004/031",
-                    "prepDate": "2025-12-24",
-                    "expDate": "2026-01-08",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHS"
-                },
-                {
-                    "id": 1773371485319,
-                    "type": "milieux",
-                    "date": "2025-12-15",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/027",
-                    "prepDate": "2025-12-15",
-                    "expDate": "2025-12-30",
-                    "conservation": "Température ambiante",
-                    "preparator": "CHY"
-                },
-                {
-                    "id": 1773371485320,
-                    "type": "milieux",
-                    "date": "2025-12-28",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/028",
-                    "prepDate": "2025-12-28",
-                    "expDate": "2026-01-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485321,
-                    "type": "milieux",
-                    "date": "2025-12-28",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM006/006",
-                    "prepDate": "2025-12-28",
-                    "expDate": "2026-01-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485322,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/006",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485323,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE CETRIMIDE",
-                    "code": "LRESOGEC002/012",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485324,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE SABOURAUD DEXTROSE",
-                    "code": "LRESOSAB004/004",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485325,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE R2A",
-                    "code": "LRESOREA005/003",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485326,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "BOUILLON RVS",
-                    "code": "LRELIRVS003/008",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485327,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "BOUILLON MACCONKEY",
-                    "code": "LRELIMAC003/029",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485328,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE VIANDE FOIE",
-                    "code": "LRESOVIA003/014",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485329,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE CHAPMAN",
-                    "code": "LRESOMAN004/003",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485330,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE MACCONKEY",
-                    "code": "LRESOMAC002/013",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485331,
-                    "type": "milieux",
-                    "date": "2025-12-29",
-                    "designation": "GELOSE XLD",
-                    "code": "LRESOXLD004/002",
-                    "prepDate": "2025-12-29",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485332,
-                    "type": "milieux",
-                    "date": "2025-12-30",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY084001",
-                    "prepDate": "2025-12-30",
-                    "expDate": "2026-01-29",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485333,
-                    "type": "milieux",
-                    "date": "2026-01-04",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELI004/007",
-                    "prepDate": "2026-01-04",
-                    "expDate": "2026-01-19",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485334,
-                    "type": "milieux",
-                    "date": "2026-01-04",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS023/002",
-                    "prepDate": "2026-01-04",
-                    "expDate": "2026-01-19",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485335,
-                    "type": "milieux",
-                    "date": "2026-01-04",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH004/032",
-                    "prepDate": "2026-01-04",
-                    "expDate": "2026-01-19",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485336,
-                    "type": "milieux",
-                    "date": "2026-01-06",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY084/002",
-                    "prepDate": "2026-01-06",
-                    "expDate": "2026-02-05",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485337,
-                    "type": "milieux",
-                    "date": "2026-01-06",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY085/001",
-                    "prepDate": "2026-01-06",
-                    "expDate": "2026-02-05",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485338,
-                    "type": "milieux",
-                    "date": "2026-01-11",
-                    "designation": "GELOSE SABOURAUD DEXTROSE",
-                    "code": "LRESOSAB004/005",
-                    "prepDate": "2026-01-14",
-                    "expDate": "2026-02-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485339,
-                    "type": "milieux",
-                    "date": "2026-01-13",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/007",
-                    "prepDate": "2026-01-13",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485340,
-                    "type": "milieux",
-                    "date": "2026-01-13",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/029",
-                    "prepDate": "2026-01-13",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485341,
-                    "type": "milieux",
-                    "date": "2026-01-13",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/001",
-                    "prepDate": "2026-01-13",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485342,
-                    "type": "milieux",
-                    "date": "2026-01-13",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS023/003",
-                    "prepDate": "2026-01-13",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485343,
-                    "type": "milieux",
-                    "date": "2026-01-13",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/001",
-                    "prepDate": "2026-01-13",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485344,
-                    "type": "milieux",
-                    "date": "2026-01-13",
-                    "designation": "BOUILLON MACCONKEY",
-                    "code": "LRELIMAC003/030",
-                    "prepDate": "2026-01-13",
-                    "expDate": "2026-01-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485345,
-                    "type": "milieux",
-                    "date": "2026-01-14",
-                    "designation": "BOUILLON RVS",
-                    "code": "LRELIRVS003/009",
-                    "prepDate": "2026-01-14",
-                    "expDate": "2026-01-29",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485346,
-                    "type": "milieux",
-                    "date": "2026-01-15",
-                    "designation": "GELOSE XLD",
-                    "code": "LRESOXLD004/003",
-                    "prepDate": "2026-01-15",
-                    "expDate": "2026-02-14",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485347,
-                    "type": "milieux",
-                    "date": "2026-01-15",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY085/002",
-                    "prepDate": "2026-01-15",
-                    "expDate": "2026-02-14",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485348,
-                    "type": "milieux",
-                    "date": "2026-01-19",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY086/001",
-                    "prepDate": "2026-01-19",
-                    "expDate": "2026-02-18",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485349,
-                    "type": "milieux",
-                    "date": "2026-01-19",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/009",
-                    "prepDate": "2026-01-19",
-                    "expDate": "2026-02-03",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485350,
-                    "type": "milieux",
-                    "date": "2026-01-21",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/002",
-                    "prepDate": "2026-01-21",
-                    "expDate": "2026-02-05",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485351,
-                    "type": "milieux",
-                    "date": "2026-01-21",
-                    "designation": "GELOSE R2A",
-                    "code": "LRESOREA005/004",
-                    "prepDate": "2026-01-21",
-                    "expDate": "2026-02-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485352,
-                    "type": "milieux",
-                    "date": "2026-01-21",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY086/002",
-                    "prepDate": "2026-01-21",
-                    "expDate": "2026-02-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485353,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "GELOSE CHAPMAN",
-                    "code": "LRESOMAN004/004",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485354,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "GELOSE CETRIMIDE",
-                    "code": "LRESOCET002/013",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485355,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/010",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485356,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "Gélose Mac Conkey",
-                    "code": "LRESOMAC002/014",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485357,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/002",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485358,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS023/004",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485359,
-                    "type": "milieux",
-                    "date": "2026-01-25",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA023/005",
-                    "prepDate": "2026-01-25",
-                    "expDate": "2026-02-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485360,
-                    "type": "milieux",
-                    "date": "2026-01-28",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA",
-                    "prepDate": "2026-01-28",
-                    "expDate": "2026-02-27",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485361,
-                    "type": "milieux",
-                    "date": "2026-01-28",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS",
-                    "prepDate": "2026-01-28",
-                    "expDate": "2026-02-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485362,
-                    "type": "milieux",
-                    "date": "2026-01-28",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/003",
-                    "prepDate": "2026-01-28",
-                    "expDate": "2026-02-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485363,
-                    "type": "milieux",
-                    "date": "2026-01-28",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/030",
-                    "prepDate": "2026-01-28",
-                    "expDate": "2026-02-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485364,
-                    "type": "milieux",
-                    "date": "2026-01-29",
-                    "designation": "Gélose viande foie",
-                    "code": "LRESOVIA003/015",
-                    "prepDate": "2026-01-29",
-                    "expDate": "2026-02-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485365,
-                    "type": "milieux",
-                    "date": "2026-01-29",
-                    "designation": "BOUILLON MACCONKEY",
-                    "code": "LRELIMAC003/031",
-                    "prepDate": "2026-01-29",
-                    "expDate": "2026-02-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485366,
-                    "type": "milieux",
-                    "date": "2026-01-29",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA024/001",
-                    "prepDate": "2026-01-29",
-                    "expDate": "2026-02-28",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485367,
-                    "type": "milieux",
-                    "date": "2026-02-01",
-                    "designation": "BOUILLON RVS",
-                    "code": "LRELIRVS003/010",
-                    "prepDate": "2026-02-01",
-                    "expDate": "2026-02-16",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485368,
-                    "type": "milieux",
-                    "date": "2026-02-01",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/011",
-                    "prepDate": "2026-02-01",
-                    "expDate": "2026-02-16",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485369,
-                    "type": "milieux",
-                    "date": "2026-02-03",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA024/002",
-                    "prepDate": "2026-02-03",
-                    "expDate": "2026-03-05",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485370,
-                    "type": "milieux",
-                    "date": "2026-02-03",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/003",
-                    "prepDate": "2026-02-03",
-                    "expDate": "2026-02-18",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485371,
-                    "type": "milieux",
-                    "date": "2026-02-05",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA025/001",
-                    "prepDate": "2026-02-05",
-                    "expDate": "2026-03-07",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485372,
-                    "type": "milieux",
-                    "date": "2026-02-05",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004012",
-                    "prepDate": "2026-02-05",
-                    "expDate": "2026-02-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485373,
-                    "type": "milieux",
-                    "date": "2026-02-05",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS025/001",
-                    "prepDate": "2026-02-05",
-                    "expDate": "2026-02-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485374,
-                    "type": "milieux",
-                    "date": "2026-02-05",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/004",
-                    "prepDate": "2026-02-05",
-                    "expDate": "2026-02-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485375,
-                    "type": "milieux",
-                    "date": "2026-02-08",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/031",
-                    "prepDate": "2026-02-08",
-                    "expDate": "2026-02-23",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485376,
-                    "type": "milieux",
-                    "date": "2026-02-09",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/004",
-                    "prepDate": "2026-02-09",
-                    "expDate": "2026-02-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485377,
-                    "type": "milieux",
-                    "date": "2026-02-09",
-                    "designation": "GELOSE MACCONKEY",
-                    "code": "LRESOMAC002/014",
-                    "prepDate": "2026-02-09",
-                    "expDate": "2026-03-11",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485378,
-                    "type": "milieux",
-                    "date": "2026-02-09",
-                    "designation": "GELOSE VIANDE FOIE",
-                    "code": "LRESOVIA003/016",
-                    "prepDate": "2026-02-09",
-                    "expDate": "2026-03-11",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485379,
-                    "type": "milieux",
-                    "date": "2026-02-09",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA025/002",
-                    "prepDate": "2026-02-09",
-                    "expDate": "2026-03-11",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485380,
-                    "type": "milieux",
-                    "date": "2026-02-10",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA026/001",
-                    "prepDate": "2026-02-10",
-                    "expDate": "2026-03-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485381,
-                    "type": "milieux",
-                    "date": "2026-02-11",
-                    "designation": "GELOSE SABOURAUD DEXTROSE",
-                    "code": "LRESOSAB004/006",
-                    "prepDate": "2026-02-11",
-                    "expDate": "2026-03-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485382,
-                    "type": "milieux",
-                    "date": "2026-02-11",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/013",
-                    "prepDate": "2026-02-11",
-                    "expDate": "2026-02-26",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485383,
-                    "type": "milieux",
-                    "date": "2026-02-12",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA026/002",
-                    "prepDate": "2026-02-12",
-                    "expDate": "2026-03-14",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485384,
-                    "type": "milieux",
-                    "date": "2026-02-12",
-                    "designation": "GELOSE XLD",
-                    "code": "LRESOXLD004/004",
-                    "prepDate": "2026-02-12",
-                    "expDate": "2026-03-14",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485385,
-                    "type": "milieux",
-                    "date": "2026-02-12",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/032",
-                    "prepDate": "2026-02-12",
-                    "expDate": "2026-02-27",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485386,
-                    "type": "milieux",
-                    "date": "2026-02-12",
-                    "designation": "BOUILLON MACCONKEY",
-                    "code": "LRELIMAC004/002",
-                    "prepDate": "2026-02-12",
-                    "expDate": "2026-02-27",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485387,
-                    "type": "milieux",
-                    "date": "2026-02-15",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA026/003",
-                    "prepDate": "2026-02-15",
-                    "expDate": "2026-03-17",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485388,
-                    "type": "milieux",
-                    "date": "2026-02-15",
-                    "designation": "BOUILLON RVS",
-                    "code": "LRELIRVS003/011",
-                    "prepDate": "2026-02-15",
-                    "expDate": "2026-03-02",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485389,
-                    "type": "milieux",
-                    "date": "2026-02-15",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS041/001",
-                    "prepDate": "2026-02-15",
-                    "expDate": "2026-03-02",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485390,
-                    "type": "milieux",
-                    "date": "2026-02-15",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/005",
-                    "prepDate": "2026-02-15",
-                    "expDate": "2026-03-02",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485391,
-                    "type": "milieux",
-                    "date": "2026-02-17",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA041/001",
-                    "prepDate": "2026-02-17",
-                    "expDate": "2026-03-19",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485392,
-                    "type": "milieux",
-                    "date": "2026-02-17",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/005",
-                    "prepDate": "2026-02-17",
-                    "expDate": "2026-03-04",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485393,
-                    "type": "milieux",
-                    "date": "2026-02-19",
-                    "designation": "GELOSE R2A",
-                    "code": "LRESOREA005/005",
-                    "prepDate": "2026-02-19",
-                    "expDate": "2026-03-21",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485394,
-                    "type": "milieux",
-                    "date": "2026-02-19",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/014",
-                    "prepDate": "2026-02-19",
-                    "expDate": "2026-03-06",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485395,
-                    "type": "milieux",
-                    "date": "2026-02-22",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA041/002",
-                    "prepDate": "2026-02-22",
-                    "expDate": "2026-03-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485396,
-                    "type": "milieux",
-                    "date": "2026-02-22",
-                    "designation": "GELOSE XLD",
-                    "code": "LRESOXLD004/005",
-                    "prepDate": "2026-02-22",
-                    "expDate": "2026-03-24",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485397,
-                    "type": "milieux",
-                    "date": "2026-02-24",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRA044/001",
-                    "prepDate": "2026-02-24",
-                    "expDate": "2026-03-26",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485398,
-                    "type": "milieux",
-                    "date": "2026-02-24",
-                    "designation": "Eau physiologique",
-                    "code": "LRELIPHY004/033",
-                    "prepDate": "2026-02-24",
-                    "expDate": "2026-03-11",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485399,
-                    "type": "milieux",
-                    "date": "2026-02-25",
-                    "designation": "GELOSE CHAPMAN",
-                    "code": "LRESOMAN004/005",
-                    "prepDate": "2026-02-25",
-                    "expDate": "2026-03-27",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485400,
-                    "type": "milieux",
-                    "date": "2026-02-25",
-                    "designation": "GELOSE CETRIMIDE",
-                    "code": "LRESOCET002/014",
-                    "prepDate": "2026-02-25",
-                    "expDate": "2026-03-27",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485401,
-                    "type": "milieux",
-                    "date": "2026-02-25",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/006",
-                    "prepDate": "2026-02-25",
-                    "expDate": "2026-03-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485402,
-                    "type": "milieux",
-                    "date": "2026-02-25",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS044/001",
-                    "prepDate": "2026-02-25",
-                    "expDate": "2026-03-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485403,
-                    "type": "milieux",
-                    "date": "2026-02-25",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/006",
-                    "prepDate": "2026-02-25",
-                    "expDate": "2026-03-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485404,
-                    "type": "milieux",
-                    "date": "2026-02-25",
-                    "designation": "BOUILLON MACCONKEY",
-                    "code": "LRELIMAC004/002",
-                    "prepDate": "2026-02-25",
-                    "expDate": "2026-03-12",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485405,
-                    "type": "milieux",
-                    "date": "2026-02-26",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/015",
-                    "prepDate": "2026-02-26",
-                    "expDate": "2026-03-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485406,
-                    "type": "milieux",
-                    "date": "2026-02-26",
-                    "designation": "BOUILLON RVS",
-                    "code": "LRELIRVS003/012",
-                    "prepDate": "2026-02-26",
-                    "expDate": "2026-03-13",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485407,
-                    "type": "milieux",
-                    "date": "2026-03-02",
-                    "designation": "GELOSE TSA",
-                    "code": "LRESOTRY087/001",
-                    "prepDate": "2026-03-02",
-                    "expDate": "2026-04-01",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485408,
-                    "type": "milieux",
-                    "date": "2026-03-02",
-                    "designation": "GELOSE SABOURAUD DEXTROSE",
-                    "code": "LRESOSAB004/007",
-                    "prepDate": "2026-03-02",
-                    "expDate": "2026-04-01",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485409,
-                    "type": "milieux",
-                    "date": "2026-03-02",
-                    "designation": "SOLUTION DE RINCAGE",
-                    "code": "LRELIRIN004/016",
-                    "prepDate": "2026-03-02",
-                    "expDate": "2026-03-17",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485410,
-                    "type": "milieux",
-                    "date": "2026-03-03",
-                    "designation": "BOUILLON MACCONKEY",
-                    "code": "LRELIMAC004/004",
-                    "prepDate": "2026-03-03",
-                    "expDate": "2026-03-18",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485411,
-                    "type": "milieux",
-                    "date": "2026-03-03",
-                    "designation": "SOLUTION TAMPON",
-                    "code": "LRELITAM008/007",
-                    "prepDate": "2026-03-03",
-                    "expDate": "2026-03-18",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485412,
-                    "type": "milieux",
-                    "date": "2026-03-05",
-                    "designation": "Eau physiologique",
-                    "code": "LLRELIPHY004/033",
-                    "prepDate": "2026-03-05",
-                    "expDate": "2026-03-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485413,
-                    "type": "milieux",
-                    "date": "2026-03-05",
-                    "designation": "BOUILLON TSB",
-                    "code": "LRELIBTS060/001",
-                    "prepDate": "2026-03-05",
-                    "expDate": "2026-03-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485414,
-                    "type": "milieux",
-                    "date": "2026-03-05",
-                    "designation": "BOUILLON BTH",
-                    "code": "LRELIBTH005/007",
-                    "prepDate": "2026-03-05",
-                    "expDate": "2026-03-20",
-                    "conservation": "Température ambiante",
-                    "preparator": "AME"
-                },
-                {
-                    "id": 1773371485415,
-                    "type": "milieux",
-                    "date": "2026-03-10",
-                    "designation": "GELOSE MACCONKEY",
-                    "code": "LRESOMAC002/016",
-                    "prepDate": "2026-03-10",
-                    "expDate": "2026-04-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "SABs"
-                },
-                {
-                    "id": 1773371485416,
-                    "type": "milieux",
-                    "date": "2026-03-10",
-                    "designation": "GELOSE VIANDE FOIE",
-                    "code": "LRESOVIF 003/017",
-                    "prepDate": "2026-03-10",
-                    "expDate": "2026-04-09",
-                    "conservation": "Température ambiante",
-                    "preparator": "SABs"
-                },
-                {
-                    "id": 1773371485417,
-                    "type": "milieux",
-                    "date": "2026-03-12",
-                    "designation": "BOUILLON RVS",
-                    "code": "LRESORVS004/001",
-                    "prepDate": "2026-03-12",
-                    "expDate": "2026-03-27",
-                    "conservation": "Température ambiante",
-                    "preparator": "SABs"
-                }
-            ];
-            // check if already has exact same code / designation to avoid duplicates if they ran it before
-            legacyData.forEach(item => {
-                if (!labels.find(l => l.code === item.code && l.designation === item.designation && l.date === item.date)) {
-                    labels.push(item);
-                }
-            });
-            localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
-            localStorage.setItem('legacy_data_injected_v1', 'true');
-            console.log('Legacy data injected!');
-        }
-        let inventoryData = JSON.parse(localStorage.getItem('etiq_inventory_db') || '[]');
+        // --- REAL-TIME SYNC ---
+        onSnapshot(query(collection(db, "labels"), orderBy("id", "desc")), (snapshot) => {
+            labels = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+            if (typeof renderTable === 'function') renderTable();
+            if (typeof renderHistoryTable === 'function') renderHistoryTable();
+            if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
+        });
+
+        onSnapshot(query(collection(db, "inventory"), orderBy("id", "desc")), (snapshot) => {
+            inventoryData = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+            if (typeof renderTable === 'function') renderTable();
+            if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
+            if (typeof updateInventoryGroups === 'function') updateInventoryGroups();
+        });
+
+        onSnapshot(collection(db, "users"), (snapshot) => {
+            users = snapshot.docs.map(doc => doc.data());
+            if (typeof renderUserTable === 'function') renderUserTable();
+        });
+
+        // Legacy migration placeholder (future)
+
 
         // --- NETTOYAGE AUTOMATIQUE DES DONNÉES CORROMPUES ---
         function isValidEntry(entry) {
@@ -2755,34 +1561,54 @@
             return true;
         }
 
-        function cleanData() {
-            const beforeLabels = labels.length;
-            const beforeInv = inventoryData.length;
-            labels = labels.filter(isValidEntry);
-            inventoryData = inventoryData.filter(isValidEntry);
-            localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
-            localStorage.setItem('etiq_inventory_db', JSON.stringify(inventoryData));
-            const removedLabels = beforeLabels - labels.length;
-            const removedInv = beforeInv - inventoryData.length;
-            return { removedLabels, removedInv };
+        // Initialisation de l'application
+        async function initApp() {
+            // Check if admin exist in users
+            const adminEmail = 'sohaibchekri@gmail.com';
+            const userDoc = await getDoc(doc(db, "users", adminEmail));
+            if (!userDoc.exists()) {
+                await setDoc(doc(db, "users", adminEmail), {
+                    email: adminEmail,
+                    role: 'admin',
+                    status: 'approved',
+                    createdAt: new Date().toISOString()
+                });
+            }
         }
+        initApp();
 
-        function cleanDataManual() {
-            if (!confirm('Voulez-vous supprimer toutes les entrées corrompues (Invalid Date, undefined, données illisibles) ?')) return;
-            const result = cleanData();
-            alert(`Nettoyage terminé !\n${result.removedLabels} étiquettes corrompues supprimées.\n${result.removedInv} entrées d'inventaire corrompues supprimées.`);
-            if (typeof renderTable === 'function') renderTable();
-            if (typeof renderHistoryTable === 'function') renderHistoryTable();
+
+        // --- AUTH SECTION ---
+        async function handleAuth() {
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPass').value.trim();
+            const errorMsg = document.getElementById('auth-error');
+
+            if (!email || !pass) {
+                errorMsg.innerText = "Veuillez remplir tous les champs.";
+                return;
+            }
+
+            try {
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                    await setDoc(doc(db, "users", email), {
+                        email: email,
+                        role: 'user',
+                        status: 'pending'
+                    });
+                    errorMsg.innerText = "Inscription réussie ! En attente d'approbation.";
+                    errorMsg.style.color = '#2ecc71';
+                    setTimeout(() => toggleAuthMode(), 2000);
+                }
+            } catch (error) {
+                console.error(error);
+                errorMsg.innerText = "Erreur: " + error.message;
+            }
         }
-
-        // Nettoyage automatique au chargement
-        cleanData();
-
-        // Création de l'admin par défaut si inexistant
-        if (!users.find(u => u.email === 'sohaibchekri@gmail.com')) {
-            users.push({ email: 'sohaibchekri@gmail.com', pass: 'FARAH2025+', role: 'admin', status: 'approved' });
-            localStorage.setItem('etiq_users', JSON.stringify(users));
-        }
+        window.handleAuth = handleAuth;
 
         function toggleAuthMode() {
             isLoginMode = !isLoginMode;
@@ -2802,51 +1628,7 @@
                 switchPrompt.innerHTML = `Déjà un compte ? <a href="#" onclick="toggleAuthMode()" style="color: #3074c7; font-weight: 600; text-decoration: none;">Se connecter</a>`;
             }
         }
-
-        function handleAuth() {
-            const email = document.getElementById('authEmail').value.trim();
-            const pass = document.getElementById('authPass').value.trim();
-            const errorMsg = document.getElementById('auth-error');
-
-            if (!email || !pass) {
-                errorMsg.innerText = "Veuillez remplir tous les champs.";
-                return;
-            }
-
-            if (isLoginMode) {
-                const user = users.find(u => u.email === email && u.pass === pass);
-                if (!user) {
-                    errorMsg.innerText = "Email ou mot de passe incorrect.";
-                    return;
-                }
-                if (user.status === 'pending') {
-                    errorMsg.innerText = "Votre compte est en attente d'approbation par un administrateur.";
-                    errorMsg.style.color = '#f39c12';
-                    return;
-                }
-                currentUser = user;
-                localStorage.setItem('etiq_current_user', JSON.stringify(currentUser));
-                checkAuth();
-            } else {
-                if (users.find(u => u.email === email)) {
-                    errorMsg.innerText = "Cet email est déjà utilisé.";
-                    return;
-                }
-                const newUser = { email, pass, role: 'user', status: 'pending' };
-                users.push(newUser);
-                localStorage.setItem('etiq_users', JSON.stringify(users));
-                errorMsg.innerText = "Inscription réussie ! Votre compte doit être approuvé par l'admin.";
-                errorMsg.style.color = '#2ecc71';
-                setTimeout(() => toggleAuthMode(), 2000);
-            }
-        }
-
-        function collapseSidebar() {
-            document.getElementById('sidebar').classList.add('collapsed');
-        }
-        function expandSidebar() {
-            document.getElementById('sidebar').classList.remove('collapsed');
-        }
+        window.toggleAuthMode = toggleAuthMode;
 
         function checkAuth() {
             if (currentUser) {
@@ -2861,9 +1643,38 @@
                 document.getElementById('main-app').style.display = 'none';
             }
         }
+        window.checkAuth = checkAuth;
+
+        async function logout() {
+            await signOut(auth);
+            location.reload();
+        }
+        window.logout = logout;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.email));
+                if (userDoc.exists()) {
+                    currentUser = userDoc.data();
+                    if (currentUser.status === 'approved') {
+                        checkAuth();
+                    } else {
+                        await signOut(auth);
+                        alert("Votre compte est en attente d'approbation.");
+                    }
+                } else {
+                    await signOut(auth);
+                    alert("Compte inconnu.");
+                }
+            } else {
+                currentUser = null;
+                checkAuth();
+            }
+        });
 
         function renderUserTable() {
             const tbody = document.getElementById('userTableBody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             const pendingUsers = users.filter(u => u.status === 'pending');
 
@@ -2884,38 +1695,50 @@
                 tbody.appendChild(tr);
             });
         }
+        window.renderUserTable = renderUserTable;
 
-        function approveUser(email) {
-            const user = users.find(u => u.email === email);
-            if (user) {
-                user.status = 'approved';
-                localStorage.setItem('etiq_users', JSON.stringify(users));
-                renderUserTable();
+        async function approveUser(email) {
+            try {
+                await updateDoc(doc(db, "users", email), { status: 'approved' });
                 alert(`Utilisateur ${email} approuvé.`);
+            } catch (err) {
+                alert("Erreur lors de l'approbation.");
             }
         }
+        window.approveUser = approveUser;
 
-        function rejectUser(email) {
+        async function rejectUser(email) {
             if (confirm(`Supprimer définitivement la demande de ${email} ?`)) {
-                users = users.filter(u => u.email !== email);
-                localStorage.setItem('etiq_users', JSON.stringify(users));
-                renderUserTable();
+                try {
+                    await deleteDoc(doc(db, "users", email));
+                    alert(`Demande de ${email} rejetée.`);
+                } catch (err) {
+                    alert("Erreur lors du rejet.");
+                }
             }
         }
+        window.rejectUser = rejectUser;
 
-        function logout() {
-            localStorage.removeItem('etiq_current_user');
-            location.reload();
-        }
 
-        function deleteLabel(id) {
+
+        async function deleteLabel(id) {
             if (confirm("Supprimer cette étiquette ?")) {
-                labels = labels.filter(l => l.id !== id);
-                localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
-                renderTable();
-                renderHistoryTable();
+                const isInv = (currentSection === 'inventory');
+                const dataPool = isInv ? inventoryData : labels;
+                const item = dataPool.find(l => l.id == id);
+                if (!item || !item.docId) {
+                    alert("Erreur: Document non trouvé.");
+                    return;
+                }
+                try {
+                    const colName = isInv ? "inventory" : "labels";
+                    await deleteDoc(doc(db, colName, item.docId));
+                } catch (err) {
+                    alert("Erreur lors de la suppression.");
+                }
             }
         }
+
 
         const legacyDataRaw = `25/11/2025	GELOSE TSA	LRESOTRY079/002	25/11/2025	25/12/2025	MBO
 25/11/2025	SOLUTION TAMPON	LRELITAM006/004	25/11/2025	09/12/2025	MBO
@@ -3041,29 +1864,41 @@
         let selectedLabelId = null;
         let editingLabelId = null;
 
-        function importData() {
-            if (localStorage.getItem('etiq_data_imported') === 'true') return;
+        async function importData() {
+            if (localStorage.getItem('etiq_data_imported_fs_v3') === 'true') return;
 
-            const lines = legacyDataRaw.trim().split('\n');
-            lines.forEach(line => {
-                const cols = line.split('\t');
-                if (cols.length < 6) return;
+            // Only import if we are sure labels are loaded and empty
+            // Wait a bit for Firestore sync
+            setTimeout(async () => {
+                if (labels.length > 5) { // If there are already labels, don't import
+                    localStorage.setItem('etiq_data_imported_fs_v3', 'true');
+                    return;
+                }
 
-                labels.push({
-                    id: Date.now() + Math.random(),
-                    date: parseDate(cols[0]),
-                    designation: cols[1].toUpperCase(),
-                    code: cols[2],
-                    prepDate: parseDate(cols[3]),
-                    expDate: parseDate(cols[4]),
-                    conservation: "Température ambiante",
-                    preparator: cols[5],
-                    type: 'milieux'
-                });
-            });
-            localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
-            localStorage.setItem('etiq_data_imported', 'true');
+                const lines = legacyDataRaw.trim().split('\n');
+                for (const line of lines) {
+                    const cols = line.split('\t');
+                    if (cols.length < 6) continue;
+
+                    try {
+                        await addDoc(collection(db, "labels"), {
+                            id: Date.now() + Math.random(),
+                            date: parseDate(cols[0]),
+                            designation: cols[1].toUpperCase(),
+                            code: cols[2],
+                            prepDate: parseDate(cols[3]),
+                            expDate: parseDate(cols[4]),
+                            conservation: "Température ambiante",
+                            preparator: cols[5],
+                            type: 'milieux',
+                            updatedAt: new Date().toISOString()
+                        });
+                    } catch (err) { console.error("Import error", err); }
+                }
+                localStorage.setItem('etiq_data_imported_fs_v3', 'true');
+            }, 3000);
         }
+
 
         // Met la date du jour par défaut
         document.getElementById('dateInput').valueAsDate = new Date();
@@ -3191,21 +2026,28 @@
             return allData.filter(l => selectedBulkIds.has(l.id.toString()));
         }
 
-        function bulkDelete() {
+        async function bulkDelete() {
             if (selectedBulkIds.size === 0) return;
             if (confirm(`Voulez-vous vraiment supprimer les ${selectedBulkIds.size} éléments sélectionnés ?`)) {
-                inventoryData = inventoryData.filter(l => !selectedBulkIds.has(l.id.toString()));
-                localStorage.setItem('etiq_inventory_db', JSON.stringify(inventoryData));
+                try {
+                    const allData = [...labels, ...inventoryData];
+                    const toDelete = allData.filter(l => selectedBulkIds.has(l.id.toString()));
 
-                labels = labels.filter(l => !selectedBulkIds.has(l.id.toString()));
-                localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
+                    for (const item of toDelete) {
+                        if (item.docId) {
+                            const colName = (item.type === 'inventory') ? "inventory" : "labels";
+                            await deleteDoc(doc(db, colName, item.docId));
+                        }
+                    }
 
-                clearBulkSelection();
-                renderTable();
-                if (typeof renderAdminDbTable === 'function') renderAdminDbTable();
-                renderHistoryTable();
+                    clearBulkSelection();
+                } catch (err) {
+                    console.error(err);
+                    alert("Erreur lors de la suppression groupée.");
+                }
             }
         }
+
 
         function bulkPrint() {
             const items = getSelectedData();
@@ -3748,7 +2590,7 @@
             select.value = currentVal;
         }
 
-        function addLabel() {
+        async function addLabel() {
             // Fonction de secours pour lire les valeurs
             const gVal = (id) => {
                 const el = document.getElementById(id);
@@ -3783,63 +2625,61 @@
                 return;
             }
 
-            if (editingLabelId) {
+            try {
                 const isInv = (currentSection === 'inventory');
-                const dataPool = isInv ? inventoryData : labels;
-                const index = dataPool.findIndex(l => l.id === editingLabelId);
-                if (index !== -1) {
-                    dataPool[index] = {
-                        ...dataPool[index],
-                        date, designation, code, prepDate, expDate, conservation, preparator,
-                        supplier, location, quantity, openDate, lotNumber,
-                        inventoryGroup: invGroup || (dataPool[index].inventoryGroup || ''),
-                        type: isInv ? 'inventory' : (currentSection === 'petri' ? 'petri' : 'milieux')
-                    };
-                }
-                cancelEdit();
-            } else {
-                const newLabel = {
-                    id: Date.now(),
+                const colName = isInv ? "inventory" : "labels";
+
+                const data = {
+                    id: editingLabelId || Date.now(),
                     date, designation, code, prepDate, expDate, conservation, preparator,
                     supplier, location, quantity, openDate, lotNumber,
-                    inventoryGroup: invGroup,
-                    type: currentSection === 'inventory' ? 'inventory' : (currentSection === 'petri' ? 'petri' : 'milieux')
+                    inventoryGroup: invGroup || '',
+                    type: isInv ? 'inventory' : (currentSection === 'petri' ? 'petri' : 'milieux'),
+                    updatedAt: new Date().toISOString()
                 };
-                if (currentSection === 'inventory') {
-                    inventoryData.unshift(newLabel);
-                } else {
-                    labels.unshift(newLabel);
-                }
-            }
 
-            localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
-            localStorage.setItem('etiq_inventory_db', JSON.stringify(inventoryData));
-            updateInventoryGroups();
-            renderTable();
-
-            if (!editingLabelId) {
-                const fields = [
-                    'dateInput', 'designationInput', 'codeInput', 'prepDateInput',
-                    'expDateInput', 'conservationInput', 'preparatorInput',
-                    'supplierInput', 'locationInput', 'quantityInput',
-                    'openDateInput', 'linkedMilieuSelect', 'lotInput', 'customGroupInput'
-                ];
-                fields.forEach(f => {
-                    const el = document.getElementById(f);
-                    if (el) {
-                        if (f === 'preparatorInput' && el.value !== '') {
-                            // On garde les initiales du préparateur par confort
-                        } else {
-                            el.value = '';
-                        }
+                if (editingLabelId) {
+                    const dataPool = isInv ? inventoryData : labels;
+                    const item = dataPool.find(l => l.id === editingLabelId);
+                    if (item && item.docId) {
+                        await updateDoc(doc(db, colName, item.docId), data);
                     }
-                });
-                const sel = document.getElementById('conservationSelect');
-                if (sel) sel.value = 'T° ambiante';
-                const inp = document.getElementById('conservationInput');
-                if (inp) inp.style.display = 'none';
+                    cancelEdit();
+                } else {
+                    await addDoc(collection(db, colName), data);
+
+                    // Clear fields
+                    const fields = [
+                        'dateInput', 'designationInput', 'codeInput', 'prepDateInput',
+                        'expDateInput', 'conservationInput', 'preparatorInput',
+                        'supplierInput', 'locationInput', 'quantityInput',
+                        'openDateInput', 'linkedMilieuSelect', 'lotInput', 'customGroupInput'
+                    ];
+                    fields.forEach(f => {
+                        const el = document.getElementById(f);
+                        if (el) {
+                            if (f === 'preparatorInput' && el.value !== '') {
+                                // Keep preparator
+                            } else if (f === 'dateInput' || f === 'prepDateInput') {
+                                el.valueAsDate = new Date();
+                            } else {
+                                el.value = '';
+                            }
+                        }
+                    });
+                    const sel = document.getElementById('conservationSelect');
+                    if (sel) sel.value = 'T° ambiante';
+                    const inp = document.getElementById('conservationInput');
+                    if (inp) inp.style.display = 'none';
+                    if (typeof calculateExpiryDate === 'function') calculateExpiryDate();
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Erreur lors de l'enregistrement dans la base de données.");
             }
         }
+
+
 
         function toggleConservationInput() {
             const select = document.getElementById('conservationSelect');
@@ -4568,20 +3408,23 @@
             });
         }
 
-        function deleteAdminDbLabel(id, isInv) {
+        async function deleteAdminDbLabel(id, isInv) {
             if (confirm('Voulez-vous vraiment supprimer cet élément de la base de données ?')) {
-                if (isInv) {
-                    inventoryData = inventoryData.filter(item => item.id !== id);
-                    localStorage.setItem('etiq_inventory_db', JSON.stringify(inventoryData));
-                } else {
-                    labels = labels.filter(item => item.id !== id);
-                    localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
+                const dataPool = isInv ? inventoryData : labels;
+                const item = dataPool.find(l => l.id == id);
+                if (!item || !item.docId) {
+                    alert("Erreur: Document non trouvé.");
+                    return;
                 }
-                renderAdminDbTable();
-                if (currentSection !== 'dashboard') renderTable();
-                renderHistoryTable();
+                try {
+                    const colName = isInv ? "inventory" : "labels";
+                    await deleteDoc(doc(db, colName, item.docId));
+                } catch (err) {
+                    alert("Erreur lors de la suppression.");
+                }
             }
         }
+
 
         function editAdminDbLabel(id, isInv, type) {
             // Basculer vers la section appropriée
@@ -4633,7 +3476,7 @@
             }
         }
 
-        function processAdminRows(rows, target) {
+        async function processAdminRows(rows, target) {
             let importedCount = 0;
             let targetType = 'milieux';
             let invGroup = '';
@@ -4645,47 +3488,45 @@
                 targetType = target;
             }
 
-            rows.forEach(cols => {
-                if (cols.length < 3) return;
+            try {
+                for (const cols of rows) {
+                    if (cols.length < 3) continue;
 
-                const newObj = {
-                    id: Date.now() + Math.random(),
-                    type: targetType,
-                    date: cols[2] || new Date().toISOString().split('T')[0],
-                    designation: (cols[3] || cols[1] || 'PRODUIT IMPORTE').toUpperCase(),
-                    code: cols[4] || cols[2] || 'CODE-IMP',
-                    prepDate: cols[5] || cols[2] || '',
-                    expDate: cols[6] || '',
-                    conservation: cols[7] || 'T° ambiante',
-                    preparator: cols[8] || (currentUser ? currentUser.email.split('@')[0].toUpperCase() : 'IMP'),
-                    supplier: cols[9] || '',
-                    location: cols[10] || '',
-                    quantity: cols[11] || '',
-                    openDate: cols[12] || '',
-                    inventoryGroup: invGroup || cols[13] || ''
-                };
+                    const newObj = {
+                        id: Date.now() + Math.random(),
+                        type: targetType,
+                        date: cols[2] || new Date().toISOString().split('T')[0],
+                        designation: (cols[3] || cols[1] || 'PRODUIT IMPORTE').toUpperCase(),
+                        code: cols[4] || cols[2] || 'CODE-IMP',
+                        prepDate: cols[5] || cols[2] || '',
+                        expDate: cols[6] || '',
+                        conservation: cols[7] || 'T° ambiante',
+                        preparator: cols[8] || (currentUser ? currentUser.email.split('@')[0].toUpperCase() : 'IMP'),
+                        supplier: cols[9] || '',
+                        location: cols[10] || '',
+                        quantity: cols[11] || '',
+                        openDate: cols[12] || '',
+                        inventoryGroup: invGroup || cols[13] || '',
+                        updatedAt: new Date().toISOString()
+                    };
 
-                if (targetType === 'inventory') {
-                    inventoryData.push(newObj);
-                } else {
-                    labels.push(newObj);
+                    const colName = (targetType === 'inventory') ? "inventory" : "labels";
+                    await addDoc(collection(db, colName), newObj);
+                    importedCount++;
                 }
-                importedCount++;
-            });
 
-            if (importedCount > 0) {
-                localStorage.setItem('etiq_culture_v2', JSON.stringify(labels));
-                localStorage.setItem('etiq_inventory_db', JSON.stringify(inventoryData));
-                alert(`${importedCount} éléments importés avec succès vers la catégorie : ${target}.`);
-                updateInventoryGroups();
-                renderAdminDbTable();
-                if (currentSection !== 'dashboard') renderTable();
-                renderHistoryTable();
-            } else {
-                alert("Aucune donnée n'a pu être importée.");
+                if (importedCount > 0) {
+                    alert(`${importedCount} éléments importés avec succès vers la catégorie : ${target}.`);
+                } else {
+                    alert("Aucune donnée n'a pu être importée.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Erreur lors de l'importation massive.");
             }
             document.getElementById('adminImportCsvInput').value = ''; // Reset file input
         }
+
 
         // Initialisation
         checkAuth();
