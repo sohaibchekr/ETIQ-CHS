@@ -709,7 +709,8 @@
             body {
                 /* Désactiver l'animation lourde sur mobile pour éviter le lag au scroll */
                 animation: none;
-                background: #e0f7fa; /* Fond statique */
+                background: #e0f7fa;
+                /* Fond statique */
                 background-attachment: scroll;
             }
 
@@ -1693,24 +1694,36 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userDoc = await getDoc(doc(db, "users", user.email));
-                if (userDoc.exists()) {
-                    currentUser = userDoc.data();
-                    if (currentUser.status === 'approved') {
-                        checkAuth();
-                    } else {
-                        await signOut(auth);
-                        alert("Votre compte est en attente d'approbation.");
-                    }
+                const adminEmail = 'sohaibchekri@gmail.com';
+                let userDoc = await getDoc(doc(db, "users", user.email));
+                
+                // Si le document n'existe pas encore (cas d'une inscription toute neuve)
+                if (!userDoc.exists()) {
+                    const isSystemAdmin = (user.email === adminEmail);
+                    await setDoc(doc(db, "users", user.email), {
+                        email: user.email,
+                        role: isSystemAdmin ? 'admin' : 'user',
+                        status: isSystemAdmin ? 'approved' : 'pending',
+                        createdAt: new Date().toISOString()
+                    });
+                    // Recharger le document après création
+                    userDoc = await getDoc(doc(db, "users", user.email));
+                }
+
+                currentUser = userDoc.data();
+                
+                if (currentUser.status === 'approved') {
+                    checkAuth();
                 } else {
                     await signOut(auth);
-                    alert("Compte inconnu.");
+                    alert("Votre compte est en attente d'approbation par un administrateur.");
                 }
             } else {
                 currentUser = null;
                 checkAuth();
             }
         });
+
 
         function renderUserTable() {
             const tbody = document.getElementById('userTableBody');
