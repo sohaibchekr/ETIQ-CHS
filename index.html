@@ -706,6 +706,13 @@
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
+            body {
+                /* Désactiver l'animation lourde sur mobile pour éviter le lag au scroll */
+                animation: none;
+                background: #e0f7fa; /* Fond statique */
+                background-attachment: scroll;
+            }
+
             .sidebar {
                 position: fixed;
                 left: -280px;
@@ -713,6 +720,9 @@
                 bottom: 0;
                 z-index: 1000;
                 transition: left 0.3s ease;
+                /* Réduire le flou sur mobile */
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
             }
 
             .sidebar.active {
@@ -737,6 +747,10 @@
             .glass-card {
                 padding: 12px;
                 border-radius: 12px;
+                /* Supprimer ou réduire le blur sur les cartes en mouvement sur mobile */
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background: rgba(255, 255, 255, 0.95);
             }
 
             .page-header {
@@ -789,6 +803,13 @@
                 grid-template-columns: 1fr !important;
             }
 
+            .dashboard-card {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+            }
+
             .bulk-action-bar {
                 bottom: 70px;
                 width: 90%;
@@ -797,6 +818,7 @@
                 font-size: 0.8rem;
             }
         }
+
 
         .sidebar-toggle-btn {
             display: none;
@@ -1982,6 +2004,21 @@
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('collapsed');
         }
+
+        function expandSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('collapsed');
+            }
+        }
+
+        function collapseSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768) {
+                sidebar.classList.add('collapsed');
+            }
+        }
+
 
         function toggleMobileSidebar() {
             const sidebar = document.getElementById('sidebar');
@@ -3551,6 +3588,57 @@
         importData();
         updateInventoryGroups(); // Charger les groupes d'inventaire dynamiques
         renderTable();
+
+        // --- EXPORT DES FONCTIONS AU NIVEAU GLOBAL (Nécessaire pour les onclick car script type="module") ---
+        Object.assign(window, {
+            showSection,
+            renderTable,
+            renderHistoryTable,
+            addLabel,
+            deleteLabel,
+            editLabel,
+            cancelEdit,
+            previewLabel,
+            printSingleLabel,
+            exportSinglePdf,
+            bulkDelete,
+            bulkPrint,
+            bulkExport,
+            handleAuth,
+            toggleAuthMode,
+            logout,
+            approveUser,
+            rejectUser,
+            toggleSidebar,
+            toggleMobileSidebar,
+            calculateExpiryDate,
+            filterLinkedMilieux,
+            fillFromMilieu,
+            updateDesignationOptions,
+            scrollToSearch,
+            scrollToTable,
+            toggleSelectAll,
+            handleRowSelect,
+            clearBulkSelection,
+            toggleConservationInput,
+            toggleCustomGroup,
+            updateInventoryGroups,
+            updateExpiryAlertStatus,
+            showNearExpiry,
+            exportTableToPdf,
+            exportLabelsToPdf,
+            generateDetailedReport,
+            renderAdminDbTable,
+            deleteAdminDbLabel,
+            editAdminDbLabel,
+            handleAdminImportFile,
+            handleImportFile,
+            processRows,
+            expandSidebar,
+            collapseSidebar
+        });
+
+
     </script>
 </body>
 
