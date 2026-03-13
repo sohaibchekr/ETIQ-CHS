@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Laboratoire CQ3</title>
+    <title>Gestion de Laboratoire CQ</title>
     <!-- Firebase SDKs -->
     <script type="importmap">
     {
@@ -1565,16 +1565,25 @@
         async function initApp() {
             // Check if admin exist in users
             const adminEmail = 'sohaibchekri@gmail.com';
-            const userDoc = await getDoc(doc(db, "users", adminEmail));
-            if (!userDoc.exists()) {
-                await setDoc(doc(db, "users", adminEmail), {
-                    email: adminEmail,
-                    role: 'admin',
-                    status: 'approved',
-                    createdAt: new Date().toISOString()
-                });
+
+            try {
+                const userDoc = await getDoc(doc(db, "users", adminEmail));
+
+                // On force l'approbation et le rôle admin pour cet email précis
+                if (!userDoc.exists() || userDoc.data().status !== 'approved' || userDoc.data().role !== 'admin') {
+                    await setDoc(doc(db, "users", adminEmail), {
+                        email: adminEmail,
+                        role: 'admin',
+                        status: 'approved',
+                        updatedAt: new Date().toISOString()
+                    }, { merge: true });
+                    console.log("Admin access forced for", adminEmail);
+                }
+            } catch (err) {
+                console.error("Error initializing admin:", err);
             }
         }
+
         initApp();
 
 
@@ -1594,15 +1603,24 @@
                     await signInWithEmailAndPassword(auth, email, pass);
                 } else {
                     await createUserWithEmailAndPassword(auth, email, pass);
-                    await setDoc(doc(db, "users", email), {
-                        email: email,
-                        role: 'user',
-                        status: 'pending'
-                    });
-                    errorMsg.innerText = "Inscription réussie ! En attente d'approbation.";
+
+                    // Vérifier si le document utilisateur existe déjà (ex: pré-créé par initApp)
+                    const userDoc = await getDoc(doc(db, "users", email));
+                    if (!userDoc.exists()) {
+                        await setDoc(doc(db, "users", email), {
+                            email: email,
+                            role: 'user',
+                            status: 'pending',
+                            createdAt: new Date().toISOString()
+                        });
+                        errorMsg.innerText = "Inscription réussie ! En attente d'approbation.";
+                    } else {
+                        errorMsg.innerText = "Inscription réussie ! Connectez-vous maintenant.";
+                    }
                     errorMsg.style.color = '#2ecc71';
                     setTimeout(() => toggleAuthMode(), 2000);
                 }
+
             } catch (error) {
                 console.error(error);
                 errorMsg.innerText = "Erreur: " + error.message;
