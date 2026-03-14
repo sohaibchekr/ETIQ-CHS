@@ -17,6 +17,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         /* Importation d'une police moderne pour l'interface */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -1557,6 +1558,12 @@
 
                     <!-- Champs spécifiques pour l'Inventaire -->
                     <div id="inventory-fields" class="form-grid" style="margin-top: 10px; display: none;">
+                        <div class="form-group" style="grid-column: span 2;">
+                            <button class="btn-modern" onclick="openBarcodeScanner()"
+                                style="background: #34495e; color: white; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; border-radius: 12px; font-weight: 700;">
+                                🔍 📦 Saisie par Code-barres
+                            </button>
+                        </div>
                         <div class="form-group">
                             <label id="label-supplier">Fournisseur:</label>
                             <input type="text" id="supplierInput" placeholder="ex: Merck, Biokar">
@@ -1916,9 +1923,13 @@
                 Vous pouvez importer vos données depuis Access en les exportant d'abord au format CSV.
             </p>
             <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
-                <input type="text" id="inventorySearchInput" placeholder="🔍 Rechercher dans l'inventaire..."
+                <input type="text" id="inventorySearchInput" placeholder="🔍 Rechercher dans l'inventaire (Désignation, Code, Barcode...)"
                     onkeyup="renderTable()" autocomplete="off"
                     style="flex: 1; padding: 12px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; font-size: 1rem; color: var(--text-dark); outline: none;">
+                <button class="btn-modern" onclick="openBarcodeScanner('search')"
+                    style="background: #3074c7; color: white; display: flex; align-items: center; gap: 8px;">
+                    📷 Scanner
+                </button>
                 <button class="btn-modern" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
                     style="background: #34495e; color: white;">
                     🔝 Retour Haut
@@ -2128,6 +2139,25 @@
         </div>
     </div>
 
+    <!-- MODAL SCANNER CODE-BARRES -->
+    <div id="barcode-modal" class="modal"
+        style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; backdrop-filter: blur(5px);">
+        <div
+            style="background:white; padding:25px; border-radius:24px; width:95%; max-width:500px; text-align:center; position:relative; box-shadow: 0 25px 50px rgba(0,0,0,0.3);">
+            <div style="margin-bottom: 20px;">
+                <h3 style="color:#1a202c; font-size: 1.4rem; font-weight: 800;">Scanner Code-Barres</h3>
+                <p style="color:#718096; font-size: 0.9rem;">Placez le code-barres du produit devant la caméra</p>
+            </div>
+            <div id="reader-container" style="overflow: hidden; border-radius: 16px; border: 2px solid #e2e8f0;">
+                <div id="reader" style="width:100%;"></div>
+            </div>
+            <button class="btn-modern" onclick="closeBarcodeScanner()"
+                style="margin-top:25px; background:#e74c3c; color:white; width: 100%; padding: 15px;">
+                ❌ Annuler / Fermer
+            </button>
+        </div>
+    </div>
+
     </div> <!-- Fin de main-app -->
 
     <!-- ZONE D'IMPRESSION CACHÉE -->
@@ -2162,6 +2192,8 @@
         let isLoginMode = true;
         let userPhotoBase64 = null;
         let videoStream = null;
+        let scannedBarcode = null;
+        let html5QrCode = null;
 
 
         // --- REAL-TIME SYNC ---
@@ -3360,6 +3392,7 @@
 
                 return normalizeStr(label.designation).includes(searchLower) ||
                     normalizeStr(label.code).includes(searchLower) ||
+                    normalizeStr(label.barcode).includes(searchLower) ||
                     normalizeStr(label.preparator).includes(searchLower) ||
                     normalizeStr(label.supplier).includes(searchLower) ||
                     normalizeStr(label.location).includes(searchLower) ||
@@ -3701,6 +3734,7 @@
                 return el ? el.value : '';
             };
 
+            const barcode = scannedBarcode || '';
             const date = gVal('dateInput');
             const designation = gVal('designationInput');
             const code = gVal('codeInput');
@@ -3759,6 +3793,7 @@
                     sterCycle057,
                     sterCycle056,
                     inventoryGroup: invGroup || '',
+                    barcode: barcode || '',
                     type: typeVal,
                     updatedAt: new Date().toISOString()
                 };
@@ -3799,11 +3834,80 @@
                     if (sel) sel.value = 'T° ambiante';
                     const inp = document.getElementById('conservationInput');
                     if (inp) inp.style.display = 'none';
+                    scannedBarcode = null;
                     if (typeof calculateExpiryDate === 'function') calculateExpiryDate();
                 }
             } catch (err) {
                 console.error(err);
                 alert("Erreur lors de l'enregistrement dans la base de données.");
+            }
+        }
+
+        // --- GESTION SCANNER CODE-BARRES ---
+        async function openBarcodeScanner(mode = 'add') {
+            document.getElementById('barcode-modal').style.display = 'flex';
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("reader");
+            }
+            const config = { fps: 15, qrbox: { width: 300, height: 200 } };
+            
+            try {
+                await html5QrCode.start(
+                    { facingMode: "environment" }, 
+                    config,
+                    (decodedText) => {
+                        if (mode === 'search') {
+                            document.getElementById('inventorySearchInput').value = decodedText;
+                            renderTable();
+                        } else {
+                            onBarcodeScanned(decodedText);
+                        }
+                        closeBarcodeScanner();
+                    }
+                );
+            } catch (err) {
+                console.error("Scanner error:", err);
+                alert("Erreur de caméra ou accès refusé.");
+                document.getElementById('barcode-modal').style.display = 'none';
+            }
+        }
+
+        async function closeBarcodeScanner() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                try {
+                    await html5QrCode.stop();
+                } catch(e) {}
+            }
+            document.getElementById('barcode-modal').style.display = 'none';
+        }
+
+        async function onBarcodeScanned(code) {
+            scannedBarcode = code;
+            
+            // On cherche si ce code existe déjà dans l'inventaire ou l'historique
+            const allData = [...inventoryData, ...labels];
+            const found = allData.find(item => item.barcode === code);
+
+            if (found) {
+                document.getElementById('designationInput').value = found.designation || '';
+                document.getElementById('codeInput').value = found.code || '';
+                const supplierInp = document.getElementById('supplierInput');
+                if (supplierInp) supplierInp.value = found.supplier || '';
+                
+                const groupInp = document.getElementById('inventoryGroupInput');
+                if (groupInp && found.inventoryGroup) {
+                    groupInp.value = found.inventoryGroup;
+                    toggleCustomGroup();
+                }
+                
+                alert(`📦 Produit reconnu : ${found.designation}`);
+            } else {
+                if (confirm(`Nouveau produit détecté (Code: ${code}).\nVoulez-vous enregistrer ce code pour ce produit ?`)) {
+                    // On garde scannedBarcode pour l'ajout
+                    alert("Scanné avec succès. Veuillez maintenant remplir les autres champs.");
+                } else {
+                    scannedBarcode = null;
+                }
             }
         }
 
