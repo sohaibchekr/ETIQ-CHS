@@ -5,6 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion de Laboratoire CQ</title>
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3074c7">
+    <link rel="apple-touch-icon" href="logo.PNG">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GEST-LABO">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('Service Worker enregistré !'))
+                    .catch(err => console.log('Erreur Service Worker:', err));
+            });
+        }
+    </script>
     <!-- Firebase SDKs -->
     <!-- Error Handling for Mobile Debugging -->
     <script>
@@ -154,10 +171,10 @@
         /* ----- MAIN CONTENT ----- */
         .main-content {
             flex: 1;
-            padding: 40px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -166,6 +183,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .page-title {
@@ -719,116 +738,8 @@
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
             body {
-                /* Désactiver l'animation lourde sur mobile pour éviter le lag au scroll */
                 animation: none;
-                background: #e0f7fa;
-                /* Fond statique */
-                background-attachment: scroll;
-            }
-
-            .sidebar {
-                position: fixed;
-                left: -280px;
-                top: 0;
-                bottom: 0;
-                z-index: 1000;
-                transition: left 0.3s ease;
-                /* Réduire le flou sur mobile */
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-            }
-
-            .sidebar.active {
-                left: 0;
-            }
-
-            .main-content {
-                margin-left: 0 !important;
-                padding: 10px;
-                padding-bottom: 75px;
-            }
-
-            .sidebar-toggle-btn {
-                display: flex !important;
-            }
-
-            .table-wrapper {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .glass-card {
-                padding: 12px;
-                border-radius: 12px;
-                /* Supprimer ou réduire le blur sur les cartes en mouvement sur mobile */
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                background: rgba(255, 255, 255, 0.95);
-            }
-
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .page-header h1 {
-                font-size: 1.1rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .mobile-bottom-nav {
-                display: flex;
-            }
-
-            .footer-contact {
-                position: relative;
-                bottom: 0;
-                right: 0;
-                margin-top: 20px;
-                margin-bottom: 70px;
-                justify-content: center;
-            }
-
-            .btn-modern {
-                padding: 8px 12px;
-                font-size: 0.8rem;
-            }
-
-            table {
-                font-size: 0.75rem;
-            }
-
-            th,
-            td {
-                padding: 6px 4px;
-            }
-
-            .auth-card {
-                width: 90%;
-                padding: 25px;
-            }
-
-            .dashboard-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .dashboard-card {
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                background: rgba(255, 255, 255, 0.9);
-                padding: 20px;
-            }
-
-            .bulk-action-bar {
-                bottom: 70px;
-                width: 90%;
-                flex-wrap: wrap;
-                justify-content: center;
-                font-size: 0.8rem;
+                background: #eef2f7;
             }
 
             .sidebar {
@@ -838,14 +749,107 @@
                 height: 100vh;
                 z-index: 5000;
                 transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
             }
 
             .sidebar.active {
                 left: 0 !important;
             }
 
+            .main-content {
+                margin-left: 0 !important;
+                padding: 12px;
+                padding-bottom: 80px; /* Space for bottom nav */
+                gap: 15px;
+            }
+
+            .page-title {
+                font-size: 1.2rem !important;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            #user-profile-header {
+                margin-left: 0 !important;
+                padding: 5px 10px;
+                justify-content: flex-start;
+                width: fit-content;
+            }
+
+            .glass-card {
+                padding: 15px;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 10px;
+            }
+
+            .btn-modern {
+                padding: 10px 12px;
+                font-size: 0.85rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px;
+            }
+
+            .dashboard-card {
+                padding: 20px 15px !important;
+                border-radius: 16px;
+            }
+
+            .dashboard-card .icon-circle {
+                width: 55px !important;
+                height: 55px !important;
+                font-size: 1.8rem !important;
+            }
+
+            .dashboard-card h3 {
+                font-size: 1.1rem !important;
+            }
+
+            .mobile-bottom-nav {
+                display: flex;
+            }
+
             .sidebar-toggle-btn {
-                display: block !important;
+                display: flex !important;
+            }
+
+            .auth-card {
+                width: 95%;
+                padding: 20px;
+            }
+
+            table {
+                font-size: 0.7rem;
+            }
+
+            th, td {
+                padding: 6px 3px;
+            }
+
+            .bulk-action-bar {
+                bottom: 75px;
+                width: 95%;
+                font-size: 0.75rem;
+                padding: 10px;
+            }
+
+            .top-signature {
+                display: none; /* Too large for small mobile headers */
             }
         }
 
@@ -3933,32 +3937,116 @@
 
         async function onBarcodeScanned(code) {
             scannedBarcode = code;
+            console.log("Scanned code:", code);
             
             // On cherche si ce code existe déjà dans l'inventaire ou l'historique
             const allData = [...inventoryData, ...labels];
             const found = allData.find(item => item.barcode === code);
 
             if (found) {
-                document.getElementById('designationInput').value = found.designation || '';
-                document.getElementById('codeInput').value = found.code || '';
-                const supplierInp = document.getElementById('supplierInput');
-                if (supplierInp) supplierInp.value = found.supplier || '';
+                // Remplissage intelligent des champs
+                const fill = (id, val) => {
+                    const el = document.getElementById(id);
+                    if (el && val) el.value = val;
+                };
+
+                fill('designationInput', found.designation);
+                fill('codeInput', found.code);
+                fill('lotInput', found.lotNumber);
+                fill('supplierInput', found.supplier);
+                fill('locationInput', found.location);
+                fill('quantityInput', found.quantity);
+                fill('expDateInput', found.expDate);
+                fill('prepDateInput', found.prepDate);
+                fill('openDateInput', found.openDate);
+
+                if (found.conservation) {
+                    const sel = document.getElementById('conservationSelect');
+                    if (sel) {
+                        const options = Array.from(sel.options).map(o => o.value);
+                        if (options.includes(found.conservation)) {
+                            sel.value = found.conservation;
+                        } else {
+                            sel.value = 'Autre';
+                            const inp = document.getElementById('conservationInput');
+                            if (inp) {
+                                inp.style.display = 'block';
+                                inp.value = found.conservation;
+                            }
+                        }
+                    }
+                }
                 
                 const groupInp = document.getElementById('inventoryGroupInput');
                 if (groupInp && found.inventoryGroup) {
                     groupInp.value = found.inventoryGroup;
-                    toggleCustomGroup();
+                    if (typeof toggleCustomGroup === 'function') toggleCustomGroup();
                 }
                 
-                alert(`📦 Produit reconnu : ${found.designation}`);
+                alert(`📦 Produit reconnu : ${found.designation}\nLes informations ont été automatiquement remplies.`);
+                if (typeof calculateExpiryDate === 'function') calculateExpiryDate();
             } else {
-                if (confirm(`Nouveau produit détecté (Code: ${code}).\nVoulez-vous enregistrer ce code pour ce produit ?`)) {
-                    // On garde scannedBarcode pour l'ajout
-                    alert("Scanné avec succès. Veuillez maintenant remplir les autres champs.");
+                // Tentative de parsing GS1-128 (Format courant sur les réactifs : (01)GTIN(17)EXP(10)LOT)
+                // Note: Les scanners renvoient souvent le code brut sans parenthèses (ex: 01012345678901231725123110ABC123)
+                const gs1 = parseGS1(code);
+                if (gs1) {
+                    if (gs1.lot) {
+                        const lotInp = document.getElementById('lotInput');
+                        if (lotInp) lotInp.value = gs1.lot;
+                    }
+                    if (gs1.expiry) {
+                        const expInp = document.getElementById('expDateInput');
+                        if (expInp) {
+                            // Format YYMMDD -> YYYY-MM-DD
+                            const year = "20" + gs1.expiry.substring(0, 2);
+                            const month = gs1.expiry.substring(2, 4);
+                            const day = gs1.expiry.substring(4, 6);
+                            expInp.value = `${year}-${month}-${day}`;
+                        }
+                    }
+                    alert("Informations extraites du code-barres (Lot/Péremption).");
+                } else if (confirm(`Nouveau produit détecté (Code: ${code}).\nVoulez-vous enregistrer ce code pour ce produit ?`)) {
+                    alert("Scanné avec succès. Veuillez maintenant remplir les autres champs pour enregistrer ce nouveau produit.");
                 } else {
                     scannedBarcode = null;
                 }
             }
+        }
+
+        // Mini parser GS1 pour les codes de réactifs courants
+        function parseGS1(code) {
+            if (!code || code.length < 10) return null;
+            let result = {};
+            // Recherche simplifiée des AI (Application Identifiers) fréquents
+            // 01 = GTIN (14 chars)
+            // 17 = Expiry (6 chars: YYMMDD)
+            // 10 = Lot (variable length, up to 20 chars)
+            
+            // Ceci est une version simplifiée car le GS1-128 sans séparateurs est complexe à parser parfaitement
+            // On cherche des patterns connus
+            if (code.startsWith('01')) {
+                result.gtin = code.substring(2, 16);
+                let remaining = code.substring(16);
+                if (remaining.startsWith('17')) {
+                    result.expiry = remaining.substring(2, 8);
+                    remaining = remaining.substring(8);
+                    if (remaining.startsWith('10')) {
+                        result.lot = remaining.substring(2);
+                    }
+                } else if (remaining.startsWith('10')) {
+                    result.lot = remaining.substring(2);
+                }
+            } else if (code.includes('17') && code.length > 15) {
+                // Heuristique pour certains codes sans le '01' au début
+                const expIdx = code.indexOf('17');
+                if (expIdx !== -1 && code.length >= expIdx + 8) {
+                    result.expiry = code.substring(expIdx + 2, expIdx + 8);
+                    const lotIdx = code.indexOf('10', expIdx + 8);
+                    if (lotIdx !== -1) result.lot = code.substring(lotIdx + 2);
+                }
+            }
+            
+            return (result.lot || result.expiry) ? result : null;
         }
 
 
