@@ -2493,13 +2493,42 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function (e) {
-                memberPhotoBase64 = e.target.result;
-                const preview = document.getElementById('member-photo-preview');
-                preview.src = memberPhotoBase64;
-                preview.style.display = 'block';
-                document.getElementById('member-photo-placeholder').style.display = 'none';
+                resizeImage(e.target.result, 400, 400, (resized) => {
+                    memberPhotoBase64 = resized;
+                    const preview = document.getElementById('member-photo-preview');
+                    preview.src = memberPhotoBase64;
+                    preview.style.display = 'block';
+                    document.getElementById('member-photo-placeholder').style.display = 'none';
+                });
             };
             reader.readAsDataURL(file);
+        }
+
+        // Helper pour compresser les images (évite l'erreur Firestore > 1Mo)
+        function resizeImage(base64Str, maxWidth, maxHeight, callback) {
+            const img = new Image();
+            img.src = base64Str;
+            img.onload = function () {
+                let width = img.width;
+                let height = img.height;
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                callback(canvas.toDataURL('image/jpeg', 0.7));
+            };
         }
 
 
@@ -2649,11 +2678,20 @@
         function takeMemberSnapshot() {
             const video = document.getElementById('member-video');
             const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            // Redimensionner directement via le canvas pour économiser de la place
+            const maxDim = 400;
+            let w = video.videoWidth;
+            let h = video.videoHeight;
+            if (w > h) {
+                if (w > maxDim) { h *= maxDim / w; w = maxDim; }
+            } else {
+                if (h > maxDim) { w *= maxDim / h; h = maxDim; }
+            }
+            canvas.width = w;
+            canvas.height = h;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            memberPhotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+            ctx.drawImage(video, 0, 0, w, h);
+            memberPhotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
             const preview = document.getElementById('member-photo-preview');
             preview.src = memberPhotoBase64;
             preview.style.display = 'block';
@@ -3687,7 +3725,7 @@
                 const el = document.getElementById(f);
                 if (el) el.value = '';
             });
-
+            scannedBarcode = null;
             renderTable();
         }
 
@@ -5121,11 +5159,13 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function (e) {
-                userPhotoBase64 = e.target.result;
-                const preview = document.getElementById('photo-preview');
-                preview.src = userPhotoBase64;
-                preview.style.display = 'block';
-                document.getElementById('photo-placeholder').style.display = 'none';
+                resizeImage(e.target.result, 400, 400, (resized) => {
+                    userPhotoBase64 = resized;
+                    const preview = document.getElementById('photo-preview');
+                    preview.src = userPhotoBase64;
+                    preview.style.display = 'block';
+                    document.getElementById('photo-placeholder').style.display = 'none';
+                });
             };
             reader.readAsDataURL(file);
         }
@@ -5153,12 +5193,20 @@
         function takeSnapshot() {
             const video = document.getElementById('video');
             const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+            const maxDim = 400;
+            let w = video.videoWidth;
+            let h = video.videoHeight;
+            if (w > h) {
+                if (w > maxDim) { h *= maxDim / w; w = maxDim; }
+            } else {
+                if (h > maxDim) { w *= maxDim / h; h = maxDim; }
+            }
+            canvas.width = w;
+            canvas.height = h;
             const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            ctx.drawImage(video, 0, 0, w, h);
 
-            userPhotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+            userPhotoBase64 = canvas.toDataURL('image/jpeg', 0.7);
             const preview = document.getElementById('photo-preview');
             preview.src = userPhotoBase64;
             preview.style.display = 'block';
@@ -5317,7 +5365,10 @@
             toggleMemberCustomFonction,
             updatePrintPreview,
             savePrintSettings,
-            toggleAutoclaveInputs
+            toggleAutoclaveInputs,
+            openBarcodeScanner,
+            closeBarcodeScanner,
+            onBarcodeScanned
         });
 
         // Charger les réglages au démarrage pour peupler les inputs du modal
