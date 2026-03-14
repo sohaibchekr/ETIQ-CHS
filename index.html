@@ -1169,10 +1169,29 @@
 
             <!-- NAVIGATION LATÉRALE (STYLE GLASS) -->
             <div class="sidebar" id="sidebar" onmouseenter="expandSidebar()" onmouseleave="collapseSidebar()">
-                <div style="text-align: center; margin-bottom: 20px;">
+                <div
+                    style="text-align: center; margin-bottom: 25px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 20px;">
                     <img id="app-logo" src="logo.PNG" alt="Logo"
                         style="max-width: 80px; margin-bottom: 10px; border-radius: 8px;">
-                    <h2 style="font-weight: 800; font-size: 1.4rem;">GEST-LABO </h2>
+                    <h2 style="font-weight: 800; font-size: 1.4rem; color: #1a202c;">GEST-LABO</h2>
+
+                    <!-- PROFIL DANS LE MENU -->
+                    <div id="sidebar-profile"
+                        style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.5); border-radius: 12px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(0,0,0,0.05);">
+                        <img id="sidebar-user-photo" src=""
+                            style="width: 35px; height: 35px; border-radius: 50%; object-fit: cover; display: none; border: 1px solid #3074c7;">
+                        <div id="sidebar-user-placeholder"
+                            style="width: 35px; height: 35px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                            👤</div>
+                        <div style="text-align: left; overflow: hidden;">
+                            <div id="sidebar-user-name"
+                                style="font-weight: 700; font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                Membre</div>
+                            <div id="sidebar-user-role"
+                                style="font-size: 0.65rem; color: #3074c7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600;">
+                                Chargement...</div>
+                        </div>
+                    </div>
                 </div>
                 <button class="sidebar-btn" id="btn-dashboard" onclick="showSection('dashboard')">
                     <span class="icon">🏠</span>
@@ -1229,7 +1248,29 @@
                         </button>
                         <h1 class="page-title" id="page-main-title">Saisie des Milieux</h1>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+
+                    <!-- PROFIL UTILISATEUR CONNECTÉ -->
+                    <div id="user-profile-header"
+                        style="margin-left:auto; display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.6); padding: 5px 15px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px);">
+                        <div style="position: relative;">
+                            <img id="header-user-photo" src="" alt=""
+                                style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; display: none; border: 2px solid #3074c7; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                            <div id="header-user-placeholder"
+                                style="width: 40px; height: 40px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #718096;">
+                                👤</div>
+                            <div id="header-user-status"
+                                style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #2ecc71; border: 2px solid white; border-radius: 50%;">
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; white-space: nowrap;">
+                            <span id="header-user-name"
+                                style="font-weight: 800; font-size: 0.95rem; color: #1a202c;">Utilisateur</span>
+                            <span id="header-user-role"
+                                style="font-size: 0.75rem; font-weight: 600; color: #3074c7; text-transform: uppercase; letter-spacing: 0.5px;">Chargement...</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-left: 20px;">
                         <input type="file" id="globalImportCsvInput" accept=".csv, .xlsx, .xls" style="display: none;"
                             onchange="handleImportFile(this)">
                         <button class="btn-modern" onclick="scrollToSearch('etiquette')"
@@ -1371,14 +1412,14 @@
                         </div>
                     </div>
 
-                    <!-- Champs spécifiques pour Stérilisation (Layout Capture 2 Premium) -->
+                    <!-- Champs spécifiques pour Stérilisation (Layout Vivid Premium Light) -->
                     <div id="sterilisation-fields-custom"
-                        style="display: none; background: #0c0c0c; padding: 40px; border-radius: 24px; margin-top: 20px; color: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden;">
+                        style="display: none; background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,244,255,0.9) 100%); padding: 40px; border-radius: 24px; margin-top: 20px; color: #1a202c; box-shadow: 0 20px 50px rgba(48, 116, 199, 0.15); border: 2px solid rgba(255,255,255,0.8); position: relative; overflow: hidden; backdrop-filter: blur(15px);">
                         <div
-                            style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,0,0,0.15) 0%, transparent 70%); pointer-events: none;">
+                            style="position: absolute; top: -100px; right: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(48, 116, 199, 0.1) 0%, transparent 70%); pointer-events: none;">
                         </div>
                         <div
-                            style="position: absolute; bottom: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(231, 76, 60, 0.1) 0%, transparent 70%); pointer-events: none;">
+                            style="position: absolute; bottom: -100px; left: -100px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(231, 76, 60, 0.05) 0%, transparent 70%); pointer-events: none;">
                         </div>
 
                         <style>
@@ -1390,30 +1431,33 @@
                             }
 
                             .ster-form-premium label {
-                                color: #ff3333 !important;
-                                font-weight: 700;
-                                font-size: 0.95rem;
+                                color: #3074c7 !important;
+                                font-weight: 800;
+                                font-size: 0.85rem;
                                 text-transform: uppercase;
-                                letter-spacing: 1px;
+                                letter-spacing: 1.2px;
+                                margin-bottom: 2px;
                             }
 
                             .ster-form-premium input,
                             .ster-form-premium select {
-                                background: rgba(255, 255, 255, 0.05);
-                                border: 1px solid rgba(255, 255, 255, 0.1);
-                                border-radius: 12px;
+                                background: #ffffff;
+                                border: 1.5px solid #e2e8f0;
+                                border-radius: 14px;
                                 padding: 14px 18px;
-                                color: #fff;
+                                color: #2d3748;
                                 font-size: 1rem;
-                                transition: all 0.3s ease;
+                                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                 outline: none;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
                             }
 
                             .ster-form-premium input:focus,
                             .ster-form-premium select:focus {
-                                border-color: #ff3333;
-                                background: rgba(255, 255, 255, 0.08);
-                                box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+                                border-color: #3074c7;
+                                background: #ffffff;
+                                box-shadow: 0 10px 25px rgba(48, 116, 199, 0.15);
+                                transform: translateY(-3px);
                             }
 
                             .ster-form-premium .grid-2 {
@@ -1429,22 +1473,22 @@
                             }
 
                             .ster-form-premium .btn-submit {
-                                background: linear-gradient(135deg, #ff3333 0%, #a00000 100%);
+                                background: linear-gradient(135deg, #3074c7 0%, #1a56a6 100%);
                                 color: #fff;
                                 border: none;
-                                padding: 16px 40px;
-                                border-radius: 14px;
+                                padding: 18px 45px;
+                                border-radius: 16px;
                                 font-weight: 800;
                                 cursor: pointer;
                                 text-transform: uppercase;
                                 letter-spacing: 2px;
                                 transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                                box-shadow: 0 10px 20px rgba(255, 0, 0, 0.2);
+                                box-shadow: 0 10px 20px rgba(48, 116, 199, 0.2);
                             }
 
                             .ster-form-premium .btn-submit:hover {
                                 transform: translateY(-3px) scale(1.02);
-                                box-shadow: 0 15px 30px rgba(255, 0, 0, 0.3);
+                                box-shadow: 0 15px 30px rgba(48, 116, 199, 0.3);
                             }
 
                             .ster-form-premium .btn-submit:active {
@@ -1454,7 +1498,7 @@
 
                         <div class="ster-form-premium">
                             <h3
-                                style="margin-bottom: 30px; color: #fff; font-size: 1.5rem; border-left: 4px solid #f00; padding-left: 15px;">
+                                style="margin-bottom: 35px; color: #1a202c; font-size: 1.6rem; border-left: 5px solid #3074c7; padding-left: 20px; font-weight: 800; letter-spacing: -0.5px;">
                                 Configuration de Stérilisation</h3>
 
                             <div class="grid-2">
@@ -1464,7 +1508,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Équipement utilisé</label>
-                                    <select id="ster-equip">
+                                    <select id="ster-equip" onchange="toggleAutoclaveInputs()">
                                         <option value="">--- Choisir l'autoclave ---</option>
                                         <option value="LAUTO057">🔥 LAUTO057 (Grand)</option>
                                         <option value="LAUTO056">🔥 LAUTO056 (Petit)</option>
@@ -1475,11 +1519,11 @@
 
                             <div class="grid-2">
                                 <div class="form-group">
-                                    <label>Batch N° (Cycle 057)</label>
+                                    <label>N° de cycle (Cycle 057)</label>
                                     <input type="text" id="ster-cycle-057" placeholder="Ex: 2024-123">
                                 </div>
                                 <div class="form-group">
-                                    <label>Batch N° (Cycle 056)</label>
+                                    <label> N° de cycle (Cycle 056)</label>
                                     <input type="text" id="ster-cycle-056" placeholder="Ex: 2024-ABC">
                                 </div>
                             </div>
@@ -1512,8 +1556,7 @@
                     <!-- Champs spécifiques pour l'Inventaire -->
 
                     <!-- Champs spécifiques pour l'Inventaire -->
-                    <div id="inventory-fields" class="form-grid"
-                        style="margin-top: 10px; display: none; grid-template-columns: repeat(3, 1fr);">
+                    <div id="inventory-fields" class="form-grid" style="margin-top: 10px; display: none;">
                         <div class="form-group">
                             <label id="label-supplier">Fournisseur:</label>
                             <input type="text" id="supplierInput" placeholder="ex: Merck, Biokar">
@@ -1891,13 +1934,24 @@
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')"
                                 title="Trier par date">D. Réc. <span class="sort-icon-main" data-col="date">⬇️</span>
                             </th>
-                            <th style="width: 220px;">Désignation</th>
-                            <th style="width: 120px;">Code Int.</th>
-                            <th style="width: 100px;">N° Lot</th>
-                            <th style="width: 100px;">Fourn.</th>
-                            <th style="width: 90px;">DDO</th>
-                            <th style="width: 90px;">DDF</th>
-                            <th>Condition de conservation</th>
+                            <th style="width: 220px; cursor: pointer;" onclick="handleSort('main', 'designation')">
+                                Désignation <span class="sort-icon-main" data-col="designation"></span></th>
+                            <th style="width: 120px; cursor: pointer;" onclick="handleSort('main', 'code')">Code Int.
+                                <span class="sort-icon-main" data-col="code"></span>
+                            </th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'lotNumber')">N° Lot
+                                <span class="sort-icon-main" data-col="lotNumber"></span>
+                            </th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'inventoryGroup')">
+                                Classe <span class="sort-icon-main" data-col="inventoryGroup"></span></th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'supplier')">Fourn.
+                                <span class="sort-icon-main" data-col="supplier"></span>
+                            </th>
+                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'openDate')">DDO <span
+                                    class="sort-icon-main" data-col="openDate"></span></th>
+                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span
+                                    class="sort-icon-main" data-col="expDate"></span></th>
+                            <th style="min-width: 180px;">Condition de conservation</th>
                             <th style="width: 100px;">Empl.</th>
                             <th style="text-align: center; width: 140px;">Action</th>
                         </tr>
@@ -1959,7 +2013,8 @@
                             <th style="width: 250px;">Désignation</th>
                             <th style="width: 150px;">Code</th>
                             <th style="width: 120px;">Péremption</th>
-                            <th style="width: 150px;">Status</th>
+                            <th style="width: 150px;">Conservation</th>
+                            <th style="width: 100px;">Status</th>
                         </tr>
                     </thead>
                     <tbody id="expiryTableBody">
@@ -1994,10 +2049,17 @@
                             <th style="width: 90px; cursor: pointer;" onclick="handleSort('history', 'date')"
                                 title="Trier par date">Date <span class="sort-icon-history" data-col="date">⬇️</span>
                             </th>
-                            <th style="width: 200px;">Désignation</th>
-                            <th style="width: 110px;">Code</th>
-                            <th style="width: 90px;">DDP</th>
-                            <th style="width: 90px;">DDF</th>
+                            <th style="width: 200px; cursor: pointer;" onclick="handleSort('history', 'designation')">
+                                Désignation <span class="sort-icon-history" data-col="designation"></span></th>
+                            <th style="width: 110px; cursor: pointer;" onclick="handleSort('history', 'code')">Code
+                                <span class="sort-icon-history" data-col="code"></span>
+                            </th>
+                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('history', 'prepDate')">DDP
+                                <span class="sort-icon-history" data-col="prepDate"></span>
+                            </th>
+                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('history', 'expDate')">DDF
+                                <span class="sort-icon-history" data-col="expDate"></span>
+                            </th>
                             <th style="width: 150px;">Condition de conservation</th>
                             <th style="width: 80px;">Par</th>
                             <th style="text-align: center; width: 130px;">Action</th>
@@ -2911,7 +2973,13 @@
 
 
         function bulkPrint() {
-            const items = getSelectedData();
+            const items = getSelectedData().filter(item => {
+                if (currentSection === 'inventory') return item.type === 'inventory';
+                if (currentSection === 'petri') return item.type === 'petri';
+                if (currentSection === 'milieux') return item.type === 'milieux' || !item.type;
+                if (currentSection === 'sterilisation') return item.type === 'sterilisation';
+                return true;
+            });
             if (items.length === 0) return;
 
             const printArea = document.getElementById('print-area');
@@ -2965,11 +3033,11 @@
             container.style.backgroundColor = 'white';
             container.style.padding = '10mm';
 
-            items.forEach(label => {
+            items.forEach((label, idx) => {
                 const wrapper = document.createElement('div');
                 wrapper.innerHTML = generateLabelHTML(label);
-                wrapper.style.marginBottom = '15mm';
-                wrapper.style.pageBreakInside = 'avoid';
+                wrapper.style.marginBottom = (idx === items.length - 1) ? '0' : '20px';
+                if (idx < items.length - 1) wrapper.style.pageBreakAfter = 'always';
                 container.appendChild(wrapper);
             });
 
@@ -3098,7 +3166,15 @@
                 titleMap['milieux'] = "Préparation et Étiquetage des Milieux de Culture";
             }
 
-            document.getElementById('page-main-title').innerText = titleMap[sectionId] || 'Gestion de Laboratoire';
+            let mainTitle = titleMap[sectionId] || 'Gestion de Laboratoire';
+            if (sectionId === 'inventory') {
+                const groupSel = document.getElementById('inventoryGroupInput');
+                const groupText = groupSel ? groupSel.options[groupSel.selectedIndex].text : '';
+                if (groupText && groupText !== '➕ Ajouter une nouvelle classe...') {
+                    mainTitle = `Inventaire : ${groupText}`;
+                }
+            }
+            document.getElementById('page-main-title').innerText = mainTitle;
 
             // Mise à jour des labels du formulaire selon le mode
             const labelDate = document.querySelector('label[for="dateInput"]') || document.getElementById('dateInput').previousElementSibling;
@@ -3138,7 +3214,7 @@
             if (sectionId === 'sterilisation') {
                 if (formGrid) formGrid.style.display = 'none';
                 document.getElementById('petri-link-row').style.display = 'none';
-                document.getElementById('inventory-fields').style.display = 'none';
+                if (document.getElementById('inventory-fields')) document.getElementById('inventory-fields').style.display = 'none';
             } else {
                 if (formGrid) formGrid.style.display = 'grid';
                 const consGrp = document.getElementById('conservationGroup');
@@ -3147,6 +3223,10 @@
                 if (locGrp) locGrp.style.display = 'block';
                 const qtyGrp = document.getElementById('quantityGroup');
                 if (qtyGrp) qtyGrp.style.display = 'block';
+
+                if (document.getElementById('inventory-fields')) {
+                    document.getElementById('inventory-fields').style.display = (sectionId === 'inventory') ? 'grid' : 'none';
+                }
             }
 
             if (sectionId === 'petri') {
@@ -3201,12 +3281,12 @@
                 theadTr.innerHTML = `
                     <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
                     <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')" title="Trier par date">Date <span class="sort-icon-main" data-col="date">⬇️</span></th>
-                    <th style="width: 250px;">Désignation</th>
-                    <th style="width: 130px;">Code interne</th>
-                    <th style="width: 100px;">DDP</th>
-                    <th style="width: 100px;">DDF</th>
-                    <th>Condition de conservation</th>
-                    <th style="width: 90px;">Visa</th>
+                    <th style="width: 250px; cursor: pointer;" onclick="handleSort('main', 'designation')">Désignation <span class="sort-icon-main" data-col="designation"></span></th>
+                    <th style="width: 130px; cursor: pointer;" onclick="handleSort('main', 'code')">Code interne <span class="sort-icon-main" data-col="code"></span></th>
+                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'prepDate')">DDP <span class="sort-icon-main" data-col="prepDate"></span></th>
+                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span class="sort-icon-main" data-col="expDate"></span></th>
+                    <th style="cursor: pointer;" onclick="handleSort('main', 'conservation')">Condition de conservation <span class="sort-icon-main" data-col="conservation"></span></th>
+                    <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'preparator')">Visa <span class="sort-icon-main" data-col="preparator"></span></th>
                     <th style="text-align: center; width: 140px;">Action</th>
                 `;
             }
@@ -3291,13 +3371,27 @@
             // Trier avec les settings globaux de tri
             filteredLabels.sort((a, b) => {
                 const asc = tableSort.main.asc ? 1 : -1;
-                let dA = a.date ? new Date(a.date).getTime() : 0;
-                let dB = b.date ? new Date(b.date).getTime() : 0;
-                return (dA - dB) * asc;
+                const col = tableSort.main.col || 'date';
+
+                let valA = a[col] || '';
+                let valB = b[col] || '';
+
+                if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
+                    let dA = valA ? new Date(valA).getTime() : 0;
+                    let dB = valB ? new Date(valB).getTime() : 0;
+                    return (dA - dB) * asc;
+                }
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return -1 * asc;
+                if (valA > valB) return 1 * asc;
+                return 0;
             });
 
             if (filteredLabels.length === 0) {
-                const cols = isInv ? 10 : 8; // Adjusted column count for inventory
+                const cols = isInv ? 11 : (currentSection === 'sterilisation' ? 8 : 9);
                 tbody.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding: 30px; color:#718096;">Aucun élément trouvé.</td></tr>`;
             }
 
@@ -3319,6 +3413,7 @@
                                 <td>${label.designation}</td>
                                 <td>${label.code}</td>
                                 <td>${label.lotNumber || '---'}</td>
+                                <td style="font-weight:bold; color:#3074c7;">${label.inventoryGroup || '---'}</td>
                                 <td>${label.supplier || '---'}</td>
                                 <td>${ddo}</td>
                                 <td>${expDate}</td>
@@ -3408,9 +3503,31 @@
             const searchTerm = document.getElementById('historySearchInput') ? document.getElementById('historySearchInput').value.toLowerCase().trim() : '';
 
             const filteredLabels = labels.filter(label => {
-                return label.designation.toLowerCase().includes(searchTerm) ||
-                    label.code.toLowerCase().includes(searchTerm) ||
-                    label.preparator.toLowerCase().includes(searchTerm);
+                const searchLower = searchTerm.toLowerCase();
+                return (label.designation || '').toLowerCase().includes(searchLower) ||
+                    (label.code || '').toLowerCase().includes(searchLower) ||
+                    (label.preparator || '').toLowerCase().includes(searchLower);
+            });
+
+            filteredLabels.sort((a, b) => {
+                const asc = tableSort.history.asc ? 1 : -1;
+                const col = tableSort.history.col || 'date';
+
+                let valA = a[col] || '';
+                let valB = b[col] || '';
+
+                if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
+                    let dA = valA ? new Date(valA).getTime() : 0;
+                    let dB = valB ? new Date(valB).getTime() : 0;
+                    return (dA - dB) * asc;
+                }
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return -1 * asc;
+                if (valA > valB) return 1 * asc;
+                return 0;
             });
 
             if (filteredLabels.length === 0) {
@@ -4196,10 +4313,35 @@
                         <td>${l.designation} ${l.source === 'inventory' ? '<small style="color:#718096;">(Stock)</small>' : ''}</td>
                         <td>${l.code}</td>
                         <td>${expDate.toLocaleDateString('fr-FR')}</td>
+                        <td><small>${l.conservation || 'N/A'}</small></td>
                         <td style="font-weight:bold;">${status}</td>
                     `;
                     tbody.appendChild(tr);
                 });
+            }
+        }
+
+        function toggleAutoclaveInputs() {
+            const equip = document.getElementById('ster-equip').value;
+            const input57 = document.getElementById('ster-cycle-057');
+            const input56 = document.getElementById('ster-cycle-056');
+            if (equip === 'LAUTO057') {
+                input57.disabled = false;
+                input57.parentElement.style.opacity = '1';
+                input56.disabled = true;
+                input56.value = '';
+                input56.parentElement.style.opacity = '0.3';
+            } else if (equip === 'LAUTO056') {
+                input56.disabled = false;
+                input56.parentElement.style.opacity = '1';
+                input57.disabled = true;
+                input57.value = '';
+                input57.parentElement.style.opacity = '0.3';
+            } else {
+                input57.disabled = false;
+                input56.disabled = false;
+                input57.parentElement.style.opacity = '1';
+                input56.parentElement.style.opacity = '1';
             }
         }
 
@@ -4301,7 +4443,9 @@
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Fournisseur</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">N° LOT</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDP</th>
+                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDF</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDO</th>
+                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Conservation</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -4313,7 +4457,9 @@
                                     <td style="border: 1.2px solid #000; padding: 5px;">${l.supplier || '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.lotNumber || '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.prepDate ? new Date(l.prepDate).toLocaleDateString('fr-FR') : '---'}</td>
+                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.expDate ? new Date(l.expDate).toLocaleDateString('fr-FR') : '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.openDate ? new Date(l.openDate).toLocaleDateString('fr-FR') : '---'}</td>
+                                    <td style="border: 1.2px solid #000; padding: 5px;">${l.conservation || '---'}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
@@ -4392,34 +4538,45 @@
             const searchTerm = document.getElementById(searchId) ? document.getElementById(searchId).value.toLowerCase().trim() : '';
             const searchLower = searchTerm.toLowerCase();
 
-            const filtered = dataPool.filter(label => {
-                const ddo = label.openDate ? new Date(label.openDate).toLocaleDateString('fr-FR') : '';
-                const ddf = label.expDate ? new Date(label.expDate).toLocaleDateString('fr-FR') : '';
-                const ddp = label.prepDate ? new Date(label.prepDate).toLocaleDateString('fr-FR') : '';
-                const dr = label.date ? new Date(label.date).toLocaleDateString('fr-FR') : '';
+            if (selectedBulkIds.size > 0) {
+                // Prioriser les éléments sélectionnés, mais UNIQUEMENT de la section courante
+                filtered = getSelectedData().filter(item => {
+                    if (currentSection === 'inventory') return item.type === 'inventory';
+                    if (currentSection === 'petri') return item.type === 'petri';
+                    if (currentSection === 'milieux') return item.type === 'milieux' || !item.type;
+                    if (currentSection === 'sterilisation') return item.type === 'sterilisation';
+                    return true;
+                });
+            } else {
+                filtered = dataPool.filter(label => {
+                    const ddo = label.openDate ? new Date(label.openDate).toLocaleDateString('fr-FR') : '';
+                    const ddf = label.expDate ? new Date(label.expDate).toLocaleDateString('fr-FR') : '';
+                    const ddp = label.prepDate ? new Date(label.prepDate).toLocaleDateString('fr-FR') : '';
+                    const dr = label.date ? new Date(label.date).toLocaleDateString('fr-FR') : '';
 
-                const matchesSearch =
-                    (label.designation || '').toLowerCase().includes(searchLower) ||
-                    (label.code || '').toLowerCase().includes(searchLower) ||
-                    (label.preparator && label.preparator.toLowerCase().includes(searchLower)) ||
-                    (label.supplier && label.supplier.toLowerCase().includes(searchLower)) ||
-                    (label.location && label.location.toLowerCase().includes(searchLower)) ||
-                    (label.lotNumber && label.lotNumber.toLowerCase().includes(searchLower)) ||
-                    (label.conservation && label.conservation.toLowerCase().includes(searchLower)) ||
-                    dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower);
+                    const matchesSearch =
+                        (label.designation || '').toLowerCase().includes(searchLower) ||
+                        (label.code || '').toLowerCase().includes(searchLower) ||
+                        (label.preparator && label.preparator.toLowerCase().includes(searchLower)) ||
+                        (label.supplier && label.supplier.toLowerCase().includes(searchLower)) ||
+                        (label.location && label.location.toLowerCase().includes(searchLower)) ||
+                        (label.lotNumber && label.lotNumber.toLowerCase().includes(searchLower)) ||
+                        (label.conservation && label.conservation.toLowerCase().includes(searchLower)) ||
+                        dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower);
 
-                const matchesSection = (currentSection === 'milieux' && (label.type === 'milieux' || !label.type)) ||
-                    (currentSection === 'petri' && label.type === 'petri') ||
-                    (currentSection === 'inventory');
+                    const matchesSection = (currentSection === 'milieux' && (label.type === 'milieux' || !label.type)) ||
+                        (currentSection === 'petri' && label.type === 'petri') ||
+                        (currentSection === 'inventory');
 
-                const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
-                const matchesGroup = currentSection !== 'inventory' || label.inventoryGroup === currentGroup;
+                    const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
+                    const matchesGroup = currentSection !== 'inventory' || label.inventoryGroup === currentGroup;
 
-                return matchesSearch && matchesSection && matchesGroup;
-            });
+                    return matchesSearch && matchesSection && matchesGroup;
+                });
+            }
 
             if (filtered.length === 0) {
-                alert("Aucune étiquette à imprimer pour cette sélection.");
+                alert("Aucune étiquette à imprimer. Veuillez sélectionner des éléments ou vérifier vos filtres.");
                 return;
             }
 
@@ -4944,6 +5101,34 @@
                 }
                 currentUser = userDoc.data();
                 if (currentUser.status === 'approved') {
+                    // Update user profile header
+                    const headerPhoto = document.getElementById('header-user-photo');
+                    const headerPlaceholder = document.getElementById('header-user-placeholder');
+                    if (currentUser.photo) {
+                        headerPhoto.src = currentUser.photo;
+                        headerPhoto.style.display = 'block';
+                        headerPlaceholder.style.display = 'none';
+                    } else {
+                        headerPhoto.style.display = 'none';
+                        headerPlaceholder.style.display = 'flex';
+                    }
+                    document.getElementById('header-user-name').innerText = (currentUser.prenom || '') + ' ' + (currentUser.nom || '');
+                    document.getElementById('header-user-role').innerText = (currentUser.role === 'admin' ? 'Administrateur' : 'Utilisateur') + ' / ' + (currentUser.fonction || 'Membre');
+
+                    // Update sidebar profile
+                    const sidePhoto = document.getElementById('sidebar-user-photo');
+                    const sidePlaceholder = document.getElementById('sidebar-user-placeholder');
+                    if (currentUser.photo) {
+                        sidePhoto.src = currentUser.photo;
+                        sidePhoto.style.display = 'block';
+                        sidePlaceholder.style.display = 'none';
+                    } else {
+                        sidePhoto.style.display = 'none';
+                        sidePlaceholder.style.display = 'flex';
+                    }
+                    document.getElementById('sidebar-user-name').innerText = (currentUser.prenom || '') + ' ' + (currentUser.nom || '');
+                    document.getElementById('sidebar-user-role').innerText = (currentUser.fonction || (currentUser.role === 'admin' ? 'Admin' : 'Membre'));
+
                     checkAuth();
                 } else {
                     await signOut(auth);
@@ -5027,7 +5212,8 @@
             handleMemberPhotoSelect,
             toggleMemberCustomFonction,
             updatePrintPreview,
-            savePrintSettings
+            savePrintSettings,
+            toggleAutoclaveInputs
         });
 
         // Charger les réglages au démarrage pour peupler les inputs du modal
