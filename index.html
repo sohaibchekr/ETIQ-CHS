@@ -2473,8 +2473,9 @@
                     const pass = document.getElementById('m-pass').value.trim();
                     if (pass.length < 6) { alert("Le mot de passe doit faire au moins 6 caractères."); return; }
 
-                    await setDoc(doc(db, "users", email), {
-                        email, nom: nom.toUpperCase(), prenom, fonction,
+                    const normalizedEmail = email.toLowerCase();
+                    await setDoc(doc(db, "users", normalizedEmail), {
+                        email: normalizedEmail, nom: nom.toUpperCase(), prenom, fonction,
                         role, status: 'approved',
                         photo: memberPhotoBase64 || null,
                         createdAt: new Date().toISOString(),
@@ -5176,7 +5177,7 @@
 
             try {
                 if (isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, pass);
+                    await signInWithEmailAndPassword(auth, email.toLowerCase(), pass);
                 } else {
                     const nom = document.getElementById('regNom').value.trim();
                     const prenom = document.getElementById('regPrenom').value.trim();
@@ -5189,20 +5190,26 @@
                         return;
                     }
 
-                    await createUserWithEmailAndPassword(auth, email, pass);
+                    const normalizedEmail = email.toLowerCase();
+                    const userRef = doc(db, "users", normalizedEmail);
+                    const existingDoc = await getDoc(userRef);
+                    const existingData = existingDoc.exists() ? existingDoc.data() : null;
+
+                    await createUserWithEmailAndPassword(auth, normalizedEmail, pass);
 
                     const adminEmail = 'sohaibchekri@gmail.com';
-                    const isSystemAdmin = (email.toLowerCase() === adminEmail);
+                    const isSystemAdmin = (normalizedEmail === adminEmail);
 
-                    await setDoc(doc(db, "users", email), {
-                        email: email,
+                    await setDoc(userRef, {
+                        email: normalizedEmail,
                         nom: nom.toUpperCase(),
                         prenom: prenom,
                         fonction: fonction,
-                        role: isSystemAdmin ? 'admin' : 'user',
-                        status: isSystemAdmin ? 'approved' : 'pending',
-                        photo: userPhotoBase64 || null,
-                        createdAt: new Date().toISOString()
+                        role: existingData ? (existingData.role || 'user') : (isSystemAdmin ? 'admin' : 'user'),
+                        status: existingData ? (existingData.status || 'pending') : (isSystemAdmin ? 'approved' : 'pending'),
+                        photo: userPhotoBase64 || (existingData ? existingData.photo : null),
+                        createdAt: existingData ? (existingData.createdAt || new Date().toISOString()) : new Date().toISOString(),
+                        updatedAt: new Date().toISOString()
                     });
 
                     errorMsg.innerText = isSystemAdmin ? "Compte Admin créé !" : "Inscription réussie ! En attente d'approbation.";
@@ -5341,17 +5348,18 @@
         // Initialisation
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const adminEmail = 'sohaibchekri@gmail.com';
-                let userDoc = await getDoc(doc(db, "users", user.email));
+                const normalizedEmail = user.email.toLowerCase();
+                let userDoc = await getDoc(doc(db, "users", normalizedEmail));
                 if (!userDoc.exists()) {
-                    const isSystemAdmin = (user.email === adminEmail);
-                    await setDoc(doc(db, "users", user.email), {
-                        email: user.email,
+                    const adminEmail = 'sohaibchekri@gmail.com';
+                    const isSystemAdmin = (normalizedEmail === adminEmail);
+                    await setDoc(doc(db, "users", normalizedEmail), {
+                        email: normalizedEmail,
                         role: isSystemAdmin ? 'admin' : 'user',
                         status: isSystemAdmin ? 'approved' : 'pending',
                         createdAt: new Date().toISOString()
                     });
-                    userDoc = await getDoc(doc(db, "users", user.email));
+                    userDoc = await getDoc(doc(db, "users", normalizedEmail));
                 }
                 currentUser = userDoc.data();
                 if (currentUser.status === 'approved') {
