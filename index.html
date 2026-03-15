@@ -25,10 +25,10 @@
     <!-- Firebase SDKs -->
     <!-- Error Handling for Mobile Debugging -->
     <script>
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
             var string = msg.toLowerCase();
             var substring = "script error";
-            if (string.indexOf(substring) > -1){
+            if (string.indexOf(substring) > -1) {
                 alert('Script Error: See Browser Console for Detail');
             } else {
                 var message = [
@@ -760,7 +760,8 @@
             .main-content {
                 margin-left: 0 !important;
                 padding: 12px;
-                padding-bottom: 80px; /* Space for bottom nav */
+                padding-bottom: 80px;
+                /* Space for bottom nav */
                 gap: 15px;
             }
 
@@ -785,7 +786,7 @@
                 padding: 15px;
                 border-radius: 12px;
                 background: rgba(255, 255, 255, 0.98);
-                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
             }
 
             .form-grid {
@@ -837,7 +838,8 @@
                 font-size: 0.7rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 6px 3px;
             }
 
@@ -849,7 +851,8 @@
             }
 
             .top-signature {
-                display: none; /* Too large for small mobile headers */
+                display: none;
+                /* Too large for small mobile headers */
             }
         }
 
@@ -1938,7 +1941,8 @@
                 Vous pouvez importer vos données depuis Access en les exportant d'abord au format CSV.
             </p>
             <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
-                <input type="text" id="inventorySearchInput" placeholder="🔍 Rechercher dans l'inventaire (Désignation, Code, Barcode...)"
+                <input type="text" id="inventorySearchInput"
+                    placeholder="🔍 Rechercher dans l'inventaire (Désignation, Code, Barcode...)"
                     onkeyup="renderTable()" autocomplete="off"
                     style="flex: 1; padding: 12px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 10px; font-size: 1rem; color: var(--text-dark); outline: none;">
                 <button class="btn-modern" onclick="openBarcodeScanner('search')"
@@ -1957,26 +1961,14 @@
                             <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox"
                                     onchange="toggleSelectAll(this, 'inventoryTableBody')" title="Tout sélectionner">
                             </th>
-                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')"
-                                title="Trier par date">D. Réc. <span class="sort-icon-main" data-col="date">⬇️</span>
-                            </th>
-                            <th style="width: 220px; cursor: pointer;" onclick="handleSort('main', 'designation')">
-                                Désignation <span class="sort-icon-main" data-col="designation"></span></th>
-                            <th style="width: 120px; cursor: pointer;" onclick="handleSort('main', 'code')">Code Int.
-                                <span class="sort-icon-main" data-col="code"></span>
-                            </th>
-                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'lotNumber')">N° Lot
-                                <span class="sort-icon-main" data-col="lotNumber"></span>
-                            </th>
-                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'inventoryGroup')">
-                                Classe <span class="sort-icon-main" data-col="inventoryGroup"></span></th>
-                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'supplier')">Fourn.
-                                <span class="sort-icon-main" data-col="supplier"></span>
-                            </th>
-                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'openDate')">DDO <span
-                                    class="sort-icon-main" data-col="openDate"></span></th>
-                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span
-                                    class="sort-icon-main" data-col="expDate"></span></th>
+                            <th style="width: 100px;">D. Réc.</th>
+                            <th style="width: 220px;">Désignation</th>
+                            <th style="width: 120px;">Code Int.</th>
+                            <th style="width: 100px;">N° Lot</th>
+                            <th style="width: 100px;">Classe</th>
+                            <th style="width: 100px;">Fourn.</th>
+                            <th style="width: 90px;">DDO</th>
+                            <th style="width: 90px;">DDF</th>
                             <th style="min-width: 180px;">Condition de conservation</th>
                             <th style="width: 100px;">Empl.</th>
                             <th style="text-align: center; width: 140px;">Action</th>
@@ -3365,13 +3357,13 @@
                 const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
                 theadTr.innerHTML = `
                     <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
-                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')" title="Trier par date">Date <span class="sort-icon-main" data-col="date">⬇️</span></th>
-                    <th style="width: 250px; cursor: pointer;" onclick="handleSort('main', 'designation')">Désignation <span class="sort-icon-main" data-col="designation"></span></th>
-                    <th style="width: 130px; cursor: pointer;" onclick="handleSort('main', 'code')">Code interne <span class="sort-icon-main" data-col="code"></span></th>
-                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'prepDate')">DDP <span class="sort-icon-main" data-col="prepDate"></span></th>
-                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span class="sort-icon-main" data-col="expDate"></span></th>
-                    <th style="cursor: pointer;" onclick="handleSort('main', 'conservation')">Condition de conservation <span class="sort-icon-main" data-col="conservation"></span></th>
-                    <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'preparator')">Visa <span class="sort-icon-main" data-col="preparator"></span></th>
+                    <th style="width: 100px;">Date</th>
+                    <th style="width: 250px;">Désignation</th>
+                    <th style="width: 130px;">Code interne</th>
+                    <th style="width: 100px;">DDP</th>
+                    <th style="width: 100px;">DDF</th>
+                    <th>Condition de conservation</th>
+                    <th style="width: 90px;">Visa</th>
                     <th style="text-align: center; width: 140px;">Action</th>
                 `;
             }
@@ -3904,10 +3896,10 @@
                 html5QrCode = new Html5Qrcode("reader");
             }
             const config = { fps: 15, qrbox: { width: 300, height: 200 } };
-            
+
             try {
                 await html5QrCode.start(
-                    { facingMode: "environment" }, 
+                    { facingMode: "environment" },
                     config,
                     (decodedText) => {
                         if (mode === 'search') {
@@ -3930,7 +3922,7 @@
             if (html5QrCode && html5QrCode.isScanning) {
                 try {
                     await html5QrCode.stop();
-                } catch(e) {}
+                } catch (e) { }
             }
             document.getElementById('barcode-modal').style.display = 'none';
         }
@@ -3938,7 +3930,7 @@
         async function onBarcodeScanned(code) {
             scannedBarcode = code;
             console.log("Scanned code:", code);
-            
+
             // On cherche si ce code existe déjà dans l'inventaire ou l'historique
             const allData = [...inventoryData, ...labels];
             const found = allData.find(item => item.barcode === code);
@@ -3976,13 +3968,13 @@
                         }
                     }
                 }
-                
+
                 const groupInp = document.getElementById('inventoryGroupInput');
                 if (groupInp && found.inventoryGroup) {
                     groupInp.value = found.inventoryGroup;
                     if (typeof toggleCustomGroup === 'function') toggleCustomGroup();
                 }
-                
+
                 alert(`📦 Produit reconnu : ${found.designation}\nLes informations ont été automatiquement remplies.`);
                 if (typeof calculateExpiryDate === 'function') calculateExpiryDate();
             } else {
@@ -4021,7 +4013,7 @@
             // 01 = GTIN (14 chars)
             // 17 = Expiry (6 chars: YYMMDD)
             // 10 = Lot (variable length, up to 20 chars)
-            
+
             // Ceci est une version simplifiée car le GS1-128 sans séparateurs est complexe à parser parfaitement
             // On cherche des patterns connus
             if (code.startsWith('01')) {
@@ -4045,7 +4037,7 @@
                     if (lotIdx !== -1) result.lot = code.substring(lotIdx + 2);
                 }
             }
-            
+
             return (result.lot || result.expiry) ? result : null;
         }
 
@@ -4078,24 +4070,22 @@
 
                 return `
                         <div class="etiquette" style="border: 4px solid #000; padding: 12px; width: 9.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Inter', Arial, sans-serif;">
-                            <div style="display: flex; align-items: flex-start; gap: 10px; border-bottom: 3px solid #000; padding-bottom: 8px; margin-bottom: 12px;">
-                                <img src="logo.PNG" alt="Logo" style="width: 100px; height: auto;" onerror="this.src='logo.png'">
+                            <div style="display: flex; align-items: flex-start; gap: 10px; padding-bottom: 8px; margin-bottom: 12px;">
+                                <img src="logo.PNG" alt="Logo" style="width: 100px; height: auto;" onerror="this.onerror=null; this.src='logo.png'">
                                 <div style="flex: 1; font-weight: 900; font-size: 9pt; text-align: center; line-height: 1.3; text-decoration: underline; color: #000; display: flex; align-items: center; justify-content: center; min-height: 60px;">
                                     ${dynamicTitle}
                                 </div>
                             </div>
                             
                             <div class="data-grid" style="display: grid; grid-template-columns: 160px 1fr; font-size: 10pt; row-gap: 5px; color: #000;">
-                                <span class="data-label" style="font-weight: 800;">Date de réception:</span> <span class="data-value" style="font-weight: 800;">${recepDate}</span>
-                                <span class="data-label" style="font-weight: 800;">Désignation:</span> <span class="data-value" style="font-weight: 900; font-size: 11pt;">${label.designation}</span>
+                                <span class="data-label" style="font-weight: 800;">Désignation:</span> <span class="data-value" style="font-weight: 800;">${label.designation}</span>
                                 <span class="data-label" style="font-weight: 800;">Code:</span> <span class="data-value" style="font-weight: 800;">${label.code}</span>
                                 <span class="data-label" style="font-weight: 800;">N° de lot :</span> <span class="data-value" style="font-weight: 800;">${label.lotNumber || ''}</span>
                                 <span class="data-label" style="font-weight: 800;">Fournisseur :</span> <span class="data-value" style="font-weight: 800;">${label.supplier || ''}</span>
                                 <span class="data-label" style="font-weight: 800;">Quantité:</span> <span class="data-value" style="font-weight: 800;">${label.quantity || ''}</span>
                                 <span class="data-label" style="font-weight: 800;">Date de péremption:</span> <span class="data-value" style="font-weight: 900;">${expDate !== 'Invalid Date' ? expDate : '---'}</span>
                                 <span class="data-label" style="font-weight: 800;">Date d'ouverture:</span> <span class="data-value" style="font-weight: 800;">${openDate}</span>
-                                <span class="data-label" style="font-weight: 800;">Conservation:</span> <span class="data-value" style="font-weight: 800;">${label.conservation || ''}</span>
-                                <span class="data-label" style="font-weight: 800;">Emplacement :</span> <span class="data-value" style="font-weight: 800;">${label.location || ''}</span>
+                                <span class="data-label" style="font-weight: 800;">Condition de conservation:</span> <span class="data-value" style="font-weight: 800;">${label.conservation || ''}</span>
                             </div>
                         </div>
                     `;
@@ -4130,7 +4120,7 @@
                         <!-- Header Section (3-column layout) -->
                         <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px;">
                             <div style="width: 100px; flex-shrink: 0; display: flex; align-items: center;">
-                                <img src="logo.PNG" alt="Logo" style="width: 85px; height: auto;" onerror="this.src='logo.png'">
+                                <img src="logo.PNG" alt="Logo" style="width: 85px; height: auto;" onerror="this.onerror=null; this.src='logo.png'">
                             </div>
                             <div style="flex: 1; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                                 <div style="font-weight: 700; font-size: 10pt; margin-bottom: 4px;">-FE001/CQ-SOP004-</div>
@@ -4187,7 +4177,7 @@
                 return `
                         <div class="etiquette" style="padding: 12px 15px; border: 4px solid #000; width: 9.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Inter', Arial, sans-serif; color: #000; display: inline-block;">
                             <div style="display: flex; align-items: flex-start; margin-bottom: 8px;">
-                                <img src="logo.PNG" alt="Logo" style="width: 100px; height: auto; margin-right: 15px;" onerror="this.src='logo.png'">
+                                <img src="logo.PNG" alt="Logo" style="width: 100px; height: auto; margin-right: 15px;" onerror="this.onerror=null; this.src='logo.png'">
                                 <div style="flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 50px;">
                                     <div style="font-weight: 900; font-size: 14pt; text-decoration: underline; line-height: 1.1; margin-bottom: 2px;">Etiquette d'identification</div>
                                     <div style="font-weight: 900; font-size: 14pt; text-decoration: underline; line-height: 1.1;">Boites de pétris pré-coulées</div>
@@ -4221,7 +4211,7 @@
             return `
                         <div class="etiquette" style="padding: 15px 20px; border: 4px solid #000; width: 9.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif; color:#000; display: flex; flex-direction: column; justify-content: flex-start;">
                             <div style="display: flex; align-items: flex-start; margin-bottom: 12px;">
-                                <img src="logo.PNG" alt="Logo" style="width: 110px; height: auto; margin-right: 10px;" onerror="this.src='logo.png'">
+                                <img src="logo.PNG" alt="Logo" style="width: 110px; height: auto; margin-right: 10px;" onerror="this.onerror=null; this.src='logo.png'">
                                 <div style="flex: 1; text-align: center;">
                                     <div style="font-weight: 900; font-size: 9pt; margin-bottom: 3px;">${refDoc}</div>
                                     <div style="font-weight: 900; font-size: 13pt; text-decoration: underline; line-height: 1.2;">
@@ -4232,7 +4222,7 @@
                             
                             <div class="data-grid" style="display: grid; grid-template-columns: 160px 1fr; font-size: 11.5pt; row-gap: 8px; margin-top: 10px; color:#000; flex: 1;">
                                 <span class="data-label" style="font-weight: 800;">Désignation :</span> 
-                                <span class="data-value" style="font-weight: 900; font-size: 14pt;">${label.designation.toUpperCase()}</span>
+                                <span class="data-value" style="font-weight: 800;">${label.designation.toUpperCase()}</span>
                                 
                                 <span class="data-label" style="font-weight: 800;">Code interne :</span> 
                                 <span class="data-value" style="font-weight: 900;">${label.code}</span>
@@ -4243,7 +4233,7 @@
                                 <span class="data-label" style="font-weight: 800;">Date d'expiration:</span> 
                                 <span class="data-value" style="font-weight: 900;">${expDate}</span>
 
-                                <span class="data-label" style="font-weight: 800;">Conservation :</span> 
+                                <span class="data-label" style="font-weight: 800;">Condition de conservation :</span> 
                                 <span class="data-value" style="font-weight: 900;">${label.conservation || ''}</span>
 
                                 <span class="data-label" style="font-weight: 800;">Préparé par :</span> 
@@ -4314,7 +4304,7 @@
             if (etiq) {
                 etiq.style.width = settings.width + 'px';
                 // Retirer settings.height pour permettre le "sur mesure"
-                etiq.style.height = 'auto'; 
+                etiq.style.height = 'auto';
             }
 
             printArea.appendChild(wrapper);
@@ -4689,14 +4679,14 @@
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDP</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDF</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDO</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Conservation</th>
+                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Condition de conservation</th>
                             </tr>
                         </thead>
                         <tbody>
                             ${filtered.map(l => `
                                 <tr>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.date ? new Date(l.date).toLocaleDateString('fr-FR') : '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px; font-weight:bold;">${l.designation}</td>
+                                    <td style="border: 1.2px solid #000; padding: 5px;">${l.designation}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.code}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px;">${l.supplier || '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.lotNumber || '---'}</td>
@@ -4755,14 +4745,24 @@
                 // Donner le temps aux images (logo) de se charger avant impression
                 setTimeout(() => {
                     loader.style.display = 'none';
-                    iframe.contentWindow.focus();
-                    iframe.contentWindow.print();
 
-                    // Nettoyage de l'iframe après impression/annulation
-                    setTimeout(() => {
-                        document.body.removeChild(iframe);
-                    }, 5000);
-                }, 500);
+                    // Utiliser requestAnimationFrame pour s'assurer que le loader est bien caché visuellement
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            try {
+                                iframe.contentWindow.focus();
+                                iframe.contentWindow.print();
+
+                                // Nettoyage de l'iframe après impression/annulation
+                                setTimeout(() => {
+                                    if (document.body.contains(iframe)) document.body.removeChild(iframe);
+                                }, 2000);
+                            } catch (e) {
+                                console.error("Final print error:", e);
+                            }
+                        }, 250); // Petit délai supplémentaire pour laisser le navigateur respirer
+                    });
+                }, 1000); // 1 seconde pour être sûr que tout est chargé
 
             } catch (err) {
                 console.error("Print generation error:", err);
@@ -5119,7 +5119,7 @@
                 tr.innerHTML = `
                     <td style="text-align:center;"><input type="checkbox" class="row-checkbox" data-id="${item.id}" onchange="handleRowSelect(this)" ${selectedBulkIds.has(String(item.id)) ? 'checked' : ''}></td>
                     <td>${cat}</td>
-                    <td><b>${item.designation}</b></td>
+                    <td>${item.designation}</td>
                     <td>${item.code} <br> <small style="color:#7f8c8d;">${item.lotNumber || ''}</small></td>
                     <td>Prép/Réc.: ${item.prepDate || item.date || '---'}</td>
                     <td>Périm.: ${item.expDate || '---'}</td>
