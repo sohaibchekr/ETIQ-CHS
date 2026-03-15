@@ -1529,8 +1529,8 @@
                                     <label>Équipement utilisé</label>
                                     <select id="ster-equip" onchange="toggleAutoclaveInputs()">
                                         <option value="">--- Choisir l'autoclave ---</option>
-                                        <option value="LAUTO057">🔥 LAUTO057 (Grand)</option>
-                                        <option value="LAUTO056">🔥 LAUTO056 (Petit)</option>
+                                        <option value="LAUTO057">🔥 LAUTO057 </option>
+                                        <option value="LAUTO056">🔥 LAUTO056 </option>
                                         <option value="ETS005">⚙️ ETS005 / Étuve</option>
                                     </select>
                                 </div>
@@ -3831,7 +3831,7 @@
                     date: currentSection === 'sterilisation' ? sterDate : date,
                     designation: currentSection === 'sterilisation' ? '' : designation,
                     code: currentSection === 'sterilisation' ? '' : code,
-                    prepDate: currentSection === 'sterilisation' ? sterDDP : prepDate,
+                    prepDate: isInv ? expDate : (currentSection === 'sterilisation' ? sterDDP : prepDate),
                     expDate: currentSection === 'sterilisation' ? sterDDV : expDate,
                     conservation,
                     preparator: currentSection === 'sterilisation' ? sterUser : preparator,
@@ -4677,7 +4677,6 @@
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 80px;">Code</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Fournisseur</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">N° LOT</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDP</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDF</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDO</th>
                                 <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Condition de conservation</th>
@@ -4691,7 +4690,6 @@
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.code}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px;">${l.supplier || '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.lotNumber || '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.prepDate ? new Date(l.prepDate).toLocaleDateString('fr-FR') : '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.expDate ? new Date(l.expDate).toLocaleDateString('fr-FR') : '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.openDate ? new Date(l.openDate).toLocaleDateString('fr-FR') : '---'}</td>
                                     <td style="border: 1.2px solid #000; padding: 5px;">${l.conservation || '---'}</td>
