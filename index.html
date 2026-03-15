@@ -1697,9 +1697,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 250px;">Membre</th>
-                            <th style="width: 180px;">Fonction</th>
-                            <th style="width: 120px; text-align: center;">Statut</th>
+                            <th style="width: 250px; cursor: pointer;" onclick="handleSort('users', 'nom')">Membre <span
+                                    class="sort-icon-users" data-col="nom"></span></th>
+                            <th style="width: 180px; cursor: pointer;" onclick="handleSort('users', 'fonction')">
+                                Fonction <span class="sort-icon-users" data-col="fonction"></span></th>
+                            <th style="width: 120px; text-align: center; cursor: pointer;"
+                                onclick="handleSort('users', 'status')">Statut <span class="sort-icon-users"
+                                    data-col="status"></span></th>
                             <th style="text-align: center; width: 180px;">Actions</th>
                         </tr>
                     </thead>
@@ -1961,16 +1965,27 @@
                             <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox"
                                     onchange="toggleSelectAll(this, 'inventoryTableBody')" title="Tout sélectionner">
                             </th>
-                            <th style="width: 100px;">D. Réc.</th>
-                            <th style="width: 220px;">Désignation</th>
-                            <th style="width: 120px;">Code Int.</th>
-                            <th style="width: 100px;">N° Lot</th>
-                            <th style="width: 100px;">Classe</th>
-                            <th style="width: 100px;">Fourn.</th>
-                            <th style="width: 90px;">DDO</th>
-                            <th style="width: 90px;">DDF</th>
-                            <th style="min-width: 180px;">Condition de conservation</th>
-                            <th style="width: 100px;">Empl.</th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')">D. Réc.
+                                <span class="sort-icon-main" data-col="date">⬇️</span></th>
+                            <th style="width: 220px; cursor: pointer;" onclick="handleSort('main', 'designation')">
+                                Désignation <span class="sort-icon-main" data-col="designation"></span></th>
+                            <th style="width: 120px; cursor: pointer;" onclick="handleSort('main', 'code')">Code Int.
+                                <span class="sort-icon-main" data-col="code"></span></th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'lotNumber')">N° Lot
+                                <span class="sort-icon-main" data-col="lotNumber"></span></th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'inventoryGroup')">
+                                Classe <span class="sort-icon-main" data-col="inventoryGroup"></span></th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'supplier')">Fourn.
+                                <span class="sort-icon-main" data-col="supplier"></span></th>
+                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'openDate')">DDO <span
+                                    class="sort-icon-main" data-col="openDate"></span></th>
+                            <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span
+                                    class="sort-icon-main" data-col="expDate"></span></th>
+                            <th style="min-width: 180px; cursor: pointer;" onclick="handleSort('main', 'conservation')">
+                                Condition de conservation <span class="sort-icon-main" data-col="conservation"></span>
+                            </th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'location')">Empl.
+                                <span class="sort-icon-main" data-col="location"></span></th>
                             <th style="text-align: center; width: 140px;">Action</th>
                         </tr>
                     </thead>
@@ -2027,12 +2042,18 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 120px;">Etat</th>
-                            <th style="width: 250px;">Désignation</th>
-                            <th style="width: 150px;">Code</th>
-                            <th style="width: 120px;">Péremption</th>
-                            <th style="width: 150px;">Conservation</th>
-                            <th style="width: 100px;">Status</th>
+                            <th style="width: 120px; cursor: pointer;" onclick="handleSort('expiry', 'designation')">
+                                Etat <span class="sort-icon-expiry" data-col="designation"></span></th>
+                            <th style="width: 250px; cursor: pointer;" onclick="handleSort('expiry', 'designation')">
+                                Désignation <span class="sort-icon-expiry" data-col="designation"></span></th>
+                            <th style="width: 150px; cursor: pointer;" onclick="handleSort('expiry', 'code')">Code <span
+                                    class="sort-icon-expiry" data-col="code"></span></th>
+                            <th style="width: 120px; cursor: pointer;" onclick="handleSort('expiry', 'expDate')">
+                                Péremption <span class="sort-icon-expiry" data-col="expDate">⬇️</span></th>
+                            <th style="width: 150px; cursor: pointer;" onclick="handleSort('expiry', 'conservation')">
+                                Conservation <span class="sort-icon-expiry" data-col="conservation"></span></th>
+                            <th style="width: 100px; cursor: pointer;" onclick="handleSort('expiry', 'source')">Status
+                                <span class="sort-icon-expiry" data-col="source"></span></th>
                         </tr>
                     </thead>
                     <tbody id="expiryTableBody">
@@ -2078,8 +2099,13 @@
                             <th style="width: 90px; cursor: pointer;" onclick="handleSort('history', 'expDate')">DDF
                                 <span class="sort-icon-history" data-col="expDate"></span>
                             </th>
-                            <th style="width: 150px;">Condition de conservation</th>
-                            <th style="width: 80px;">Par</th>
+                            <th style="width: 150px; cursor: pointer;" onclick="handleSort('history', 'conservation')">
+                                Condition de conservation
+                                <span class="sort-icon-history" data-col="conservation"></span>
+                            </th>
+                            <th style="width: 80px; cursor: pointer;" onclick="handleSort('history', 'preparator')">Par
+                                <span class="sort-icon-history" data-col="preparator"></span>
+                            </th>
                             <th style="text-align: center; width: 130px;">Action</th>
                         </tr>
                     </thead>
@@ -2305,10 +2331,25 @@
             if (!tbody) return;
             tbody.innerHTML = '';
 
-            // Trier : d'abord les demandes en attente
+            // Appliquer le tri
             const sortedUsers = [...users].sort((a, b) => {
-                if (a.status === 'pending' && b.status !== 'pending') return -1;
-                if (a.status !== 'pending' && b.status === 'pending') return 1;
+                const asc = tableSort.users.asc ? 1 : -1;
+                const col = tableSort.users.col || 'status';
+
+                let valA = a[col] || '';
+                let valB = b[col] || '';
+
+                if (col === 'status') {
+                    // Priorité aux 'pending'
+                    if (valA === 'pending' && valB !== 'pending') return -1;
+                    if (valA !== 'pending' && valB === 'pending') return 1;
+                }
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return -1 * asc;
+                if (valA > valB) return 1 * asc;
                 return 0;
             });
 
@@ -3358,13 +3399,13 @@
                 const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
                 theadTr.innerHTML = `
                     <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
-                    <th style="width: 100px;">Date</th>
-                    <th style="width: 250px;">Désignation</th>
-                    <th style="width: 130px;">Code interne</th>
-                    <th style="width: 100px;">DDP</th>
-                    <th style="width: 100px;">DDF</th>
-                    <th>Condition de conservation</th>
-                    <th style="width: 90px;">Visa</th>
+                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')" title="Trier par date">Date <span class="sort-icon-main" data-col="date">⬇️</span></th>
+                    <th style="width: 250px; cursor: pointer;" onclick="handleSort('main', 'designation')">Désignation <span class="sort-icon-main" data-col="designation"></span></th>
+                    <th style="width: 130px; cursor: pointer;" onclick="handleSort('main', 'code')">Code interne <span class="sort-icon-main" data-col="code"></span></th>
+                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'prepDate')">DDP <span class="sort-icon-main" data-col="prepDate"></span></th>
+                    <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span class="sort-icon-main" data-col="expDate"></span></th>
+                    <th style="cursor: pointer;" onclick="handleSort('main', 'conservation')">Condition de conservation <span class="sort-icon-main" data-col="conservation"></span></th>
+                    <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'preparator')">Visa <span class="sort-icon-main" data-col="preparator"></span></th>
                     <th style="text-align: center; width: 140px;">Action</th>
                 `;
             }
@@ -3387,7 +3428,10 @@
 
             if (sectionId === 'history') renderHistoryTable();
             if (sectionId === 'admin') renderUserTable();
-            if (sectionId !== 'dashboard') renderTable();
+            if (sectionId !== 'dashboard') {
+                renderTable();
+                updateSortIcons(sectionId === 'inventory' || sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'sterilisation' ? 'main' : sectionId);
+            }
 
             // Auto scroll vers le haut quand on change de section pour être bien orienté
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -3470,7 +3514,7 @@
             });
 
             if (filteredLabels.length === 0) {
-                const cols = isInv ? 11 : (currentSection === 'sterilisation' ? 8 : 9);
+                const cols = isInv ? 12 : (currentSection === 'sterilisation' ? 8 : 9);
                 tbody.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding: 30px; color:#718096;">Aucun élément trouvé.</td></tr>`;
             }
 
@@ -3844,6 +3888,11 @@
                     type: typeVal,
                     updatedAt: new Date().toISOString()
                 };
+
+                // DDP = DDF pour l'inventaire
+                if (isInv && data.expDate) {
+                    data.prepDate = data.expDate;
+                }
 
                 if (editingLabelId) {
                     const dataPool = isInv ? inventoryData : labels;
@@ -4516,6 +4565,28 @@
                 return expDate <= threeMonthsFromNow;
             });
 
+            // Appliquer le tri
+            alertingItems.sort((a, b) => {
+                const asc = tableSort.expiry.asc ? 1 : -1;
+                const col = tableSort.expiry.col || 'expDate';
+
+                let valA = a[col] || '';
+                let valB = b[col] || '';
+
+                if (col === 'expDate') {
+                    let dA = valA ? new Date(valA).getTime() : 0;
+                    let dB = valB ? new Date(valB).getTime() : 0;
+                    return (dA - dB) * asc;
+                }
+
+                if (typeof valA === 'string') valA = valA.toLowerCase();
+                if (typeof valB === 'string') valB = valB.toLowerCase();
+
+                if (valA < valB) return -1 * asc;
+                if (valA > valB) return 1 * asc;
+                return 0;
+            });
+
             const btn = document.getElementById('expiry-alert-btn');
             if (alertingItems.length > 0) {
                 btn.style.display = 'block';
@@ -5006,6 +5077,11 @@
                     updatedAt: new Date().toISOString()
                 };
 
+                // DDP = DDF pour l'inventaire
+                if (currentSection === 'inventory' && newObj.expDate) {
+                    newObj.prepDate = newObj.expDate;
+                }
+
                 // Correction format date si besoin (Excel date serial)
                 ['date', 'prepDate', 'expDate', 'openDate'].forEach(key => {
                     if (typeof newObj[key] === 'number') {
@@ -5036,29 +5112,42 @@
         let tableSort = {
             main: { col: 'date', asc: false },
             history: { col: 'date', asc: false },
-            admin: { col: 'date', asc: false }
+            admin: { col: 'date', asc: false },
+            expiry: { col: 'expDate', asc: false },
+            users: { col: 'status', asc: false }
         };
+
+        function updateSortIcons(table) {
+            document.querySelectorAll(`.sort-icon-${table}`).forEach(el => {
+                const col = el.getAttribute('data-col');
+                if (col === tableSort[table].col) {
+                    el.innerText = tableSort[table].asc ? ' ⬆️' : ' ⬇️';
+                } else {
+                    el.innerText = '';
+                }
+            });
+        }
 
         function handleSort(table, col) {
             if (tableSort[table].col === col) {
                 tableSort[table].asc = !tableSort[table].asc;
             } else {
                 tableSort[table].col = col;
-                tableSort[table].asc = true;
+                // Pour les dates, on commence par trier du plus récent au plus ancien (asc = false)
+                if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
+                    tableSort[table].asc = false;
+                } else {
+                    tableSort[table].asc = true;
+                }
             }
 
-            // Mettre à jour toutes les icones de cette table
-            document.querySelectorAll(`.sort-icon-${table}`).forEach(el => {
-                if (el.getAttribute('data-col') === tableSort[table].col) {
-                    el.innerText = tableSort[table].asc ? ' ⬆️' : ' ⬇️';
-                } else {
-                    el.innerText = '';
-                }
-            });
+            updateSortIcons(table);
 
             if (table === 'main') renderTable();
             else if (table === 'history') renderHistoryTable();
             else if (table === 'admin') renderAdminDbTable();
+            else if (table === 'expiry') updateExpiryAlertStatus();
+            else if (table === 'users') renderUserTable();
         }
 
         function renderAdminDbTable() {
@@ -5431,6 +5520,8 @@
             approveUser,
             toggleSidebar,
             toggleMobileSidebar,
+            handleSort,
+            updateSortIcons,
             calculateExpiryDate,
             filterLinkedMilieux,
             fillFromMilieu,
