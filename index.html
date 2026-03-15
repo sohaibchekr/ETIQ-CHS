@@ -17,8 +17,30 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('Service Worker enregistré !'))
+                    .then(reg => {
+                        console.log('Service Worker enregistré !');
+                        reg.onupdatefound = () => {
+                            const installingWorker = reg.installing;
+                            installingWorker.onstatechange = () => {
+                                if (installingWorker.state === 'installed') {
+                                    if (navigator.serviceWorker.controller) {
+                                        console.log('Nouvelle version disponible, rechargement...');
+                                        window.location.reload();
+                                    }
+                                }
+                            };
+                        };
+                    })
                     .catch(err => console.log('Erreur Service Worker:', err));
+            });
+
+            // Forcer le rechargement quand le nouveau SW prend le contrôle
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    window.location.reload();
+                    refreshing = true;
+                }
             });
         }
     </script>
@@ -1276,6 +1298,7 @@
                     <img id="app-logo" src="logo.PNG" alt="Logo"
                         style="max-width: 80px; margin-bottom: 5px; border-radius: 8px;">
                     <h2 style="font-weight: 800; font-size: 1.4rem; color: #1a202c; margin-bottom: 0;">GEST-LABO</h2>
+                    <p style="font-size: 0.65rem; color: #718096; margin-bottom: 5px; font-weight: 600;">v1.1 (Mise à jour Auto)</p>
 
                     <!-- PROFIL DANS LE MENU -->
                     <div id="sidebar-profile"
