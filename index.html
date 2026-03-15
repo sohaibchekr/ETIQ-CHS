@@ -1966,17 +1966,21 @@
                                     onchange="toggleSelectAll(this, 'inventoryTableBody')" title="Tout sélectionner">
                             </th>
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'date')">D. Réc.
-                                <span class="sort-icon-main" data-col="date">⬇️</span></th>
+                                <span class="sort-icon-main" data-col="date">⬇️</span>
+                            </th>
                             <th style="width: 220px; cursor: pointer;" onclick="handleSort('main', 'designation')">
                                 Désignation <span class="sort-icon-main" data-col="designation"></span></th>
                             <th style="width: 120px; cursor: pointer;" onclick="handleSort('main', 'code')">Code Int.
-                                <span class="sort-icon-main" data-col="code"></span></th>
+                                <span class="sort-icon-main" data-col="code"></span>
+                            </th>
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'lotNumber')">N° Lot
-                                <span class="sort-icon-main" data-col="lotNumber"></span></th>
+                                <span class="sort-icon-main" data-col="lotNumber"></span>
+                            </th>
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'inventoryGroup')">
                                 Classe <span class="sort-icon-main" data-col="inventoryGroup"></span></th>
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'supplier')">Fourn.
-                                <span class="sort-icon-main" data-col="supplier"></span></th>
+                                <span class="sort-icon-main" data-col="supplier"></span>
+                            </th>
                             <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'openDate')">DDO <span
                                     class="sort-icon-main" data-col="openDate"></span></th>
                             <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span
@@ -1985,7 +1989,8 @@
                                 Condition de conservation <span class="sort-icon-main" data-col="conservation"></span>
                             </th>
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'location')">Empl.
-                                <span class="sort-icon-main" data-col="location"></span></th>
+                                <span class="sort-icon-main" data-col="location"></span>
+                            </th>
                             <th style="text-align: center; width: 140px;">Action</th>
                         </tr>
                     </thead>
@@ -2053,7 +2058,8 @@
                             <th style="width: 150px; cursor: pointer;" onclick="handleSort('expiry', 'conservation')">
                                 Conservation <span class="sort-icon-expiry" data-col="conservation"></span></th>
                             <th style="width: 100px; cursor: pointer;" onclick="handleSort('expiry', 'source')">Status
-                                <span class="sort-icon-expiry" data-col="source"></span></th>
+                                <span class="sort-icon-expiry" data-col="source"></span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody id="expiryTableBody">
@@ -3233,7 +3239,7 @@
         function updateDesignationOptions(sectionId) {
             const desigList = document.getElementById('designationList');
             if (!desigList) return;
-            
+
             const allItems = [...labels, ...inventoryData];
             const usedDesignations = [...new Set(allItems.map(l => l.designation))].filter(Boolean).sort();
 
@@ -3807,8 +3813,9 @@
                 'lal_tests': 'Réactifs & Consommables LAL'
             };
 
-            // Extraire les groupes uniques des labels
-            const existings = [...new Set(labels.filter(l => l.inventoryGroup && !defaultGroups[l.inventoryGroup]).map(l => l.inventoryGroup))];
+            // Extraire les groupes uniques des labels et de l'inventaire
+            const allItems = [...labels, ...inventoryData];
+            const existings = [...new Set(allItems.filter(l => l.inventoryGroup && !defaultGroups[l.inventoryGroup]).map(l => l.inventoryGroup))];
 
             let html = '';
             for (let key in defaultGroups) {
