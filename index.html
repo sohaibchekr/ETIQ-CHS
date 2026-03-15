@@ -2235,6 +2235,7 @@
             if (typeof renderTable === 'function') renderTable();
             if (typeof renderHistoryTable === 'function') renderHistoryTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
+            if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection);
         });
 
         onSnapshot(query(collection(db, "inventory"), orderBy("id", "desc")), (snapshot) => {
@@ -2242,6 +2243,7 @@
             if (typeof renderTable === 'function') renderTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
             if (typeof updateInventoryGroups === 'function') updateInventoryGroups();
+            if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection);
         });
 
         onSnapshot(collection(db, "users"), (snapshot) => {
@@ -3229,8 +3231,11 @@
         }
 
         function updateDesignationOptions(sectionId) {
-            const desigSelect = document.getElementById('designationInput');
-            const usedDesignations = [...new Set(labels.map(l => l.designation))].sort();
+            const desigList = document.getElementById('designationList');
+            if (!desigList) return;
+            
+            const allItems = [...labels, ...inventoryData];
+            const usedDesignations = [...new Set(allItems.map(l => l.designation))].filter(Boolean).sort();
 
             let options = [];
             if (sectionId === 'petri') {
@@ -3244,7 +3249,7 @@
                 if (d && !options.includes(d)) options.push(d);
             });
 
-            desigSelect.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+            desigList.innerHTML = options.map(opt => `<option value="${opt}">`).join('');
         }
 
         // Mise à jour continue du statut des alertes
