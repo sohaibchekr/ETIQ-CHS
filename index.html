@@ -1298,7 +1298,8 @@
                     <img id="app-logo" src="logo.PNG" alt="Logo"
                         style="max-width: 80px; margin-bottom: 5px; border-radius: 8px;">
                     <h2 style="font-weight: 800; font-size: 1.4rem; color: #1a202c; margin-bottom: 0;">GEST-LABO</h2>
-                    <p style="font-size: 0.65rem; color: #718096; margin-bottom: 5px; font-weight: 600;">v1.1 (Mise à jour Auto)</p>
+                    <p style="font-size: 0.65rem; color: #718096; margin-bottom: 5px; font-weight: 600;">v1.1 (Mise à
+                        jour Auto)</p>
 
                     <!-- PROFIL DANS LE MENU -->
                     <div id="sidebar-profile"
@@ -4036,7 +4037,13 @@
             } else {
                 customInput.style.display = 'none';
             }
+            if (currentSection === 'inventory') {
+                renderTable();
+                // On appelle showSection pour mettre à jour le titre principal de la page
+                showSection('inventory');
+            }
         }
+
 
         function updateInventoryGroups() {
             const select = document.getElementById('inventoryGroupInput');
@@ -4360,13 +4367,20 @@
             const logoPath = "logo.PNG"; // Chemin relatif ou absolu
 
             if (label.type === 'inventory') {
-                // Titre long demandé par l'utilisateur
-                const fullTitle = "ETIQUETTE D'IDENTIFICATION DES MILIEUX DE CULTURE, SOUCHE DE REFERENCE, INDICATEUR BIOLOGIQUE, REACTIFS";
-                let dynamicTitle = fullTitle;
+                // Titre dynamique selon le type d'inventaire
+                let dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES MILIEUX DE CULTURE, SOUCHE DE REFERENCE, INDICATEUR BIOLOGIQUE, REACTIFS";
 
-                if (label.inventoryGroup === 'bio_indic') dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES INDICATEURS BIOLOGIQUES ET REACTIFS";
-                if (label.inventoryGroup === 'lal_tests') dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES REACTIFS ET CONSOMMABLES LAL";
-                if (label.inventoryGroup === 'milieux') dynamicTitle = fullTitle;
+                if (label.inventoryGroup === 'bio_indic') {
+                    dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES INDICATEURS BIOLOGIQUES";
+                } else if (label.inventoryGroup === 'lal_tests') {
+                    dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES REACTIFS ET CONSOMMABLES LAL";
+                } else if (label.inventoryGroup === 'milieux') {
+                    dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES MILIEUX DE CULTURE";
+                } else if (label.inventoryGroup) {
+                    // Pour les catégories personnalisées (ex: COLORANTS DE GRAM, REACTIFS...)
+                    dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES " + label.inventoryGroup.toUpperCase();
+                }
+
 
                 return `
                         <div class="etiquette" style="border: 4px solid #000; padding: 25px; width: 11.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Inter', Arial, sans-serif;">
