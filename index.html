@@ -1789,10 +1789,14 @@
                         style="background: #7f8c8d; color: white;">
                         ⚙️ Calibration
                     </button>
-                    <button class="btn-modern btn-print" onclick="generateDetailedReport(currentSection)"
-                        style="background: #9b59b6;">
-                        📋 Aperçu État
-                    </button>
+                    <div style="display:flex">
+                        <button class="btn-modern btn-print" onclick="generateDetailedReport(currentSection)"
+                            style="background: #9b59b6; border-radius: 8px 0 0 8px; margin-right: 0; padding: 10px 14px; font-size: 0.82rem; font-weight: 700;">
+                            📋 Aperçu État
+                        </button>
+                        <button onclick="openProfileSettings('report')" title="Paramètres Rapport (A4)"
+                            style="background:#9b59b6; color:white; border:none; border-left:1px solid rgba(255,255,255,0.3); border-radius:0 8px 8px 0; padding:0 10px; cursor:pointer;">⚙️</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2117,10 +2121,14 @@
                     <button class="btn-modern btn-print" onclick="exportToCsv()">
                         📤 Exporter (CSV)
                     </button>
-                    <button class="btn-modern btn-print" onclick="generateDetailedReport('inventory')"
-                        style="background: #9b59b6;">
-                        📋 Aperçu État
-                    </button>
+                    <div style="display:flex">
+                        <button class="btn-modern btn-print" onclick="generateDetailedReport('inventory')"
+                            style="background: #9b59b6; border-radius: 8px 0 0 8px; margin-right: 0; padding: 10px 14px; font-size: 0.82rem; font-weight: 700;">
+                            📋 Aperçu État
+                        </button>
+                        <button onclick="openProfileSettings('report')" title="Paramètres Rapport (A4)"
+                            style="background:#9b59b6; color:white; border:none; border-left:1px solid rgba(255,255,255,0.3); border-radius:0 8px 8px 0; padding:0 10px; cursor:pointer;">⚙️</button>
+                    </div>
                 </div>
             </div>
             <p style="color: var(--text-light); margin-bottom: 20px;">
@@ -4976,6 +4984,8 @@
             const searchId = isInv ? 'inventorySearchInput' : 'searchInput';
             const searchTerm = document.getElementById(searchId) ? document.getElementById(searchId).value.toLowerCase().trim() : '';
 
+            let filtered = [];
+
             // Récupérer le nom du groupe pour le titre
             let groupName = "Inventaire";
             if (isInv) {
@@ -4986,33 +4996,53 @@
                 groupName = currentSection === 'petri' ? "Inventaire des Boîtes Petri" : "Inventaire des Milieux de Culture";
             }
 
-            const filtered = dataPool.filter(label => {
-                const searchLower = normalizeStr(searchTerm);
+            if (selectedBulkIds.size > 0) {
 
-                // Si recherche active, on cherche partout
-                const matchesSearch = !searchLower || (
-                    normalizeStr(label.designation).includes(searchLower) ||
-                    normalizeStr(label.code).includes(searchLower) ||
-                    normalizeStr(label.preparator).includes(searchLower) ||
-                    normalizeStr(label.supplier).includes(searchLower) ||
-                    normalizeStr(label.location).includes(searchLower) ||
-                    normalizeStr(label.lotNumber).includes(searchLower) ||
-                    normalizeStr(label.conservation).includes(searchLower)
-                );
+                // Si des éléments sont sélectionnés via cases à cocher, on les utilise en priorité
+                filtered = getSelectedData().filter(item => {
+                    if (isInv) return item.type === 'inventory';
+                    if (currentSection === 'petri') return item.type === 'petri';
+                    if (currentSection === 'milieux') return item.type === 'milieux' || !item.type;
+                    if (currentSection === 'sterilisation') return item.type === 'sterilisation';
+                    return true;
+                });
+            } else {
+                // Sinon on utilise les filtres de recherche et de catégorie
+                filtered = dataPool.filter(label => {
+                    const searchLower = normalizeStr(searchTerm);
 
-                let matchesSection = true;
-                if (!searchLower) {
-                    // Si pas de recherche, on filtre par section/groupe
-                    if (!isInv) {
-                        matchesSection = (currentSection === 'petri') ? (label.type === 'petri') : (label.type === 'milieux' || !label.type);
-                    } else {
-                        const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
-                        matchesSection = label.inventoryGroup === currentGroup;
+                    // Dates formatées pour la recherche
+                    const ddo = label.openDate ? normalizeStr(new Date(label.openDate).toLocaleDateString('fr-FR')) : '';
+                    const ddf = label.expDate ? normalizeStr(new Date(label.expDate).toLocaleDateString('fr-FR')) : '';
+                    const ddp = label.prepDate ? normalizeStr(new Date(label.prepDate).toLocaleDateString('fr-FR')) : '';
+                    const dr = label.date ? normalizeStr(new Date(label.date).toLocaleDateString('fr-FR')) : '';
+
+                    const matchesSearch = !searchLower || (
+                        normalizeStr(label.designation).includes(searchLower) ||
+                        normalizeStr(label.code).includes(searchLower) ||
+                        normalizeStr(label.preparator).includes(searchLower) ||
+                        normalizeStr(label.supplier).includes(searchLower) ||
+                        normalizeStr(label.location).includes(searchLower) ||
+                        normalizeStr(label.lotNumber).includes(searchLower) ||
+                        normalizeStr(label.conservation).includes(searchLower) ||
+                        dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower)
+                    );
+
+                    let matchesSection = true;
+                    if (!searchLower) {
+                        // Si pas de recherche, on filtre par section/groupe
+                        if (!isInv) {
+                            matchesSection = (currentSection === 'petri') ? (label.type === 'petri') : (label.type === 'milieux' || !label.type);
+                        } else {
+                            const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
+                            matchesSection = label.inventoryGroup === currentGroup;
+                        }
                     }
-                }
 
-                return matchesSearch && matchesSection;
-            });
+                    return matchesSearch && matchesSection;
+                });
+            }
+
 
             if (filtered.length === 0) {
                 alert("Aucune donnée à afficher pour ce rapport.");
@@ -5108,6 +5138,7 @@
                 iframe.style.height = '0';
                 document.body.appendChild(iframe);
 
+                const settings = getProfileSettings('report');
                 const iframeDoc = iframe.contentWindow.document;
                 iframeDoc.open();
                 iframeDoc.write(`
@@ -5115,9 +5146,9 @@
                     <head>
                         <title>Rapport_${finalTitle.replace(/ /g, '_')}_${today}</title>
                         <style>
-                            @page { size: landscape; margin: 10mm; }
-                            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-                            table { page-break-inside: auto; }
+                            @page { size: A4 ${settings.orientation || 'landscape'}; margin: ${settings.marginTop || 1}cm; }
+                            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-family: 'Times New Roman', serif; }
+                            table { page-break-inside: auto; width: 100%; border-collapse: collapse; }
                             tr { page-break-inside: avoid; page-break-after: auto; }
                             thead { display: table-header-group; }
                             tfoot { display: table-footer-group; }
@@ -5261,12 +5292,19 @@
             milieux: { label: 'Milieux Préparés', color: '#1a6fa8', emoji: '🧪' },
             petri: { label: 'Boîtes Petri Pré-coulées', color: '#1e8449', emoji: '🧫' },
             sterilisation: { label: 'Stérilisation', color: '#ca6f1e', emoji: '🔥' },
-            inventory: { label: 'Inventaire', color: '#6c3483', emoji: '📦' }
+            inventory: { label: 'Inventaire', color: '#6c3483', emoji: '📦' },
+            report: { label: 'Rapports État (A4)', color: '#9b59b6', emoji: '📋' }
         };
 
         function getProfileSettings(profileKey) {
             const storageKey = 'labo_print_settings_' + profileKey;
-            const defaults = '{"width":11.9,"height":7.4,"marginTop":0,"align":"flex-start","orientation":"portrait"}';
+            let defaults = '{"width":11.9,"height":7.4,"marginTop":0,"align":"flex-start","orientation":"portrait"}';
+            
+            // Paramètres standards pour les rapports A4
+            if (profileKey === 'report') {
+                defaults = '{"width":21,"height":29.7,"marginTop":1,"align":"center","orientation":"landscape"}';
+            }
+            
             let settings = JSON.parse(localStorage.getItem(storageKey) || defaults);
             if (settings.width > 50) {
                 // Conversion from legacy px to appropriate cm dimensions
