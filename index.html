@@ -1715,7 +1715,7 @@
                             <select id="inventoryGroupInput" onchange="toggleCustomGroup()">
                                 <option value="milieux">Milieux de culture</option>
                                 <option value="bio_indic">Indicateurs biologiques</option>
-                                <option value="lal_tests">Réactifs & Consommables LAL</option>
+                                <option value="lal_tests">Réactifs et Consommables de test LAL</option>
                                 <option value="NEW">➕ Ajouter une nouvelle classe...</option>
                             </select>
                             <input type="text" id="customGroupInput" placeholder="Nom de la nouvelle classe"
@@ -2063,7 +2063,7 @@
                         <option value="petri">Boîtes Petri pré-coulées</option>
                         <option value="inventory_milieux">Inventaire: Milieux de culture</option>
                         <option value="inventory_bio_indic">Inventaire: Indicateurs biologiques</option>
-                        <option value="inventory_lal_tests">Inventaire: Réactifs/Consommables LAL</option>
+                        <option value="inventory_lal_tests">Inventaire: Réactifs et Consommables de test LAL</option>
                     </select>
                     <input type="file" id="adminImportCsvInput" accept=".csv, .xlsx, .xls" style="display: none;"
                         onchange="handleAdminImportFile(this)">
@@ -3490,7 +3490,7 @@
                 'dashboard': 'Tableau de Bord',
                 'milieux': 'Saisie & Étiquetage des Milieux de Culture',
                 'petri': 'Identification des Boîtes Petri Précoulées',
-                'inventory': 'Inventaire des consommables',
+                'inventory': 'Inventaire des consommables et réactifs de test LAL',
                 'history': 'Historique complet des étiquettes',
                 'expiry': 'Alertes de Péremption',
                 'admin': 'Administration du système',
@@ -3504,7 +3504,7 @@
                 const groupValue = groupSelect.value;
                 const groupText = groupSelect.options[groupSelect.selectedIndex].text;
 
-                if (groupValue === 'lal_tests') titleMap['inventory'] = "Liste d'inventaire des réactifs et consommables LAL";
+                if (groupValue === 'lal_tests') titleMap['inventory'] = "Liste d'inventaire des réactifs et consommables de test LAL";
                 else if (groupValue === 'bio_indic') titleMap['inventory'] = "Liste d'inventaire des réactifs et indicateurs biologiques";
                 else if (groupValue === 'milieux') titleMap['inventory'] = "Liste d'inventaire des milieux de culture et réactifs";
                 else titleMap['inventory'] = "Liste d'inventaire réactifs " + groupText;
@@ -4060,7 +4060,7 @@
             const defaultGroups = {
                 'milieux': 'Milieux de culture',
                 'bio_indic': 'Indicateurs biologiques',
-                'lal_tests': 'Réactifs & Consommables LAL'
+                'lal_tests': 'Réactifs et Consommables de test LAL'
             };
 
             // Extraire les groupes uniques des labels et de l'inventaire
@@ -4381,7 +4381,7 @@
                 if (label.inventoryGroup === 'bio_indic') {
                     dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES INDICATEURS BIOLOGIQUES";
                 } else if (label.inventoryGroup === 'lal_tests') {
-                    dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES REACTIFS ET CONSOMMABLES LAL";
+                    dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES REACTIFS ET CONSOMMABLES de test LAL";
                 } else if (label.inventoryGroup === 'milieux') {
                     dynamicTitle = "ETIQUETTE D'IDENTIFICATION DES MILIEUX DE CULTURE";
                 } else if (label.inventoryGroup) {
@@ -5062,7 +5062,7 @@
             let finalTitle = groupName;
             if (isInv) {
                 finalTitle = "LISTE D'INVENTAIRE DES " + groupName.toUpperCase();
-                if (groupName.toLowerCase().includes("consommables")) finalTitle = "LISTE D'INVENTAIRE DES REACTIFS ET CONSOMMABLES";
+                if (groupName.toLowerCase().includes("consommables de test LAL")) finalTitle = "LISTE D'INVENTAIRE DES REACTIFS ET de test LAL";
                 if (groupName.toLowerCase().includes("milieux")) finalTitle = "LISTE D'INVENTAIRE DES MILIEUX DE CULTURE";
                 if (groupName.toLowerCase().includes("indicateurs")) finalTitle = "LISTE D'INVENTAIRE DES INDICATEURS BIOLOGIQUES";
             } else {
@@ -5299,12 +5299,12 @@
         function getProfileSettings(profileKey) {
             const storageKey = 'labo_print_settings_' + profileKey;
             let defaults = '{"width":11.9,"height":7.4,"marginTop":0,"align":"flex-start","orientation":"portrait"}';
-            
+
             // Paramètres standards pour les rapports A4
             if (profileKey === 'report') {
                 defaults = '{"width":21,"height":29.7,"marginTop":1,"align":"center","orientation":"landscape"}';
             }
-            
+
             let settings = JSON.parse(localStorage.getItem(storageKey) || defaults);
             if (settings.width > 50) {
                 // Conversion from legacy px to appropriate cm dimensions
