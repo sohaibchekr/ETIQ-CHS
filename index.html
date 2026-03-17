@@ -1989,9 +1989,17 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Marge Haute (Espace en haut - cm)</label>
-                        <input type="number" id="cfg-margin-top" value="0" step="0.1" oninput="updatePrintPreview()">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Marge Haute (cm)</label>
+                            <input type="number" id="cfg-margin-top" value="0" step="0.1"
+                                oninput="updatePrintPreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Marge Gauche (cm)</label>
+                            <input type="number" id="cfg-margin-left" value="0" step="0.1"
+                                oninput="updatePrintPreview()">
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -2020,6 +2028,17 @@
                                 📄 Paysage
                             </label>
                         </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Type de Papier / Support</label>
+                        <select id="cfg-paper-type" onchange="updatePrintPreview()"
+                            style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--input-border);">
+                            <option value="standard">Standard (Feuille A4)</option>
+                            <option value="label">Étiquette autocollante</option>
+                            <option value="thermal">Thermique / Rouleau</option>
+                            <option value="custom">Autre / Sur Mesure</option>
+                        </select>
                     </div>
 
                     <div
@@ -2424,6 +2443,93 @@
         let videoStream = null;
         let scannedBarcode = null;
         let html5QrCode = null;
+
+        // --- SORTING STATE & UTILS ---
+        // tableSort stores an array of criteria: [{col: 'date', asc: false}, {col: 'designation', asc: true}]
+        let tableSort = {
+            main: [{ col: 'date', asc: false }],
+            history: [{ col: 'date', asc: false }],
+            admin: [{ col: 'date', asc: false }],
+            expiry: [{ col: 'expDate', asc: false }],
+            users: [{ col: 'status', asc: false }]
+        };
+
+        function multiColumnSort(data, criteria) {
+            if (!criteria || criteria.length === 0) return data;
+            return data.sort((a, b) => {
+                for (let i = 0; i < criteria.length; i++) {
+                    const { col, asc } = criteria[i];
+                    const direction = asc ? 1 : -1;
+
+                    let valA = a[col] || '';
+                    let valB = b[col] || '';
+
+                    let comparison = 0;
+                    if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
+                        let dA = valA ? new Date(valA).getTime() : 0;
+                        let dB = valB ? new Date(valB).getTime() : 0;
+                        comparison = dA - dB;
+                    } else {
+                        if (typeof valA === 'string') valA = valA.toLowerCase();
+                        if (typeof valB === 'string') valB = valB.toLowerCase();
+                        if (valA < valB) comparison = -1;
+                        else if (valA > valB) comparison = 1;
+                    }
+
+                    if (comparison !== 0) return comparison * direction;
+                }
+                return 0;
+            });
+        }
+
+        function updateSortIcons(table) {
+            document.querySelectorAll(`.sort-icon-${table}`).forEach(el => {
+                const col = el.getAttribute('data-col');
+                const sortIdx = tableSort[table].findIndex(s => s.col === col);
+                if (sortIdx !== -1) {
+                    const sortOrder = tableSort[table].length > 1 ? (sortIdx + 1) : '';
+                    const arrow = tableSort[table][sortIdx].asc ? ' ⬆️' : ' ⬇️';
+                    el.innerText = `${sortOrder}${arrow}`;
+                    el.style.opacity = '1';
+                    el.style.fontWeight = 'bold';
+                } else {
+                    el.innerText = '';
+                    el.style.opacity = '0.3';
+                }
+            });
+        }
+
+        function handleSort(table, col) {
+            const currentSort = tableSort[table];
+            const existingIdx = currentSort.findIndex(s => s.col === col);
+
+            // If it's already the primary sort, toggle direction
+            if (existingIdx === 0) {
+                currentSort[0].asc = !currentSort[0].asc;
+            } else {
+                // If it exists but not primary, move to primary
+                if (existingIdx !== -1) {
+                    const item = currentSort.splice(existingIdx, 1)[0];
+                    currentSort.unshift(item);
+                } else {
+                    // New sort column - add to start and limit to 3 levels
+                    let newAsc = true;
+                    if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
+                        newAsc = false;
+                    }
+                    currentSort.unshift({ col: col, asc: newAsc });
+                    if (currentSort.length > 3) currentSort.pop();
+                }
+            }
+
+            updateSortIcons(table);
+
+            if (table === 'main') renderTable();
+            else if (table === 'history') renderHistoryTable();
+            else if (table === 'admin') renderAdminDbTable();
+            else if (table === 'expiry') updateExpiryAlertStatus();
+            else if (table === 'users') renderUserTable();
+        }
 
 
         // --- REAL-TIME SYNC ---
@@ -3329,12 +3435,12 @@
 
             // Appliquer les réglages de calibration au conteneur de print
             const settings = getProfileSettings(currentSection);
-            applyPrintOrientation(settings.orientation || 'portrait');
+            applyPrintSettings(settings, currentSection);
 
             printArea.style.display = 'flex';
             printArea.style.flexDirection = 'column';
             printArea.style.alignItems = settings.align || 'flex-start';
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
+            // Les marges sont gérées par applyPrintSettings via @page
 
             items.forEach(label => {
                 const wrapper = document.createElement('div');
@@ -3357,6 +3463,7 @@
             setTimeout(() => {
                 printArea.innerHTML = '';
                 printArea.style.paddingTop = '0';
+                printArea.style.paddingLeft = '0';
                 printArea.style.alignItems = 'flex-start';
                 clearBulkSelection();
             }, 1000);
@@ -3736,27 +3843,8 @@
                     dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower);
             });
 
-            // Trier avec les settings globaux de tri
-            filteredLabels.sort((a, b) => {
-                const asc = tableSort.main.asc ? 1 : -1;
-                const col = tableSort.main.col || 'date';
-
-                let valA = a[col] || '';
-                let valB = b[col] || '';
-
-                if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
-                    let dA = valA ? new Date(valA).getTime() : 0;
-                    let dB = valB ? new Date(valB).getTime() : 0;
-                    return (dA - dB) * asc;
-                }
-
-                if (typeof valA === 'string') valA = valA.toLowerCase();
-                if (typeof valB === 'string') valB = valB.toLowerCase();
-
-                if (valA < valB) return -1 * asc;
-                if (valA > valB) return 1 * asc;
-                return 0;
-            });
+            // Trier avec les settings globaux de tri (multi-colonnes)
+            multiColumnSort(filteredLabels, tableSort.main);
 
             if (filteredLabels.length === 0) {
                 const cols = isInv ? 12 : (currentSection === 'sterilisation' ? 8 : 9);
@@ -3887,26 +3975,7 @@
                     (label.preparator || '').toLowerCase().includes(searchLower);
             });
 
-            filteredLabels.sort((a, b) => {
-                const asc = tableSort.history.asc ? 1 : -1;
-                const col = tableSort.history.col || 'date';
-
-                let valA = a[col] || '';
-                let valB = b[col] || '';
-
-                if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
-                    let dA = valA ? new Date(valA).getTime() : 0;
-                    let dB = valB ? new Date(valB).getTime() : 0;
-                    return (dA - dB) * asc;
-                }
-
-                if (typeof valA === 'string') valA = valA.toLowerCase();
-                if (typeof valB === 'string') valB = valB.toLowerCase();
-
-                if (valA < valB) return -1 * asc;
-                if (valA > valB) return 1 * asc;
-                return 0;
-            });
+            multiColumnSort(filteredLabels, tableSort.history);
 
             if (filteredLabels.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding: 30px; color:#718096;">Aucune étiquette trouvée dans l'historique.</td></tr>`;
@@ -4631,18 +4700,17 @@
             printArea.innerHTML = '';
 
             const settings = getProfileSettings('sterilisation');
+            applyPrintSettings(settings, 'sterilisation');
 
             printArea.style.display = 'flex';
             printArea.style.flexDirection = 'column';
             printArea.style.alignItems = settings.align || 'flex-start';
-            printArea.style.paddingTop = settings.marginTop + 'cm';
 
             const wrapper = document.createElement('div');
             wrapper.innerHTML = generateLabelHTML(blankLabel);
             const etiq = wrapper.querySelector('.etiquette');
             if (etiq) {
                 etiq.style.width = settings.width + 'cm';
-                // Retirer settings.height pour permettre le "sur mesure"
                 etiq.style.height = 'auto';
             }
 
@@ -4658,6 +4726,7 @@
             setTimeout(() => {
                 printArea.innerHTML = '';
                 printArea.style.paddingTop = '0';
+                printArea.style.paddingLeft = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -4671,12 +4740,11 @@
             printArea.innerHTML = '';
 
             const settings = getProfileSettings(label.type || 'milieux');
-            applyPrintOrientation(settings.orientation || 'portrait');
+            applyPrintSettings(settings, label.type || 'milieux');
 
             printArea.style.display = 'flex';
             printArea.style.flexDirection = 'column';
             printArea.style.alignItems = settings.align || 'flex-start';
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
 
             const wrapper = document.createElement('div');
             wrapper.style.width = '100%';
@@ -4703,6 +4771,7 @@
             setTimeout(() => {
                 printArea.innerHTML = '';
                 printArea.style.paddingTop = '0';
+                printArea.style.paddingLeft = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -4891,27 +4960,8 @@
                 return expDate <= threeMonthsFromNow;
             });
 
-            // Appliquer le tri
-            alertingItems.sort((a, b) => {
-                const asc = tableSort.expiry.asc ? 1 : -1;
-                const col = tableSort.expiry.col || 'expDate';
-
-                let valA = a[col] || '';
-                let valB = b[col] || '';
-
-                if (col === 'expDate') {
-                    let dA = valA ? new Date(valA).getTime() : 0;
-                    let dB = valB ? new Date(valB).getTime() : 0;
-                    return (dA - dB) * asc;
-                }
-
-                if (typeof valA === 'string') valA = valA.toLowerCase();
-                if (typeof valB === 'string') valB = valB.toLowerCase();
-
-                if (valA < valB) return -1 * asc;
-                if (valA > valB) return 1 * asc;
-                return 0;
-            });
+            // Appliquer le tri (multi-colonnes)
+            multiColumnSort(alertingItems, tableSort.expiry);
 
             const btn = document.getElementById('expiry-alert-btn');
             if (alertingItems.length > 0) {
@@ -5041,6 +5091,9 @@
 
                     return matchesSearch && matchesSection;
                 });
+
+                // --- ALIGNEMENT DU TRI AVEC L'INTERFACE ---
+                multiColumnSort(filtered, tableSort.main);
             }
 
 
@@ -5070,88 +5123,144 @@
             }
 
             const today = new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: '2-digit' }).replace('.', '');
+            const fullDateTime = new Date().toLocaleString('fr-FR');
+            const settings = getProfileSettings('report');
+            const isPortrait = settings.orientation === 'portrait';
+            const ROWS_PER_PAGE = isPortrait ? 38 : 22; // Légèrement réduit pour être 100% sûr de la taille
+            const totalPages = Math.ceil(filtered.length / ROWS_PER_PAGE);
 
-            loaderText.innerText = "Préparation de l'Aperçu PDF (Rapide)...";
+            let pagesHtml = '';
 
-            const reportContent = `
-                <div style="font-family: 'Times New Roman', serif; padding: 20px; color: #000; font-size: 10px; background: white;">
-                    <div style="display: flex; justify-content: flex-start; align-items: center; border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;">
-                        <img src="logo.PNG" alt="Logo" style="height: 80px; width: auto;" onerror="this.src='logo.png'">
+            for (let i = 0; i < totalPages; i++) {
+                const chunk = filtered.slice(i * ROWS_PER_PAGE, (i + 1) * ROWS_PER_PAGE);
+                const pageBreakStyle = (i < totalPages - 1) ? 'page-break-after: always;' : '';
+
+                pagesHtml += `
+                <div class="print-page" style="${pageBreakStyle}">
+                    <div class="header-row">
+                        <img src="logo.PNG" alt="Logo" onerror="this.src='logo.png'">
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; width: 100%; font-weight: bold; font-size: 12px; margin-top: 5px; border-bottom: 2px solid #000; padding-bottom: 10px;">
+                    <div class="meta-row">
                         <span>STRUCTURE : LCQ</span>
                         <span>Département : MICROBIOLOGIE</span>
                     </div>
 
-                    <div style="text-align: center; font-size: 14px; font-weight: bold; margin: 20px 0 10px 0; border: 2px solid #000; padding: 5px;">${finalTitle}</div>
+                    <div class="title">${finalTitle}</div>
 
-                    <div style="margin-bottom: 5px; font-weight: bold; font-size: 11px;">Imprimé le : &nbsp;&nbsp; ${today}</div>
+                    <div class="printed-date">Imprimé le : &nbsp;&nbsp; ${today}</div>
 
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 5px; table-layout: auto;">
+                    <table>
                         <thead>
-                            <tr style="background-color: #f2f2f2;">
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">Date</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Désignation</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 80px;">Code</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Fournisseur</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">N° LOT</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDF</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px; width: 60px;">DDO</th>
-                                <th style="border: 1.5px solid #000; padding: 5px; font-weight: bold; font-size: 10px;">Condition de conservation</th>
+                            <tr>
+                                <th style="width: 70px;">${isInv ? 'Date de Réception' : 'Date'}</th>
+                                <th>Désignation</th>
+                                <th style="width: 100px;">Code</th>
+                                <th>Fournisseur</th>
+                                <th>N° LOT</th>
+                                <th style="width: 70px;">DDF</th>
+                                <th style="width: 70px;">DDO</th>
+                                <th>Condition de conservation</th>
                             </tr>
                         </thead>
                         <tbody>
-                            ${filtered.map(l => `
+                            ${chunk.map(l => `
                                 <tr>
-                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.date ? new Date(l.date).toLocaleDateString('fr-FR') : '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px;">${l.designation}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.code}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px;">${l.supplier || '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.lotNumber || '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.expDate ? new Date(l.expDate).toLocaleDateString('fr-FR') : '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px; text-align:center;">${l.openDate ? new Date(l.openDate).toLocaleDateString('fr-FR') : '---'}</td>
-                                    <td style="border: 1.2px solid #000; padding: 5px;">${l.conservation || '---'}</td>
+                                    <td class="text-center">${l.date ? new Date(l.date).toLocaleDateString('fr-FR') : '---'}</td>
+                                    <td>${l.designation}</td>
+                                    <td class="text-center">${l.code}</td>
+                                    <td>${l.supplier || '---'}</td>
+                                    <td class="text-center">${l.lotNumber || '---'}</td>
+                                    <td class="text-center">${l.expDate ? new Date(l.expDate).toLocaleDateString('fr-FR') : '---'}</td>
+                                    <td class="text-center">${l.openDate ? new Date(l.openDate).toLocaleDateString('fr-FR') : '---'}</td>
+                                    <td>${l.conservation || '---'}</td>
                                 </tr>
                             `).join('')}
                         </tbody>
                     </table>
 
-                    <div style="display: flex; justify-content: space-between; margin-top: 30px; font-weight: bold; font-size: 11px;">
-                        <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">
-                            <p>Effectué par :</p>
-                            <p style="margin-top:10px;">Date : ${today}</p>
+                    <div class="footer-container">
+                        <div class="footer-blocks">
+                            <div class="footer-block">
+                                <p>Effectué par :</p>
+                                <p class="visa-line">Date et VISA : <span>${fullDateTime}</span></p>
+                            </div>
+                            <div class="footer-block">
+                                <p>Vérifié par :</p>
+                                <p class="visa-line">Date et VISA : <span>${fullDateTime}</span></p>
+                            </div>
                         </div>
-                        <div style="width: 45%; border-top: 1px solid #000; padding-top: 5px;">
-                            <p>Vérifier par :</p>
-                            <p style="margin-top:10px;">Date : ${today}</p>
+                        
+                        <div class="page-count">
+                            PAGE ${i + 1} / ${totalPages}
                         </div>
                     </div>
                 </div>`;
+            }
+
+            const reportContent = `
+                <div class="report-wrapper">
+                    ${pagesHtml}
+                </div>`;
 
             try {
-                // Utilisation de l'impression native via un iframe (100x plus rapide pour les très grandes listes que html2canvas)
+                // Nettoyer l'ancien iframe s'il existe pour éviter les fuites de mémoire
+                const oldIframe = document.getElementById('print-iframe-report');
+                if (oldIframe) {
+                    oldIframe.remove();
+                }
+
+                // Utilisation de l'impression native via un iframe dédié
                 const iframe = document.createElement('iframe');
+                iframe.id = 'print-iframe-report';
                 iframe.style.position = 'fixed';
                 iframe.style.border = 'none';
                 iframe.style.width = '0';
                 iframe.style.height = '0';
+                iframe.style.visibility = 'hidden';
                 document.body.appendChild(iframe);
 
-                const settings = getProfileSettings('report');
                 const iframeDoc = iframe.contentWindow.document;
                 iframeDoc.open();
                 iframeDoc.write(`
+                    <!DOCTYPE html>
                     <html>
                     <head>
                         <title>Rapport_${finalTitle.replace(/ /g, '_')}_${today}</title>
                         <style>
-                            @page { size: A4 ${settings.orientation || 'landscape'}; margin: ${settings.marginTop || 1}cm; }
-                            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; font-family: 'Times New Roman', serif; }
-                            table { page-break-inside: auto; width: 100%; border-collapse: collapse; }
-                            tr { page-break-inside: avoid; page-break-after: auto; }
-                            thead { display: table-header-group; }
-                            tfoot { display: table-footer-group; }
+                            @page { 
+                                size: A4 ${settings.orientation || 'landscape'}; 
+                                margin: ${settings.marginTop || 1}cm ${settings.marginLeft || 1}cm; 
+                            }
+                            body { 
+                                -webkit-print-color-adjust: exact; 
+                                print-color-adjust: exact; 
+                                font-family: 'Times New Roman', serif; 
+                                margin: 0; 
+                                padding: 0;
+                            }
+                            .report-wrapper { padding: 0; }
+                            .print-page {
+                                display: flex;
+                                flex-direction: column;
+                                height: 98vh; /* Remplit la page d'impression */
+                                box-sizing: border-box;
+                            }
+                            .header-row { display: flex; justify-content: flex-start; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+                            .header-row img { height: 60px; width: auto; }
+                            .meta-row { display: flex; justify-content: space-between; width: 100%; font-weight: bold; font-size: 11px; margin-top: 5px; border-bottom: 2px solid #000; padding-bottom: 5px; }
+                            .title { text-align: center; font-size: 13px; font-weight: bold; margin: 15px 0 5px 0; border: 2px solid #000; padding: 4px; }
+                            .printed-date { margin-bottom: 5px; font-weight: bold; font-size: 10px; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 5px; table-layout: auto; }
+                            th, td { border: 1px solid #000; padding: 4px; font-size: 9.5px; }
+                            th { background-color: #f2f2f2; font-weight: bold; }
+                            .text-center { text-align: center; }
+                            .footer-container { margin-top: auto; padding-top: 20px; padding-bottom: 5px; }
+                            .footer-blocks { display: flex; justify-content: space-between; font-weight: bold; font-size: 10px; }
+                            .footer-block { width: 45%; border-top: 1px solid #000; padding-top: 5px; }
+                            .visa-line { margin-top: 15px; }
+                            .visa-line span { font-weight: normal; margin-left: 10px; }
+                            .page-count { text-align: center; font-size: 10px; font-weight: bold; padding-top: 10px; }
                         </style>
                     </head>
                     <body>
@@ -5161,27 +5270,19 @@
                 `);
                 iframeDoc.close();
 
-                // Donner le temps aux images (logo) de se charger avant impression
+                // Autoriser un très court délai pour assurer que les styles sont appliqués
                 setTimeout(() => {
                     loader.style.display = 'none';
-
-                    // Utiliser requestAnimationFrame pour s'assurer que le loader est bien caché visuellement
-                    requestAnimationFrame(() => {
-                        setTimeout(() => {
-                            try {
-                                iframe.contentWindow.focus();
-                                iframe.contentWindow.print();
-
-                                // Nettoyage de l'iframe après impression/annulation
-                                setTimeout(() => {
-                                    if (document.body.contains(iframe)) document.body.removeChild(iframe);
-                                }, 2000);
-                            } catch (e) {
-                                console.error("Final print error:", e);
-                            }
-                        }, 250); // Petit délai supplémentaire pour laisser le navigateur respirer
-                    });
-                }, 1000); // 1 seconde pour être sûr que tout est chargé
+                    try {
+                        iframe.contentWindow.focus();
+                        iframe.contentWindow.print();
+                        // NOTE: Ne JAMAIS utiliser setTimeout pour supprimer l'iframe ici,
+                        // car cela ferme le document pendant que l'utilisateur est dans le dialogue d'impression,
+                        // ce qui provoque un crash/gel de Chrome. L'ancien iframe est nettoyé au prochain clic.
+                    } catch (e) {
+                        console.error("Erreur d'impression finale:", e);
+                    }
+                }, 300);
 
             } catch (err) {
                 console.error("Print generation error:", err);
@@ -5244,10 +5345,10 @@
             }
 
             const settings = getProfileSettings(currentSection || 'milieux');
+            applyPrintSettings(settings, currentSection || 'milieux'); // Appliquer orientation ET marges via @page
             printArea.style.display = 'flex';
             printArea.style.flexDirection = 'column';
             printArea.style.alignItems = settings.align || 'flex-start';
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
 
             filtered.forEach((l, idx) => {
                 const wrapper = document.createElement('div');
@@ -5279,6 +5380,7 @@
             setTimeout(() => {
                 printArea.innerHTML = '';
                 printArea.style.paddingTop = '0';
+                printArea.style.paddingLeft = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -5298,11 +5400,11 @@
 
         function getProfileSettings(profileKey) {
             const storageKey = 'labo_print_settings_' + profileKey;
-            let defaults = '{"width":11.9,"height":7.4,"marginTop":0,"align":"flex-start","orientation":"portrait"}';
+            let defaults = '{"width":11.9,"height":7.4,"marginTop":0,"marginLeft":0,"align":"flex-start","orientation":"portrait","paperType":"standard"}';
 
             // Paramètres standards pour les rapports A4
             if (profileKey === 'report') {
-                defaults = '{"width":21,"height":29.7,"marginTop":1,"align":"center","orientation":"landscape"}';
+                defaults = '{"width":21,"height":29.7,"marginTop":1,"marginLeft":1,"align":"center","orientation":"landscape","paperType":"standard"}';
             }
 
             let settings = JSON.parse(localStorage.getItem(storageKey) || defaults);
@@ -5330,11 +5432,15 @@
             const wEl = document.getElementById('cfg-width');
             const hEl = document.getElementById('cfg-height');
             const mtEl = document.getElementById('cfg-margin-top');
+            const mlEl = document.getElementById('cfg-margin-left');
             const alEl = document.getElementById('cfg-align');
+            const ptEl = document.getElementById('cfg-paper-type');
             if (wEl) wEl.value = settings.width;
             if (hEl) hEl.value = settings.height;
-            if (mtEl) mtEl.value = settings.marginTop;
+            if (mtEl) mtEl.value = settings.marginTop || 0;
+            if (mlEl) mlEl.value = settings.marginLeft || 0;
             if (alEl) alEl.value = settings.align;
+            if (ptEl) ptEl.value = settings.paperType || 'standard';
 
             const orientation = settings.orientation || 'portrait';
             if (orientation === 'landscape') {
@@ -5401,13 +5507,12 @@
                 }
             }
 
-            // Appliquer l'orientation
-            applyPrintOrientation(settings.orientation || 'portrait');
+            // Appliquer l'orientation et les marges
+            applyPrintSettings(settings, type);
 
             printArea.style.display = 'flex';
             printArea.style.flexDirection = 'column';
             printArea.style.alignItems = settings.align || 'flex-start';
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
 
             filtered.forEach((l, idx) => {
                 const wrapper = document.createElement('div');
@@ -5439,6 +5544,7 @@
             setTimeout(() => {
                 printArea.innerHTML = '';
                 printArea.style.paddingTop = '0';
+                printArea.style.paddingLeft = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -5448,8 +5554,10 @@
             const w = parseFloat(document.getElementById('cfg-width')?.value || 11.9);
             const h = parseFloat(document.getElementById('cfg-height')?.value || 7.4);
             const marginTop = parseFloat(document.getElementById('cfg-margin-top')?.value || 0);
+            const marginLeft = parseFloat(document.getElementById('cfg-margin-left')?.value || 0);
             const align = document.getElementById('cfg-align')?.value || 'flex-start';
             const orientation = document.querySelector('input[name="cfg-orientation"]:checked')?.value || 'portrait';
+            const paperType = document.getElementById('cfg-paper-type')?.value || 'standard';
 
             const sheet = document.getElementById('cfg-preview-sheet');
             const label = document.getElementById('cfg-preview-label');
@@ -5472,10 +5580,12 @@
             const scaledW = Math.min((w / (pageW * 3.78)) * sheetW, sheetW - 4);
             const scaledH = Math.min((h / (pageH * 3.78)) * sheetH, sheetH - 4);
             const scaledTop = (marginTop / (pageH * 3.78)) * sheetH;
+            const scaledLeft = (marginLeft / (pageW * 3.78)) * sheetW;
 
             label.style.width = scaledW + 'px';
             label.style.height = scaledH + 'px';
             label.style.marginTop = scaledTop + 'px';
+            label.style.marginLeft = scaledLeft + 'px';
             sheet.style.alignItems = align;
         }
 
@@ -5483,10 +5593,12 @@
             const w = parseFloat(document.getElementById('cfg-width')?.value || 11.9);
             const h = parseFloat(document.getElementById('cfg-height')?.value || 7.4);
             const marginTop = parseFloat(document.getElementById('cfg-margin-top')?.value || 0);
+            const marginLeft = parseFloat(document.getElementById('cfg-margin-left')?.value || 0);
             const align = document.getElementById('cfg-align')?.value || 'flex-start';
             const orientation = document.querySelector('input[name="cfg-orientation"]:checked')?.value || 'portrait';
+            const paperType = document.getElementById('cfg-paper-type')?.value || 'standard';
 
-            const settings = { width: w, height: h, marginTop, align, orientation };
+            const settings = { width: w, height: h, marginTop, marginLeft, align, orientation, paperType };
 
             // Sauvegarder par profil actif
             const storageKey = 'labo_print_settings_' + (currentPrintProfile || 'global');
@@ -5498,36 +5610,57 @@
                 .catch(err => console.error("Cloud Error:", err));
 
             // Appliquer l'orientation via une balise style dynamique
-            applyPrintOrientation(orientation);
+            applyPrintSettings(settings, currentPrintProfile);
 
             document.getElementById('print-settings-modal').style.display = 'none';
             const profileInfo = PROFILE_LABELS[currentPrintProfile] || { label: currentPrintProfile, emoji: '⚙️' };
             alert('✅ Paramètres sauvegardés pour le profil : ' + profileInfo.emoji + ' ' + profileInfo.label + '\nCes paramètres sont désormais généralisés pour tous les utilisateurs.');
         }
 
-        function applyPrintOrientation(orientation) {
+        function applyPrintSettings(settings, profileKey) {
             let styleTag = document.getElementById('dynamic-print-orientation');
             if (!styleTag) {
                 styleTag = document.createElement('style');
                 styleTag.id = 'dynamic-print-orientation';
                 document.head.appendChild(styleTag);
             }
-            styleTag.textContent = `@media print { @page { size: A4 ${orientation}; } }`;
+
+            const orientation = settings.orientation || 'portrait';
+            const marginTop = settings.marginTop || 0;
+            const marginLeft = settings.marginLeft || 0;
+            const paperType = settings.paperType || 'standard';
+            const width = settings.width || 11.9;
+            const height = settings.height || 7.4;
+
+            let pageSize = `A4 ${orientation}`;
+            if (paperType === 'label' || paperType === 'thermal' || paperType === 'custom') {
+                pageSize = `${width}cm ${height}cm`;
+            } else if (profileKey === 'report') {
+                pageSize = `A4 landscape`;
+            }
+
+            styleTag.textContent = `
+                @media print { 
+                    @page { 
+                        size: ${pageSize}; 
+                        margin-top: ${marginTop}cm;
+                        margin-left: ${marginLeft}cm;
+                        margin-right: 0;
+                        margin-bottom: 0;
+                    } 
+                    body { margin: 0; padding: 0; }
+                    #print-area { 
+                        width: 100% !important; 
+                        margin: 0 !important; 
+                        padding: 0 !important; 
+                        display: flex !important;
+                        flex-direction: column !important;
+                    }
+                }
+            `;
         }
 
-        // Restaurer les réglages au chargement de la page
-        (function loadPrintSettings() {
-            const saved = JSON.parse(localStorage.getItem('labo_print_settings') || '{}');
-            if (saved.orientation) applyPrintOrientation(saved.orientation);
-            if (saved.orientation === 'landscape') {
-                const el = document.getElementById('cfg-landscape');
-                if (el) el.checked = true;
-            }
-            if (saved.width) { const el = document.getElementById('cfg-width'); if (el) el.value = saved.width; }
-            if (saved.height) { const el = document.getElementById('cfg-height'); if (el) el.value = saved.height; }
-            if (saved.marginTop !== undefined) { const el = document.getElementById('cfg-margin-top'); if (el) el.value = saved.marginTop; }
-            if (saved.align) { const el = document.getElementById('cfg-align'); if (el) el.value = saved.align; }
-        })();
+        // Les réglages sont chargés via loadPrintSettings à la fin du script
 
 
 
@@ -5719,46 +5852,6 @@
                 alert("Aucune donnée n'a pu être importée. Vérifiez que les en-têtes correspondent (Désignation, Code, etc.).");
             }
         }
-        let tableSort = {
-            main: { col: 'date', asc: false },
-            history: { col: 'date', asc: false },
-            admin: { col: 'date', asc: false },
-            expiry: { col: 'expDate', asc: false },
-            users: { col: 'status', asc: false }
-        };
-
-        function updateSortIcons(table) {
-            document.querySelectorAll(`.sort-icon-${table}`).forEach(el => {
-                const col = el.getAttribute('data-col');
-                if (col === tableSort[table].col) {
-                    el.innerText = tableSort[table].asc ? ' ⬆️' : ' ⬇️';
-                } else {
-                    el.innerText = '';
-                }
-            });
-        }
-
-        function handleSort(table, col) {
-            if (tableSort[table].col === col) {
-                tableSort[table].asc = !tableSort[table].asc;
-            } else {
-                tableSort[table].col = col;
-                // Pour les dates, on commence par trier du plus récent au plus ancien (asc = false)
-                if (['date', 'expDate', 'prepDate', 'openDate'].includes(col)) {
-                    tableSort[table].asc = false;
-                } else {
-                    tableSort[table].asc = true;
-                }
-            }
-
-            updateSortIcons(table);
-
-            if (table === 'main') renderTable();
-            else if (table === 'history') renderHistoryTable();
-            else if (table === 'admin') renderAdminDbTable();
-            else if (table === 'expiry') updateExpiryAlertStatus();
-            else if (table === 'users') renderUserTable();
-        }
 
         function renderAdminDbTable() {
             const tbody = document.getElementById('admindbTableBody');
@@ -5780,29 +5873,7 @@
                     normalizeStr(item.inventoryGroup).includes(searchLower);
             });
 
-            filtered.sort((a, b) => {
-                const asc = tableSort.admin.asc ? 1 : -1;
-                const col = tableSort.admin.col;
-
-                let valA = a[col] || '';
-                let valB = b[col] || '';
-
-                if (col === 'date' || col === 'expDate' || col === 'prepDate') {
-                    let dA = a[col] ? new Date(a[col]).getTime() : 0;
-                    let dB = b[col] ? new Date(b[col]).getTime() : 0;
-                    return (dA - dB) * asc;
-                } else if (col === 'type') {
-                    valA = a.type + (a.inventoryGroup || '');
-                    valB = b.type + (b.inventoryGroup || '');
-                } else if (col === 'code') {
-                    valA = a.code + (a.lotNumber || '');
-                    valB = b.code + (b.lotNumber || '');
-                }
-
-                if (valA < valB) return -1 * asc;
-                if (valA > valB) return 1 * asc;
-                return 0;
-            });
+            multiColumnSort(filtered, tableSort.admin);
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">Aucune donnée trouvée.</td></tr>`;
