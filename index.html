@@ -156,7 +156,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Times New Roman', Times, serif;
         }
 
         body {
@@ -918,6 +918,8 @@
         }
 
         /* --- MOBILE BOTTOM NAVIGATION (Rest of CSS) --- */
+        .mobile-bottom-nav {
+            display: none;
         }
 
         .mobile-bottom-nav button {
@@ -1636,10 +1638,7 @@
         <div id="loading-text">Génération du rapport...</div>
     </div>
 
-    <!-- SIGNATURE HAUTE -->
-    <div class="top-signature" style="left: auto; right: 20px; border-color: #2ecc71;">
-        CREATED BY <span>SOHAIB CHEKRI</span>
-    </div>
+    <!-- SIGNATURE HAUTE SUPPRIMÉE -->
 
 
     <!-- OVERLAY DE CONNEXION -->
@@ -1751,7 +1750,7 @@
                 </div>
                 <button class="sidebar-btn" id="btn-dashboard" onclick="showSection('dashboard')">
                     <span class="icon">🏠</span>
-                    <span style="font-weight: 700;">État Général</span>
+                    <span style="font-weight: 700;">Tableau de bord</span>
                 </button>
                 <button class="sidebar-btn" id="btn-milieux" onclick="showSection('milieux')">
                     <span class="icon">
@@ -1876,7 +1875,7 @@
                 <!-- DASHBOARD PANEL -->
                 <div id="dashboard-panel" style="display: none; margin-top: -35px;">
                     <div style="margin-bottom: 5px;">
-                        <h2 style="font-size: 1.3rem; color: #3074c7;">État Général & Tableau de Bord</h2>
+                        <h2 style="font-size: 1.3rem; color: #3074c7;">Tableau de Bord</h2>
                         <p style="color: var(--text-light); margin-top: 2px; font-size: 0.9rem;">Sélectionnez une action
                             pour commencer.</p>
                     </div>
@@ -2995,21 +2994,7 @@
     </div> <!-- Fin de history-panel -->
 
     <!-- FOOTER AVEC DROITS PROTEGES (Maintenant à l'intérieur du contenu principal) -->
-    <footer
-        style="margin-top: 50px; padding: 20px; text-align: center; width: 100%; border-top: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.4); border-radius: 15px; margin-bottom: 20px;">
-        <div style="font-weight: bold; color: #1a202c; letter-spacing: 1px; font-size: 1rem;">
-            CREATED BY <span style="color: #3074c7;">SOHAIB CHEKRI</span>
-        </div>
-        <div
-            style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; color: #2c3e50; font-weight: 500;">
-            <svg style="width:20px; height:20px; fill:#25D366;" viewBox="0 0 24 24">
-                <path
-                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.29-4.143c1.558.924 3.08 1.386 4.75 1.387 5.4 0 9.79-4.39 9.791-9.791.001-2.617-1.02-5.078-2.876-6.937-1.855-1.859-4.314-2.879-6.931-2.879-5.4 0-9.79 4.39-9.791 9.791 0 1.761.472 3.313 1.393 4.814l-.946 3.454 3.53-.926zm10.706-6.687c-.125-.209-.459-.334-.959-.584-.501-.25-2.959-1.459-3.417-1.625-.459-.167-.793-.25-.1.125-.333.375-1.291 1.625-1.583 1.958-.291.333-.584.375-1.084.125-.5-.25-2.115-.778-4.025-2.484-1.487-1.326-2.492-2.964-2.784-3.464-.291-.5-.031-.771.219-1.02.225-.224.5-.584.75-.875.25-.291.333-.5.5-.833.167-.333.083-.625-.042-.875s-1.125-2.708-1.542-3.708c-.406-1.001-.813-.866-1.115-.881-.286-.015-.615-.018-.946-.018s-.866.125-1.317.618c-.45 4.92-2.124 1.317 4.083 4.954 1.488 4.254 3.864 6.366 3.864 8.01 0 0 1.611 1.411 2.23 2.155 3.004 2.155.083 0 .125-.334.334.125.125.5-.042 3.25-1.459 3.542-1.625.291-.167.583-.167.791-.167z" />
-            </svg>
-            <span>+213675758220</span>
-        </div>
-        <div style="font-size: 0.8rem; color: #7f8c8d; margin-top: 5px;">&copy; 2026 Tous droits réservés.</div>
-    </footer>
+    <!-- FOOTER SUPPRIMÉ -->
 
     </div> <!-- Fin de main-content -->
     <!-- Overlay pour menu mobile -->
@@ -5370,7 +5355,7 @@
 
 
                 return `
-                        <div class="etiquette" style="border: 4px solid #000; padding: 25px; width: 11.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Inter', Arial, sans-serif;">
+                        <div class="etiquette" style="border: 4px solid #000; padding: 25px; width: 11.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif;">
                             <!-- Header Stacked: Logo then Title below -->
                             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 40px;">
                                 <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 10px;">
@@ -5480,7 +5465,7 @@
 
             if (label.type === 'petri') {
                 return `
-                        <div class="etiquette" style="padding: 22px; border: 4px solid #000; width: 11.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Inter', Arial, sans-serif; color: #000; display: inline-block;">
+                        <div class="etiquette" style="padding: 22px; border: 4px solid #000; width: 11.5cm; height: auto; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; display: inline-block;">
                             <!-- Header Stacked -->
                             <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;">
                                 <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 10px;">
@@ -5737,7 +5722,7 @@
                     <title>Export_${panelId}_${new Date().toISOString().split('T')[0]}</title>
                     <style>
                         @page { size: landscape; margin: 10mm; }
-                        body { font-family: 'Inter', sans-serif; font-size: 11px; background: white; color: black; }
+                        body { font-family: 'Times New Roman', Times, serif; font-size: 11px; background: white; color: black; }
                         table { width: 100%; border-collapse: collapse; margin-top: 15px; }
                         th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
                         th { background-color: #f2f2f2; font-weight: bold; }
@@ -5955,7 +5940,7 @@
                 ];
 
                 let reportHtml = `
-                        <div style="padding: 5mm; font-family: 'Segoe UI', sans-serif; background: white; color: black; max-width: 100%;">
+                        <div style="padding: 5mm; font-family: 'Times New Roman', Times, serif; background: white; color: black; max-width: 100%;">
                             <div style="text-align: center; border-bottom: 2.5px solid #3074c7; padding-bottom: 10px; margin-bottom: 15px;">
                                 <h1 style="color: #3074c7; margin: 0; font-size: 1.4rem; text-transform: uppercase;">SUIVRE NUMÉRO D'ACTION</h1>
                                 <p style="color: #555; margin: 4px 0; font-size: 0.82rem;">Fiche générée le ${new Date().toLocaleDateString('fr-FR')}</p>
@@ -6069,26 +6054,32 @@
                     if (currentSection === 'sterilisation') return item.type === 'sterilisation';
                     return true;
                 });
+                multiColumnSort(filtered, tableSort.main);
             } else if (currentSection !== 'souchier') {
                 filtered = dataPool.filter(label => {
                     const searchLower = normalizeStr(searchTerm);
                     const dr = label.date ? normalizeStr(new Date(label.date).toLocaleDateString('fr-FR')) : '';
                     const ddf = label.expDate ? normalizeStr(new Date(label.expDate).toLocaleDateString('fr-FR')) : '';
                     const ddp = label.prepDate ? normalizeStr(new Date(label.prepDate).toLocaleDateString('fr-FR')) : '';
+                    const ddo = label.openDate ? normalizeStr(new Date(label.openDate).toLocaleDateString('fr-FR')) : '';
+
                     const matchesSearch = !searchLower || (
                         normalizeStr(label.designation).includes(searchLower) ||
                         normalizeStr(label.code).includes(searchLower) ||
                         normalizeStr(label.preparator).includes(searchLower) ||
-                        dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower)
+                        normalizeStr(label.supplier).includes(searchLower) ||
+                        normalizeStr(label.location).includes(searchLower) ||
+                        normalizeStr(label.lotNumber).includes(searchLower) ||
+                        normalizeStr(label.conservation).includes(searchLower) ||
+                        dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower)
                     );
+
                     let matchesSection = true;
-                    if (!searchLower) {
-                        if (!isInv) {
-                            matchesSection = (currentSection === 'petri') ? (label.type === 'petri') : (label.type === 'milieux' || !label.type);
-                        } else {
-                            const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
-                            matchesSection = label.inventoryGroup === currentGroup;
-                        }
+                    if (!isInv) {
+                        matchesSection = (currentSection === 'petri') ? (label.type === 'petri') : (label.type === 'milieux' || !label.type);
+                    } else {
+                        const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
+                        matchesSection = currentSection !== 'inventory' || label.inventoryGroup === currentGroup;
                     }
                     return matchesSearch && matchesSection;
                 });
@@ -6111,7 +6102,7 @@
             if (isInv) {
                 finalTitle = "LISTE D'INVENTAIRE DES " + groupName.toUpperCase();
             } else if (currentSection === 'souchier') {
-                finalTitle = "SUIVI DE REPIQUAGE DES SOUCHES DE RÉFÉRENCES";
+                finalTitle = "SUIVI DES REPIQUAGES DES SOUCHES DE RÉFÉRENCES (2-8C°)";
             } else {
                 finalTitle = (currentSection === 'petri') ? "LISTE DES BOITES PETRI PRECOULEES" : "LISTE DES MILIEUX DE CULTURE PREPARES";
             }
@@ -6124,13 +6115,32 @@
             if (currentSection === 'souchier') {
                 // Rapport Spécial Souchier Grid View (Orientation Landscape vivement recommandée)
                 // On utilise la même logique de groupement que renderSouchierEtat pour être robuste
+                const sTerm = document.getElementById('souchierSearchInput') ? document.getElementById('souchierSearchInput').value.toLowerCase().trim() : '';
+                let fLabels = [...souchierLabels];
+                if (sTerm) {
+                    fLabels = fLabels.filter(l =>
+                        (l.designation && l.designation.toLowerCase().includes(sTerm)) ||
+                        (l.code && l.code.toLowerCase().includes(sTerm)) ||
+                        (l.prepDate && l.prepDate.includes(sTerm))
+                    );
+                }
+                multiColumnSort(fLabels, tableSort.souchier);
+
                 const grouped = {};
-                souchierLabelsSorted.forEach(l => {
+                fLabels.forEach(l => {
                     const key = (l.code || l.designation || 'INC').trim();
                     if (!grouped[key]) grouped[key] = { name: l.designation || key, code: l.code || key, reps: [] };
                     grouped[key].reps.push(l);
                 });
-                souches.forEach(s => {
+
+                let fSouches = [...souches];
+                if (sTerm) {
+                    fSouches = fSouches.filter(s =>
+                        (s.name && s.name.toLowerCase().includes(sTerm)) ||
+                        (s.code && s.code.toLowerCase().includes(sTerm))
+                    );
+                }
+                fSouches.forEach(s => {
                     const key = (s.code || s.name || 'INC').trim();
                     if (!grouped[key]) {
                         grouped[key] = { name: s.name, code: s.code, reps: [], docId: s.docId, nextPlannedDate: s.nextPlannedDate };
@@ -6140,7 +6150,21 @@
                     }
                 });
 
-                const allSouchesGrouped = Object.values(grouped);
+                const rMap = {};
+                fLabels.forEach((l, idx) => {
+                    const key = (l.code || l.designation || 'INC').trim();
+                    if (!(key in rMap)) rMap[key] = idx;
+                });
+
+                let allSouchesGrouped = Object.values(grouped);
+                allSouchesGrouped.sort((a, b) => {
+                    const kA = (a.code || a.name || 'INC').trim();
+                    const kB = (b.code || b.name || 'INC').trim();
+                    const rA = kA in rMap ? rMap[kA] : 999999;
+                    const rB = kB in rMap ? rMap[kB] : 999999;
+                    if (rA === rB) return kA.localeCompare(kB);
+                    return rA - rB;
+                });
                 const ROWS_PER_PAGE_SOUCH = 30; // Augmenté pour tenter de tout mettre sur une page
                 const totalPages = Math.ceil(allSouchesGrouped.length / ROWS_PER_PAGE_SOUCH);
 
@@ -6153,18 +6177,21 @@
                 for (let i = 0; i < totalPages; i++) {
                     const chunk = allSouchesGrouped.slice(i * ROWS_PER_PAGE_SOUCH, (i + 1) * ROWS_PER_PAGE_SOUCH);
                     pagesHtml += `
-                    <div class="print-page">
-                        <div class="header-row">
-                            <img src="logo.PNG" alt="Logo">
-                            <h2 style="margin-left: 20px; font-size: 14px;">STRUCTURE LCQ</h2>
+                    <div class="print-page" style="margin-bottom: 0px; padding: 15px; position: relative; display: flex; flex-direction: column; min-height: 15cm; background: white;">
+                        <div class="header-row" style="display: flex; flex-direction: column; border-bottom: none; margin-bottom: 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 2px;">
+                                        <img src="logo.PNG" alt="Logo" style="height: 48px;">
+                                    </div>
+                                    <div style="font-size: 11px; font-weight: bold; margin-top: 5px;">STRUCTURE : LCQ</div>
+                                </div>
+                                <div style="font-size: 11px; font-weight: bold;">Département : MICROBIOLOGIE</div>
+                            </div>
+                            <div style="width: 100%; border-bottom: 3.5px solid #000; margin-top: 5px; margin-bottom: 8px;"></div>
                         </div>
-                        <div class="meta-row">
-                            <span>Département de microbiologie</span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div class="title">${finalTitle}</div>
-                        <div class="printed-date">Etat complet au ${fullDateTime}</div>
+                        <div class="title" style="margin-top: 0; background: #eee; border: 2.5px solid #000; padding: 10px;">SUIVI DES REPIQUAGES DES SOUCHES DE RÉFÉRENCES (2-8C°)</div>
+                        <div class="printed-date">Etat complet au ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
                         <table style="width: 100%; border: 2px solid #000;">
                             <thead>
                                 <tr style="background: #f2f2f2;">
@@ -6186,11 +6213,11 @@
 
                         const cryoCells = cells.map((r, i) => {
                             if (!r) return '<td class="text-center" style="padding: 4px 2px;"><span style="color:#ccc;">—</span></td>';
-                            const d = new Date(r.prepDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+                            const d = new Date(r.prepDate).toLocaleDateString('fr-FR');
                             const isExp = r.expDate && new Date(r.expDate) < new Date();
                             return `<td class="text-center" style="padding: 4px 2px;">
                                 <div style="font-size:8px; font-weight:bold;">${d}</div>
-                                <div style="font-size:7px; color:${isExp ? '#e53e3e' : '#718096'};">${r.expDate ? 'E:' + new Date(r.expDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }) : ''}</div>
+                                <div style="font-size:7px; color:${isExp ? '#e53e3e' : '#718096'};">${r.expDate ? 'E:' + new Date(r.expDate).toLocaleDateString('fr-FR') : ''}</div>
                             </td>`;
                         }).join('');
 
@@ -6198,12 +6225,19 @@
                     }).join('')}
                             </tbody>
                         </table>
-                        <div class="footer-container">
-                            <div class="footer-blocks">
-                                <div class="footer-block" style="border:none;">Effectué par:<br>Date et visa:<div class="visa-line"><span>________________</span></div></div>
-                                <div class="footer-block" style="border:none; text-align:right;">Vérifié par:<br>Date et visa:<div class="visa-line"><span>________________</span></div></div>
+                        <div style="font-size: 9px; margin-top: 5px; font-weight: bold;">E = expiration</div>
+                        <div class="footer-container" style="margin-top: auto; padding-top: 20px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div style="padding: 10px 5px; min-height: 70px;">
+                                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Effectué par :</div>
+                                    <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
+                                </div>
+                                <div style="padding: 10px 5px; min-height: 70px; margin-right: 30px;">
+                                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Vérifié par :</div>
+                                    <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
+                                </div>
                             </div>
-                            <!-- Page count removed -->
+                            <div class="page-count" style="text-align: center; font-size: 10px; margin-top: 10px; font-weight: bold;">Page ${i + 1} / ${totalPages}</div>
                         </div>
                     </div>`;
                     if (i < totalPages - 1) pagesHtml += '<div style="page-break-after: always;"></div>';
@@ -6217,53 +6251,82 @@
                     const chunk = filtered.slice(i * ROWS_PER_PAGE, (i + 1) * ROWS_PER_PAGE);
                     pagesHtml += `
                     <div class="print-page">
-                        <div class="header-row">
-                            <img src="logo.PNG" alt="Logo">
-                            <h2 style="margin-left: 20px; font-size: 14px;">STRUCTURE LCQ</h2>
+                        <div class="header-row" style="display: flex; flex-direction: column; border-bottom: none; margin-bottom: 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+                                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                                    <div style="display: flex; align-items: center; margin-bottom: 2px;">
+                                        <img src="logo.PNG" alt="Logo" style="height: 48px;">
+                                    </div>
+                                    <div style="font-size: 11px; font-weight: bold; margin-top: 5px;">STRUCTURE : LCQ</div>
+                                </div>
+                                <div style="font-size: 11px; font-weight: bold;">Département : MICROBIOLOGIE</div>
+                            </div>
+                            <div style="width: 100%; border-bottom: 3.5px solid #000; margin-top: 5px; margin-bottom: 8px;"></div>
                         </div>
-                        <div class="meta-row">
-                            <span>Département de microbiologie</span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <div class="title">${finalTitle}</div>
-                        <div class="printed-date">Imprimé le ${fullDateTime}</div>
-                        <table style="width: 100%; border-collapse: collapse;">
+                        <div class="title" style="margin-top: 0; background: #eee; border: 2.5px solid #000; padding: 10px;">${finalTitle}</div>
+                        <div class="printed-date" style="font-size: 11px; font-weight: bold; margin-bottom: 5px;">Imprimé le : ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: '2-digit' })}</div>
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
                             <thead>
                                 <tr style="background: #f2f2f2;">
                                     ${isInv ? `
-                                        <th style="width: 80px;">Réc.</th>
-                                        <th>Désignation</th>
-                                        <th style="width: 100px;">Lot</th>
-                                        <th style="width: 80px;">Périm.</th>
-                                        <th style="width: 150px;">Conserv.</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Date</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Désignation</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Code</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Fournisseur</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">N° LOT</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">DDF</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">DDO</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Condition de conservation</th>
                                     ` : `
-                                        <th style="width: 80px;">Prép.</th>
-                                        <th>Désignation</th>
-                                        <th style="width: 100px;">Code / Lot</th>
-                                        <th style="width: 80px;">Périm.</th>
-                                        <th style="width: 60px;">Par</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 80px;">Prép.</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Désignation</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 100px;">Code / Lot</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 80px;">Périm.</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 60px;">Par</th>
                                     `}
                                 </tr>
                             </thead>
                             <tbody>
-                                ${chunk.map(l => `
+                                ${chunk.map(l => {
+                        if (isInv) {
+                            return `
                                     <tr>
-                                        <td>${new Date(l.date || l.prepDate).toLocaleDateString('fr-FR')}</td>
-                                        <td style="font-weight:bold;">${l.designation}</td>
-                                        <td class="text-center">${l.code || l.lotNumber || '---'}</td>
-                                        <td class="text-center" style="${new Date(l.expDate) < new Date() ? 'color: red; font-weight: bold;' : ''}">${new Date(l.expDate).toLocaleDateString('fr-FR')}</td>
-                                        ${isInv ? `<td>${l.conservation || '---'}</td>` : `<td class="text-center">${l.preparator || '---'}</td>`}
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px;">${new Date(l.date).toLocaleDateString('fr-FR')}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; font-weight:bold;">${l.designation}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px;">${l.code || '---'}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px;">${l.supplier || '---'}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center;">${l.lotNumber || '---'}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center; ${new Date(l.expDate) < new Date() ? 'color: red; font-weight: bold;' : ''}">${new Date(l.expDate).toLocaleDateString('fr-FR')}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center;">${l.openDate ? new Date(l.openDate).toLocaleDateString('fr-FR') : '---'}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px;">${l.conservation || '---'}</td>
                                     </tr>
-                                `).join('')}
+                                `;
+                        } else {
+                            return `
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px;">${new Date(l.date || l.prepDate).toLocaleDateString('fr-FR')}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; font-weight:bold;">${l.designation}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center;">${l.code || l.lotNumber || '---'}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center; ${new Date(l.expDate) < new Date() ? 'color: red; font-weight: bold;' : ''}">${new Date(l.expDate).toLocaleDateString('fr-FR')}</td>
+                                        <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center;">${l.preparator || '---'}</td>
+                                    </tr>
+                                `;
+                        }
+                    }).join('')}
                             </tbody>
                         </table>
-                        <div class="footer-container">
-                            <div class="footer-blocks">
-                                <div class="footer-block">VISA ANALYSTE<div class="visa-line"><span>________________</span></div></div>
-                                <div class="footer-block">VISA RESPONSABLE CQ<div class="visa-line"><span>________________</span></div></div>
+                        <div class="footer-container" style="margin-top: auto; padding-top: 15px;">
+                            <div style="display: flex; justify-content: space-around;">
+                                <div style="width: 35%; padding: 8px; min-height: 65px;">
+                                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Effectué par :</div>
+                                    <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
+                                </div>
+                                <div style="width: 35%; padding: 8px; min-height: 65px;">
+                                    <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Vérifié par :</div>
+                                    <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
+                                </div>
                             </div>
-                            <div class="page-count">Page ${i + 1} / ${totalPages}</div>
+                            <div class="page-count" style="text-align: center; font-size: 10px; margin-top: 8px; font-weight: bold;">Page ${i + 1} / ${totalPages}</div>
                         </div>
                     </div>`;
                     if (i < totalPages - 1) pagesHtml += '<div style="page-break-after: always;"></div>';
@@ -6287,7 +6350,7 @@
                         <title>Rapport_${finalTitle.replace(/ /g, '_')}</title>
                         <style>
                             @page { size: A4 ${currentSection === 'souchier' ? 'landscape' : (settings.orientation || 'portrait')}; margin: 1cm; }
-                            body { font-family: 'Times New Roman', serif; margin: 0; padding: 0; -webkit-print-color-adjust: exact; }
+                            body { font-family: 'Times New Roman', Times, serif; margin: 0; padding: 0; -webkit-print-color-adjust: exact; }
                             .print-page { display: flex; flex-direction: column; min-height: 19cm; box-sizing: border-box; }
                             .header-row { display: flex; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; }
                             .header-row img { height: 50px; }
@@ -6373,6 +6436,10 @@
 
                     return matchesSearch && matchesSection && matchesGroup;
                 });
+            }
+
+            if (filtered.length > 0) {
+                multiColumnSort(filtered, tableSort.main);
             }
 
             if (filtered.length === 0) {
@@ -7876,14 +7943,32 @@
             const tbody = document.getElementById('souchierEtattbody');
             if (!tbody) return;
 
-            // Grouper par code souche
+            const sTerm = document.getElementById('souchierSearchInput') ? document.getElementById('souchierSearchInput').value.toLowerCase().trim() : '';
+            let fLabels = [...souchierLabels];
+            if (sTerm) {
+                fLabels = fLabels.filter(l =>
+                    (l.designation && l.designation.toLowerCase().includes(sTerm)) ||
+                    (l.code && l.code.toLowerCase().includes(sTerm)) ||
+                    (l.prepDate && l.prepDate.includes(sTerm))
+                );
+            }
+            multiColumnSort(fLabels, tableSort.souchier);
+
             const grouped = {};
-            souchierLabels.forEach(l => {
+            fLabels.forEach(l => {
                 const key = (l.code || l.designation || 'INC').trim();
                 if (!grouped[key]) grouped[key] = { name: l.designation || key, code: l.code || key, reps: [] };
                 grouped[key].reps.push(l);
             });
-            souches.forEach(s => {
+
+            let fSouches = [...souches];
+            if (sTerm) {
+                fSouches = fSouches.filter(s =>
+                    (s.name && s.name.toLowerCase().includes(sTerm)) ||
+                    (s.code && s.code.toLowerCase().includes(sTerm))
+                );
+            }
+            fSouches.forEach(s => {
                 const key = (s.code || s.name || 'INC').trim();
                 if (!grouped[key]) {
                     grouped[key] = { name: s.name, code: s.code, reps: [], docId: s.docId, nextPlannedDate: s.nextPlannedDate };
@@ -7893,16 +7978,32 @@
                 }
             });
 
+            const rMap = {};
+            fLabels.forEach((l, idx) => {
+                const key = (l.code || l.designation || 'INC').trim();
+                if (!(key in rMap)) rMap[key] = idx;
+            });
+
+            let allSouchesGrouped = Object.values(grouped);
+            allSouchesGrouped.sort((a, b) => {
+                const kA = (a.code || a.name || 'INC').trim();
+                const kB = (b.code || b.name || 'INC').trim();
+                const rA = kA in rMap ? rMap[kA] : 999999;
+                const rB = kB in rMap ? rMap[kB] : 999999;
+                if (rA === rB) return kA.localeCompare(kB);
+                return rA - rB;
+            });
+
             tbody.innerHTML = '';
             const today = new Date();
             today.setHours(0, 0, 0, 0); // Normalize today's date for comparison
 
-            if (Object.keys(grouped).length === 0) {
+            if (allSouchesGrouped.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="14" style="text-align:center; padding:40px; color:#94a3b8; font-style:italic; font-size:1rem;">Aucune souche activée. Enregistrez un premier repiquage.</td></tr>`;
                 return;
             }
 
-            Object.values(grouped).forEach(g => {
+            allSouchesGrouped.forEach(g => {
                 const cells = new Array(12).fill(null);
                 g.reps.forEach(r => {
                     const idx = parseInt(r.cryoNum) - 1;
