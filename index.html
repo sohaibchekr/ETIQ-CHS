@@ -258,6 +258,54 @@
             box-shadow: 0 8px 20px rgba(48, 116, 199, 0.4);
         }
 
+        .popout-hint {
+            margin-left: auto;
+            opacity: 0.1;
+            padding: 4px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .sidebar-btn:hover .popout-hint {
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dashboard-card {
+            position: relative;
+        }
+
+        .dashboard-card .popout-btn-card {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            opacity: 0;
+            background: rgba(255, 255, 255, 0.8);
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .dashboard-card:hover .popout-btn-card {
+            opacity: 1;
+        }
+
+        .popout-btn-card:hover {
+            transform: scale(1.1);
+            background: white;
+            color: #3074c7;
+        }
+
         /* ----- MAIN CONTENT ----- */
         .main-content {
             flex: 1;
@@ -1748,11 +1796,15 @@
                         </div>
                     </div>
                 </div>
-                <button class="sidebar-btn" id="btn-dashboard" onclick="showSection('dashboard')">
+                <button class="sidebar-btn" id="btn-dashboard" onclick="showSection('dashboard')"
+                    style="display:flex; align-items:center;">
                     <span class="icon">🏠</span>
                     <span style="font-weight: 700;">Tableau de bord</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('dashboard')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-milieux" onclick="showSection('milieux')">
+                <button class="sidebar-btn" id="btn-milieux" onclick="showSection('milieux')"
+                    style="display:flex; align-items:center;">
                     <span class="icon">
                         <svg style="width:18px; height:18px; vertical-align:middle; margin-right:8px;" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1762,30 +1814,60 @@
                         </svg>
                     </span>
                     <span style="font-weight: 700;">Milieux de culture</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('milieux')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-petri" onclick="showSection('petri')">
+                <button class="sidebar-btn" id="btn-petri" onclick="showSection('petri')"
+                    style="display:flex; align-items:center;">
                     <span class="icon">🧫</span>
                     <span style="font-weight: 700;">Boîtes Petri</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('petri')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-inventory" onclick="showSection('inventory')">
+                <button class="sidebar-btn" id="btn-inventory" onclick="showSection('inventory')"
+                    style="display:flex; align-items:center;">
                     <span class="icon">📦</span>
                     <span style="font-weight: 700;">Inventaire</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('inventory')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-sterilisation" onclick="showSection('sterilisation')">
-                    <span class="icon">🔥</span>
+                <button class="sidebar-btn" id="btn-rapport" onclick="showSection('rapport')"
+                    style="display:flex; align-items:center;">
+                    <span class="icon">📊</span>
+                    <span style="font-weight: 700;">Rapport Stock</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('rapport')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
+                </button>
+                <button class="sidebar-btn" id="btn-sterilisation" onclick="showSection('sterilisation')"
+                    style="display:flex; align-items:center;">
+                    <span class="icon"
+                        style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px;">
+                        <img src="sterilisation.png" style="width: 20px; height: 20px; object-fit: contain;">
+                    </span>
                     <span style="font-weight: 700;">Stérilisation</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('sterilisation')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-souchier" onclick="showSection('souchier')">
-                    <span class="icon">🧬</span>
+                <button class="sidebar-btn" id="btn-souchier" onclick="showSection('souchier')"
+                    style="display:flex; align-items:center;">
+                    <span class="icon">🦠</span>
                     <span style="font-weight: 700;">Souchier</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('souchier')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-history" onclick="showSection('history')">
+                <button class="sidebar-btn" id="btn-history" onclick="showSection('history')"
+                    style="display:flex; align-items:center;">
                     <span class="icon">📜</span>
                     <span style="font-weight: 700;">Historique</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('history')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-logbook" onclick="showSection('logbook')">
+                <button class="sidebar-btn" id="btn-logbook" onclick="showSection('logbook')"
+                    style="display:flex; align-items:center;">
                     <span class="icon">📖</span>
                     <span style="font-weight: 700;">Suivre numéro d'action</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('logbook')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
                 <div id="admin-sidebar" class="admin-section" style="display: none;">
                     <p
@@ -1882,24 +1964,41 @@
 
                     <div class="dashboard-grid">
                         <div class="dashboard-card" onclick="showSection('milieux')">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('milieux')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">🧪</div>
                             <h3>Milieux de Culture</h3>
                             <p>Préparation et étiquetage des milieux de culture en laboratoire.</p>
                         </div>
 
                         <div class="dashboard-card" onclick="showSection('petri')">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('petri')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">🧫</div>
                             <h3>Boîtes Petri</h3>
                             <p>Suivi et identification des boîtes de Petri précoulées.</p>
                         </div>
 
                         <div class="dashboard-card" onclick="showSection('inventory')">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('inventory')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">📦</div>
                             <h3>Inventaire</h3>
                             <p>Gestion des stocks, réactifs et consommables de laboratoire.</p>
                         </div>
 
+                        <div class="dashboard-card" onclick="showSection('rapport')" style="border-color: #f39c12;">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('rapport')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
+                            <div class="icon-circle" style="background: rgba(243, 156, 18, 0.1); color: #f39c12;">📊
+                            </div>
+                            <h3>Rapport Stock</h3>
+                            <p>Vue d'ensemble et décompte global des produits en stock.</p>
+                        </div>
+
                         <div class="dashboard-card" onclick="showSection('history')">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('history')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">📜</div>
                             <h3>Historique</h3>
                             <p>Consultation et export de l'historique complet des étiquettes.</p>
@@ -1907,22 +2006,64 @@
 
                         <div class="dashboard-card" onclick="showSection('sterilisation')"
                             style="border-color: #e74c3c;">
-                            <div class="icon-circle" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">🔥
+                            <div class="popout-btn-card"
+                                onclick="event.stopPropagation(); popoutSection('sterilisation')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
+                            <div class="icon-circle"
+                                style="background: rgba(231, 76, 60, 0.1); color: #e74c3c; display: flex; align-items: center; justify-content: center; padding: 4px;">
+                                <img src="sterilisation.png" style="width: 80%; height: 80%; object-fit: contain;">
                             </div>
                             <h3>Stérilisation</h3>
                             <p>Génération d'étiquettes de stérilisation conformes aux normes CQ.</p>
                         </div>
                         <div class="dashboard-card" onclick="showSection('logbook')" style="border-color: #9b59b6;">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('logbook')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6;">📖
                             </div>
                             <h3>Suivre numéro d'action</h3>
                             <p>Coordination des codes et suivi du cahier de traçabilité.</p>
                         </div>
                         <div class="dashboard-card" onclick="showSection('souchier')" style="border-color: #3074c7;">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('souchier')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle" style="background: rgba(48, 116, 199, 0.1); color: #3074c7;">🧬
                             </div>
                             <h3>Souchier</h3>
                             <p>Suivi et repiquage des souches de référence (Cycle 42j).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RAPPORT PANEL (Aperçu) -->
+                <div id="rapport-panel" style="display: none;">
+                    <div class="glass-card" style="padding: 20px;">
+                        <div
+                            style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                            <span style="font-weight: bold; color: var(--text-dark);">Décompte global (hors produits
+                                entamés/périmés)</span>
+                            <div style="flex: 1; max-width: 450px; margin-left: 10px; display: flex; gap: 10px;">
+                                <input type="text" id="rapportSearchInput" placeholder="🔍 Rechercher..."
+                                    oninput="if(typeof window.renderRapport==='function') window.renderRapport()"
+                                    style="flex: 1; padding: 8px 15px; border-radius: 20px; border: 1px solid var(--glass-border); background: var(--input-bg); color: var(--text-dark); outline: none; transition: border-color 0.3s; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+                                <button
+                                    onclick="if(typeof window.printRapportState==='function') window.printRapportState()"
+                                    class="btn-modern" style="padding: 8px 15px; background: #3498db; color: white;">🖨️
+                                    Aperçu État</button>
+                            </div>
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 70%;">Désignation</th>
+                                        <th style="width: 30%;">Nombre de produits (Contenant)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="rapportTableBody">
+                                    <!-- Rempli par JS -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -3014,6 +3155,10 @@
             <span class="nav-icon">📦</span>
             <span>Inventaire</span>
         </button>
+        <button onclick="showSection('rapport')" class="mobile-nav-btn" id="m-btn-rapport">
+            <span class="nav-icon">📊</span>
+            <span>Rapport</span>
+        </button>
         <button onclick="showSection('souchier')" class="mobile-nav-btn" id="m-btn-souchier">
             <span class="nav-icon">🧬</span>
             <span>Souches</span>
@@ -3111,6 +3256,44 @@
         </div>
     </div>
 
+    <!-- MODAL DÉTAILS RAPPORT -->
+    <div id="rapport-details-modal" class="modal"
+        style="display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; backdrop-filter: blur(8px);">
+        <div
+            style="background:white; border-radius:24px; width:95%; max-width:850px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 25px 50px rgba(0,0,0,0.2);">
+            <div
+                style="padding:25px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;">
+                <h3 id="rapport-modal-title" style="margin:0; font-size:1.5rem; color:#1a202c; font-weight:800;">Détails
+                    Stock</h3>
+                <button onclick="closeRapportModal()"
+                    style="background:none; border:none; font-size:24px; cursor:pointer; color:#718096;">&times;</button>
+            </div>
+            <div class="modal-body-scroll" style="padding:25px; overflow-y:auto; max-height: 60vh;">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">N° Lot</th>
+                                <th style="width: 15%;">Code Interne</th>
+                                <th style="width: 15%;">Quantité</th>
+                                <th style="width: 15%;">DDF</th>
+                                <th style="width: 20%;">Fournisseur</th>
+                                <th style="width: 20%;">Emplacement</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rapportDetailsTableBody">
+                            <!-- JS fill -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div style="padding:20px; border-top:1px solid #eee; display:flex; justify-content:flex-end;">
+                <button onclick="closeRapportModal()" class="btn-modern"
+                    style="background:#f7fafc; color:#4a5568; padding: 10px 20px;">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     </div> <!-- Fin de flex container -->
     </div> <!-- Fin de main-app -->
 
@@ -3151,6 +3334,257 @@
         let html5QrCode = null;
         let souches = [];
         let editingSoucheId = null;
+
+        window.renderRapport = function () {
+            const tbody = document.getElementById('rapportTableBody');
+            if (!tbody) return;
+
+            const searchInput = document.getElementById('rapportSearchInput');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+            const todayStr = new Date().toISOString().split('T')[0];
+
+            const summary = {};
+            inventoryData.forEach(item => {
+                // Filtre des entamés et périmés
+                const strData = JSON.stringify(item).toLowerCase();
+                if (strData.includes('entamé') || strData.includes('entame')) return;
+                if (strData.includes('périmé') || strData.includes('perime')) return;
+                if (strData.includes('epuisé') || strData.includes('epuise')) return;
+                if (strData.includes('dons')) return;
+                // Exclure également si la date d'expiration est dépassée selon l'ordinateur
+                if (item.expDate && item.expDate < todayStr) return;
+
+                const desig = (item.designation || 'INCONNU').toUpperCase();
+
+                // Filtre de recherche utilisateur étendu matching renderTable
+                if (searchTerm) {
+                    const searchLower = normalizeStr(searchTerm);
+                    const ddo = item.openDate ? normalizeStr(new Date(item.openDate).toLocaleDateString('fr-FR')) : '';
+                    const ddf = item.expDate ? normalizeStr(new Date(item.expDate).toLocaleDateString('fr-FR')) : '';
+                    const dr = item.date ? normalizeStr(new Date(item.date).toLocaleDateString('fr-FR')) : '';
+
+                    const searchable = normalizeStr(`${desig} ${item.code || ''} ${item.lotNumber || ''} ${item.supplier || ''} ${item.location || ''} ${item.conservation || ''} ${item.barcode || ''} ${dr} ${ddf} ${ddo}`);
+                    if (!searchable.includes(searchLower)) return;
+                }
+
+                if (!summary[desig]) {
+                    summary[desig] = { count: 0, details: new Set() };
+                }
+
+                // Analyser la quantité pour sommer les unités (ex: "5 flacons" -> 5)
+                let qtyVal = 1;
+                if (item.quantity) {
+                    const qStr = String(item.quantity).trim();
+                    const numericMatch = qStr.match(/^(\d+)$/);
+                    if (numericMatch) {
+                        qtyVal = parseInt(numericMatch[1], 10);
+                    } else {
+                        // Match "10 flacons", "10 units", etc.
+                        const unitsMatch = qStr.match(/^(\d+)\s*(flacons?|u|units?|petri|boites?|pcs|pce|fl)/i);
+                        if (unitsMatch) {
+                            qtyVal = parseInt(unitsMatch[1], 10);
+                        }
+                        // Par défaut 1 pour les descriptions de type "500 GR" (un contenant unique)
+                    }
+                }
+                summary[desig].count += qtyVal;
+                if (item.quantity) summary[desig].details.add(item.quantity);
+            });
+
+            let html = '';
+            Object.keys(summary).sort().forEach(desig => {
+                const data = summary[desig];
+                html += `
+                <tr style="border-bottom: 1px solid #edf2f7; transition: background 0.2s; cursor: pointer;" onmouseover="this.style.background='#f7fafc'" onmouseout="this.style.background='transparent'" onclick="showRapportDetails('${desig.replace(/'/g, "\\'")}')">
+                    <td style="font-weight:700; color:#2d3748; padding: 12px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            ${desig}
+                            <button class="btn-modern" style="padding: 4px 10px; font-size: 0.75rem; background: var(--glass-bg); color: #3074c7; border: 1px solid #3074c7;">🔍 Détails</button>
+                        </div>
+                    </td>
+                    <td style="font-weight:800; color:#e67e22; font-size:1.1rem; padding: 12px; text-align: center;">${data.count}</td>
+                </tr>
+                `;
+            });
+
+            if (Object.keys(summary).length === 0) {
+                html = '<tr><td colspan="2" style="text-align:center; padding:20px; color:#718096;">Aucune donnée (ou résultats masqués par les filtres).</td></tr>';
+            }
+            tbody.innerHTML = html;
+        };
+
+        window.showRapportDetails = function (desig) {
+            const tbody = document.getElementById('rapportDetailsTableBody');
+            const modal = document.getElementById('rapport-details-modal');
+            const title = document.getElementById('rapport-modal-title');
+
+            if (!tbody || !modal || !title) return;
+
+            title.innerText = `Détail Stock : ${desig}`;
+
+            const todayStr = new Date().toISOString().split('T')[0];
+            const filtered = inventoryData.filter(item => {
+                const itemDesig = (item.designation || 'INCONNU').toUpperCase();
+                if (itemDesig !== desig) return false;
+
+                const strData = JSON.stringify(item).toLowerCase();
+                if (strData.includes('entamé') || strData.includes('entame')) return false;
+                if (strData.includes('périmé') || strData.includes('perime')) return false;
+                if (strData.includes('epuisé') || strData.includes('epuise')) return false;
+                if (strData.includes('dons')) return false;
+                if (item.expDate && item.expDate < todayStr) return false;
+
+                return true;
+            });
+
+            filtered.sort((a, b) => {
+                if (!a.expDate && !b.expDate) return 0;
+                if (!a.expDate) return 1;
+                if (!b.expDate) return -1;
+                return new Date(a.expDate) - new Date(b.expDate);
+            });
+
+            let html = '';
+            filtered.forEach(item => {
+                const lot = item.lotNumber || '-';
+                const code = item.code || '-';
+                const supp = item.supplier || '-';
+                const exp = item.expDate ? new Date(item.expDate).toLocaleDateString('fr-FR') : '-';
+                const loc = item.location || '-';
+                const qty = item.quantity || '-';
+
+                html += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px; font-weight:600;">${lot}</td>
+                    <td style="padding: 10px;">${code}</td>
+                    <td style="padding: 10px;">${qty}</td>
+                    <td style="padding: 10px; font-weight:bold; color:#e74c3c;">${exp}</td>
+                    <td style="padding: 10px;">${supp}</td>
+                    <td style="padding: 10px;">${loc}</td>
+                </tr>
+                `;
+            });
+
+            if (filtered.length === 0) {
+                html = '<tr><td colspan="6" style="text-align:center; padding:20px; color:#718096;">Aucun stock détaillé disponible.</td></tr>';
+            }
+
+            tbody.innerHTML = html;
+            modal.style.display = 'flex';
+        };
+
+        window.closeRapportModal = function () {
+            const modal = document.getElementById('rapport-details-modal');
+            if (modal) modal.style.display = 'none';
+        };
+
+        window.printRapportState = function () {
+            const tbody = document.getElementById('rapportTableBody');
+            if (!tbody || tbody.children.length === 0) return;
+
+            if (tbody.children.length === 1 && tbody.innerHTML.includes('Aucune donnée')) return;
+
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = '';
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('fr-FR');
+
+            const searchInput = document.getElementById('rapportSearchInput');
+            const searchTerm = searchInput ? searchInput.value.trim() : '';
+
+            // Clean the table to add thick borders and simple style
+            const tempTable = document.createElement('table');
+            tempTable.innerHTML = `
+                <thead>
+                    <tr style="border: 1px solid #000; font-weight: bold; background-color: #f7fafc;">
+                        <td style="padding: 8px; text-align: left; border: 1px solid #000; width: 70%;">Désignation</td>
+                        <td style="padding: 8px; text-align: center; border: 1px solid #000; width: 30%;">Nombre de produits (Contenant)</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tbody.innerHTML}
+                </tbody>
+            `;
+            tempTable.style.width = '100%';
+            tempTable.style.borderCollapse = 'collapse';
+            tempTable.style.fontFamily = "'Arial', sans-serif";
+            tempTable.style.fontSize = '12px';
+            tempTable.style.color = '#000';
+            tempTable.style.marginTop = '15px';
+
+            // Clean up rows (remove buttons, styling, flexboxes)
+            const buttons = tempTable.querySelectorAll('button');
+            buttons.forEach(btn => btn.remove());
+
+            const rows = Array.from(tempTable.querySelectorAll('tbody tr'));
+            rows.forEach(tr => {
+                tr.style = "border: 1px solid #000;";
+                const cells = tr.querySelectorAll('td');
+                cells.forEach(td => {
+                    td.style = "border: 1px solid #000; padding: 6px;";
+                    // Remove internal flex containers from the "Désignation" column
+                    const content = td.innerText.trim();
+                    td.innerHTML = content;
+                });
+            });
+
+            const filterStr = searchTerm ? `<span style="font-size:10px; font-weight:normal; margin-left: 10px;"></span>` : '';
+
+            const printHTML = `
+            <div style="font-family: Arial, sans-serif; font-size: 11px; width: 100%; color: #000; padding: 20px;">
+                <!-- HEADER -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px;">
+                    <div>
+                        <img src="logo.PNG" alt="Biocare BiotechLogo" style="max-height: 50px; margin-bottom: 5px;">
+                    </div>
+                </div>
+                
+                <div style="border-top: 1px solid #000; border-bottom: 2px solid #000; padding: 5px 0; margin-bottom: 15px; display: flex; justify-content: space-between; font-weight: bold; font-size: 10px;">
+                    <span>STRUCTURE : LCQ</span>
+                    <span>Département : MICROBIOLOGIE</span>
+                </div>
+                
+                <!-- TITLE BOX -->
+                <div style="border: 2px solid #000; padding: 10px; text-align: center; margin-bottom: 15px; background-color: #f7fafc;">
+                    <h3 style="margin: 0; font-size: 14px; font-weight: bold; text-transform: uppercase;">Rapport globale des produits stockés</h3>
+                </div>
+                
+                <!-- METADATA -->
+                <div style="font-weight: bold; font-size: 11px; margin-bottom: 10px;">
+                    Imprimé le : ${dateStr} ${filterStr}
+                </div>
+                
+                <!-- TABLE -->
+                ${tempTable.outerHTML}
+                
+                <!-- FOOTER -->
+                <div style="display: flex; justify-content: space-between; margin-top: 50px; font-size: 10px; font-weight: bold;">
+                    <div style="text-align: left;">
+                        <p style="margin: 0 0 30px 0;">Effectué par :</p>
+                        <p style="margin: 0;">Date et Visa : ${dateStr}</p>
+                    </div>
+                    <div style="text-align: left; padding-right: 50px;">
+                        <p style="margin: 0 0 30px 0;">Vérifié par :</p>
+                        <p style="margin: 0;">Date et Visa : ${dateStr}</p>
+                    </div>
+                </div>
+            </div>
+            `;
+
+            printArea.style.display = 'block';
+            printArea.style.padding = '0'; // padding relies on the sub-div
+            printArea.innerHTML = printHTML;
+
+            window.print();
+
+            setTimeout(() => {
+                printArea.innerHTML = '';
+                printArea.style.display = 'none';
+                printArea.style.padding = '0';
+            }, 1000);
+        };
 
         // --- SORTING STATE & UTILS ---
         // tableSort stores an array of criteria: [{col: 'date', asc: false}, {col: 'designation', asc: true}]
@@ -3270,6 +3704,7 @@
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
             if (typeof updateInventoryGroups === 'function') updateInventoryGroups();
             if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection);
+            if (typeof renderRapport === 'function') renderRapport();
         });
 
         onSnapshot(query(collection(db, "souches"), orderBy("updatedAt", "desc")), (snapshot) => {
@@ -4459,9 +4894,33 @@
         updateExpiryAlertStatus();
         setInterval(updateExpiryAlertStatus, 60000); // Check toutes les minutes
 
+        // Gestion de l'ouverture d'une section dans une nouvelle fenêtre
+        window.popoutSection = function (sectionId) {
+            const baseUrl = window.location.href.split('#')[0];
+            const url = baseUrl + '#section=' + sectionId;
+            // Ouvrir une petite fenêtre flottante
+            window.open(url, `popout_${sectionId}`, 'width=1200,height=800,menubar=no,toolbar=no,location=no,status=no');
+        };
+
+        // Vérifier si on doit charger une section spécifique au démarrage (via l'URL hash)
+        window.addEventListener('load', () => {
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#section=')) {
+                const sectionId = hash.replace('#section=', '');
+                setTimeout(() => {
+                    if (typeof showSection === 'function') {
+                        showSection(sectionId);
+                        // Dans une fenêtre popout, on réduit la sidebar par défaut pour gagner de la place
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar) sidebar.classList.add('collapsed');
+                    }
+                }, 500); // Délai pour laisser Firebase s'initialiser
+            }
+        });
+
         function showSection(sectionId) {
             currentSection = sectionId;
-            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation', 'logbook', 'souchier'];
+            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation', 'logbook', 'souchier', 'rapport'];
             sections.forEach(s => {
                 const panel = document.getElementById(`${s}-panel`);
                 if (panel) panel.style.display = 'none';
@@ -4485,6 +4944,12 @@
                         sp.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 50);
                 }
+            } else if (sectionId === 'rapport') {
+                const rp = document.getElementById('rapport-panel');
+                if (rp) {
+                    rp.style.display = 'block';
+                    if (typeof renderRapport === 'function') renderRapport();
+                }
             }
 
             const titleMap = {
@@ -4497,7 +4962,8 @@
                 'admin': 'Administration du système',
                 'admindb': 'Gestion Base de Données',
                 'sterilisation': 'Etiquettes de Stérilisation',
-                'souchier': 'Gestion des Souches de Référence'
+                'souchier': 'Gestion des Souches de Référence',
+                'rapport': 'Rapport Globale du Stock'
             };
 
             // Titre dynamique pour l'inventaire
@@ -6102,7 +6568,7 @@
             if (isInv) {
                 finalTitle = "LISTE D'INVENTAIRE DES " + groupName.toUpperCase();
             } else if (currentSection === 'souchier') {
-                finalTitle = "SUIVI DES REPIQUAGES DES SOUCHES DE RÉFÉRENCES (2-8C°)";
+                finalTitle = "SUIVI LES REPIQUAGES DES SOUCHES DE RÉFÉRENCES CONSERVEES  ENTRE (2-8C°)";
             } else {
                 finalTitle = (currentSection === 'petri') ? "LISTE DES BOITES PETRI PRECOULEES" : "LISTE DES MILIEUX DE CULTURE PREPARES";
             }
@@ -6165,7 +6631,7 @@
                     if (rA === rB) return kA.localeCompare(kB);
                     return rA - rB;
                 });
-                const ROWS_PER_PAGE_SOUCH = 30; // Augmenté pour tenter de tout mettre sur une page
+                const ROWS_PER_PAGE_SOUCH = 28; // Ajusté pour éviter le débordement de page
                 const totalPages = Math.ceil(allSouchesGrouped.length / ROWS_PER_PAGE_SOUCH);
 
                 if (totalPages === 0) {
@@ -6190,13 +6656,13 @@
                             </div>
                             <div style="width: 100%; border-bottom: 3.5px solid #000; margin-top: 5px; margin-bottom: 8px;"></div>
                         </div>
-                        <div class="title" style="margin-top: 0; background: #eee; border: 2.5px solid #000; padding: 10px;">SUIVI DES REPIQUAGES DES SOUCHES DE RÉFÉRENCES (2-8C°)</div>
+                        <div class="title" style="margin-top: 0; background: #eee; border: 2.5px solid #000; padding: 10px;">SUIVI LES REPIQUAGES DES SOUCHES DE RÉFÉRENCES CONSERVEES ENTRE (2-8C°)</div>
                         <div class="printed-date">Etat complet au ${new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}</div>
                         <table style="width: 100%; border: 2px solid #000;">
                             <thead>
                                 <tr style="background: #f2f2f2;">
                                     <th style="width: 160px;">Souche / Code</th>
-                                    ${Array.from({ length: 12 }).map((_, idx) => `<th style="font-size: 8px; text-align:center;">Cryo #${idx + 1}</th>`).join('')}
+                                    ${Array.from({ length: 12 }).map((_, idx) => `<th style="font-size: 8px; text-align:center;">Cryotube ${idx + 1}</th>`).join('')}
                                 </tr>
                             </thead>
                             <tbody>
@@ -6226,25 +6692,25 @@
                             </tbody>
                         </table>
                         <div style="font-size: 9px; margin-top: 5px; font-weight: bold;"> Note: E = expiration</div>
-                        <div class="footer-container" style="margin-top: auto; padding-top: 20px;">
-                            <div style="display: flex; justify-content: space-between;">
-                                <div style="padding: 10px 5px; min-height: 70px;">
+                        <div class="footer-container" style="margin-top: auto; padding-top: 15px; position: relative;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                <div style="width: 35%; padding: 5px; min-height: 45px;">
                                     <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Effectué par :</div>
                                     <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
                                 </div>
-                                <div style="padding: 10px 5px; min-height: 70px; margin-right: 30px;">
+                                <div style="width: 35%; padding: 5px; min-height: 45px; padding-left: 20px;">
                                     <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Vérifié par :</div>
                                     <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
                                 </div>
                             </div>
-                            <div class="page-count" style="text-align: center; font-size: 10px; margin-top: 10px; font-weight: bold;">Page ${i + 1} / ${totalPages}</div>
+                            <div class="page-count" style="position: absolute; right: 0; bottom: 5px; font-size: 10px; font-weight: bold;">Page ${i + 1} / ${totalPages}</div>
                         </div>
                     </div>`;
                     if (i < totalPages - 1) pagesHtml += '<div style="page-break-after: always;"></div>';
                 }
             } else {
                 // Rapport Standard (Milieux, Petri, Inventaire)
-                const ROWS_PER_PAGE = isPortrait ? 38 : 22;
+                const ROWS_PER_PAGE = isPortrait ? 36 : 20;
                 const totalPages = Math.ceil(filtered.length / ROWS_PER_PAGE);
 
                 for (let i = 0; i < totalPages; i++) {
@@ -6315,18 +6781,18 @@
                     }).join('')}
                             </tbody>
                         </table>
-                        <div class="footer-container" style="margin-top: auto; padding-top: 15px;">
-                            <div style="display: flex; justify-content: space-around;">
-                                <div style="width: 35%; padding: 8px; min-height: 65px;">
+                        <div class="footer-container" style="margin-top: auto; padding-top: 10px; position: relative;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                <div style="width: 35%; padding: 5px; min-height: 45px;">
                                     <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Effectué par :</div>
                                     <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
                                 </div>
-                                <div style="width: 35%; padding: 8px; min-height: 65px;">
+                                <div style="width: 35%; padding: 5px; min-height: 45px; padding-left: 20px;">
                                     <div style="font-weight: bold; font-size: 11px; margin-bottom: 5px;">Vérifié par :</div>
                                     <div style="font-weight: bold; font-size: 11px;">Date et Visa : ${new Date().toLocaleDateString('fr-FR')}</div>
                                 </div>
                             </div>
-                            <div class="page-count" style="text-align: center; font-size: 10px; margin-top: 8px; font-weight: bold;">Page ${i + 1} / ${totalPages}</div>
+                            <div class="page-count" style="position: absolute; right: 0; bottom: 5px; font-size: 10px; font-weight: bold;">Page ${i + 1} / ${totalPages}</div>
                         </div>
                     </div>`;
                     if (i < totalPages - 1) pagesHtml += '<div style="page-break-after: always;"></div>';
@@ -6496,7 +6962,7 @@
         const PROFILE_LABELS = {
             milieux: { label: 'Milieux Préparés', color: '#1a6fa8', emoji: '🧪' },
             petri: { label: 'Boîtes Petri Pré-coulées', color: '#1e8449', emoji: '🧫' },
-            sterilisation: { label: 'Stérilisation', color: '#ca6f1e', emoji: '🔥' },
+            sterilisation: { label: 'Stérilisation', color: '#ca6f1e', emoji: '<img src="sterilisation.png" style="width:1.4rem;height:1.4rem;vertical-align:middle;margin-right:8px;">' },
             inventory: { label: 'Inventaire', color: '#6c3483', emoji: '📦' },
             report: { label: 'Rapports État (A4)', color: '#9b59b6', emoji: '📋' }
         };
@@ -6528,7 +6994,7 @@
             const badge = document.getElementById('cfg-profile-badge');
             if (badge) {
                 badge.style.background = info.color;
-                badge.textContent = info.emoji + ' PROFIL : ' + info.label.toUpperCase();
+                badge.innerHTML = info.emoji + ' PROFIL : ' + info.label.toUpperCase();
             }
 
             // Charger les paramètres du profil dans les champs
