@@ -702,7 +702,8 @@
         }
 
         .auth-card {
-            width: 400px;
+            width: 92%;
+            max-width: 400px;
             padding: 40px;
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
@@ -1194,6 +1195,16 @@
             .ster-form-premium .grid-2 {
                 grid-template-columns: 1fr !important;
             }
+
+            .auth-card {
+                padding: 30px 20px !important;
+                width: 92% !important;
+            }
+
+            .profile-photo-container {
+                width: 80px !important;
+                height: 80px !important;
+            }
         }
 
         .mobile-overlay {
@@ -1405,8 +1416,8 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            display: none;
+            backdrop-filter: blur(10px);
+            display: flex; /* Toujours visible au démarrage jusqu'à auth check */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -1414,6 +1425,7 @@
             color: white;
             font-weight: 600;
             gap: 20px;
+            transition: opacity 0.5s ease;
         }
 
         .spinner {
@@ -1751,7 +1763,7 @@
     <!-- OVERLAY CHARGEMENT -->
     <div id="loading-overlay" class="loading-overlay">
         <div class="spinner"></div>
-        <div id="loading-text">Génération du rapport...</div>
+        <div id="loading-text">Chargement en cours...</div>
     </div>
 
     <!-- SIGNATURE HAUTE SUPPRIMÉE -->
@@ -3478,6 +3490,7 @@
         let souchierLabels = [];
         let currentUser = null;
         let isLoginMode = true;
+        let isInitialAuthCheck = true;
         let userPhotoBase64 = null;
         let videoStream = null;
         let scannedBarcode = null;
@@ -7904,15 +7917,27 @@
 
         // --- AUTH SECTION ---
         async function handleAuth() {
-            const email = document.getElementById('authEmail').value.trim();
-            const pass = document.getElementById('authPass').value.trim();
+            const emailInput = document.getElementById('authEmail');
+            const passInput = document.getElementById('authPass');
+            const email = emailInput.value.trim();
+            const pass = passInput.value.trim();
             const errorMsg = document.getElementById('auth-error');
+            const btnText = document.getElementById('auth-btn-text');
+            const btn = btnText.parentElement;
 
             if (!email || !pass) {
                 errorMsg.innerText = "Veuillez remplir tous les champs.";
                 errorMsg.style.color = '#e74c3c';
                 return;
             }
+
+            // Etat de chargement pour feedback visuel immédiat
+            const originalText = btnText.innerText;
+            btnText.innerText = isLoginMode ? "Connexion..." : "Création...";
+            btn.disabled = true;
+            btn.style.opacity = '0.7';
+            btn.style.cursor = 'not-allowed';
+            errorMsg.innerText = "";
 
             try {
                 if (isLoginMode) {
@@ -7968,6 +7993,12 @@
 
                 errorMsg.innerText = msg;
                 errorMsg.style.color = '#e74c3c';
+                
+                // Reset button state on error
+                btnText.innerText = originalText;
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
             }
         }
 
@@ -8120,6 +8151,17 @@
 
         // --- GESTION DES MEMBRES ADMIN ---
         function checkAuth() {
+            // Cacher le chargement initial une fois qu'on a une réponse auth
+            if (isInitialAuthCheck) {
+                const loader = document.getElementById('loading-overlay');
+                loader.style.opacity = '0';
+                setTimeout(() => { 
+                    loader.style.display = 'none'; 
+                    loader.style.opacity = '1'; // Reset for future usage
+                }, 500);
+                isInitialAuthCheck = false;
+            }
+
             if (currentUser) {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
@@ -8197,7 +8239,13 @@
             }
         });
 
-        checkAuth();
+        // Initialisation de la session au démarrage
+        const mainLoaderText = document.getElementById('loading-text');
+        if (mainLoaderText) mainLoaderText.innerText = "Initialisation de la session...";
+        
+        // checkAuth() est retiré ici car il sera appelé par onAuthStateChanged 
+        // dès que Firebase donnera le premier état de connexion, évitant le clignotement.
+        
         importData();
         updateInventoryGroups();
         renderTable();
