@@ -1922,9 +1922,14 @@
                             <span id="header-user-role"
                                 style="font-size: 0.75rem; font-weight: 600; color: #3074c7; text-transform: uppercase; letter-spacing: 0.5px;">Chargement...</span>
                         </div>
-                        <div style="margin-left: 20px; border-left: 2px solid #3074c7; padding-left: 15px; display: flex; flex-direction: column; align-items: flex-end;">
-                            <span style="font-size: 0.7rem; color: #1a202c; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;">CREATED BY</span>
-                            <span style="font-size: 1rem; color: #3074c7; font-weight: 1000; letter-spacing: 0.5px; text-transform: uppercase;">SOHAIB CHEKRI</span>
+                        <div
+                            style="margin-left: 20px; border-left: 2px solid #3074c7; padding-left: 15px; display: flex; flex-direction: column; align-items: flex-end;">
+                            <span
+                                style="font-size: 0.7rem; color: #1a202c; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;">CREATED
+                                BY</span>
+                            <span
+                                style="font-size: 1rem; color: #3074c7; font-weight: 1000; letter-spacing: 0.5px; text-transform: uppercase;">SOHAIB
+                                CHEKRI</span>
                         </div>
                     </div>
 
@@ -2019,8 +2024,8 @@
                             <div class="popout-btn-card"
                                 onclick="event.stopPropagation(); popoutSection('sterilisation')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
-                            <div class="icon-circle"
-                                style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">🌡️</div>
+                            <div class="icon-circle" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">🌡️
+                            </div>
                             <h3>Stérilisation</h3>
                             <p>Génération d'étiquettes de stérilisation conformes aux normes CQ.</p>
                         </div>
@@ -2338,7 +2343,8 @@
                     </div>
 
                     <!-- Champs spécifiques pour les Classeurs -->
-                    <div id="classeur-fields" class="form-grid" style="margin-top: 10px; display: none; background: rgba(48, 116, 199, 0.05); padding: 20px; border-radius: 15px; border: 1px dashed #3074c7;">
+                    <div id="classeur-fields" class="form-grid"
+                        style="margin-top: 10px; display: none; background: rgba(48, 116, 199, 0.05); padding: 20px; border-radius: 15px; border: 1px dashed #3074c7;">
                         <div class="form-group">
                             <label>📅 Année du Classeur</label>
                             <input type="text" id="classeurAnnee" placeholder="ex: 2025">
@@ -2518,19 +2524,26 @@
             </div>
 
             <!-- SECTION SECOURS ADMIN (Déplacé ici) -->
-            <div class="glass-card" style="margin-top: 25px; background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); padding: 20px;">
+            <div class="glass-card"
+                style="margin-top: 25px; background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); padding: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                     <h4 style="margin:0; color:#e74c3c;">🛠️ Outils de Diagnostic & Secours</h4>
                     <div style="display: flex; gap: 10px;">
-                        <button onclick="importChatData()" class="btn-mini" style="background:#3498db; color:white;">📥 Import Chat</button>
-                        <button onclick="globalDataRescue()" class="btn-mini" style="background:#e74c3c; color:white;">🆘 Secours</button>
+                        <button onclick="importChatData()" class="btn-mini" style="background:#3498db; color:white;">📥
+                            Import Chat</button>
+                        <button onclick="globalDataRescue()" class="btn-mini"
+                            style="background:#e74c3c; color:white;">🆘 Secours</button>
                     </div>
                 </div>
-                <div style="font-size: 0.8rem; color: #e74c3c; border: 1px dashed #e74c3c; padding: 10px; border-radius: 8px;">
+                <div
+                    style="font-size: 0.8rem; color: #e74c3c; border: 1px dashed #e74c3c; padding: 10px; border-radius: 8px;">
                     <p style="margin:0 0 5px 0; font-weight:bold;">Changer de projet Firebase (Secours) :</p>
-                    <button class="btn-mini" onclick="switchFirebaseProject('etiq-chs')" style="background:#3498db; color:white;">Default</button>
-                    <button class="btn-mini" onclick="switchFirebaseProject('biocare-biotech')" style="background:#9b59b6; color:white;">BioCare</button>
-                    <button class="btn-mini" onclick="switchFirebaseProject('mon-app-9ea26')" style="background:#27ae60; color:white;">Mon-App</button>
+                    <button class="btn-mini" onclick="switchFirebaseProject('etiq-chs')"
+                        style="background:#3498db; color:white;">Default</button>
+                    <button class="btn-mini" onclick="switchFirebaseProject('biocare-biotech')"
+                        style="background:#9b59b6; color:white;">BioCare</button>
+                    <button class="btn-mini" onclick="switchFirebaseProject('mon-app-9ea26')"
+                        style="background:#27ae60; color:white;">Mon-App</button>
                 </div>
             </div>
         </div>
@@ -3749,7 +3762,7 @@
             updateDiagnostic();
         }
 
-        window.switchFirebaseProject = function(pid) {
+        window.switchFirebaseProject = function (pid) {
             const configs = {
                 'etiq-chs': { apiKey: "AIzaSyAGegoUv1mwcxCtmssP2MBT_3RRIIWyYtA", authDomain: "etiq-chs.firebaseapp.com", projectId: "etiq-chs", storageBucket: "etiq-chs.firebasestorage.app", appId: "1:430451080731:web:3d8ee352bb6708f03782be" },
                 'biocare-biotech': { apiKey: "AIzaSyBSSVxLYLN2hx0hNCkbYwfGl--H8UZFnCw", authDomain: "biocare-biotech.firebaseapp.com", projectId: "biocare-biotech", storageBucket: "biocare-biotech.firebasestorage.app", appId: "1:136143925673:web:8c2b51a2bdbee662e594b8" },
@@ -3769,7 +3782,7 @@
             console.log("Using dynamic project config:", firebaseConfig.projectId);
         }
 
-        window.updateDiagnostic = function() {
+        window.updateDiagnostic = function () {
             const diag = document.getElementById('diagnostic-text');
             if (diag) {
                 const countMilieux = labels.filter(l => (l.type || '').toLowerCase() === 'milieux' || (l.type || '').toLowerCase() === 'milieux de culture' || !l.type).length;
@@ -3777,7 +3790,7 @@
                 const countInv = inventoryData.length;
                 const countSouches = souches.length;
                 diag.innerText = `Détectés : ${countMilieux} Milieux de culture, ${countInv} Réactifs/Inventaire, ${countSouches} Souches. (Total Labels: ${countHistory})`;
-                
+
                 // Si tout est à zéro, alerte rouge
                 if (countHistory === 0 && countInv === 0) {
                     diag.style.color = "#e74c3c";
@@ -3788,14 +3801,14 @@
             }
         };
 
-        window.globalDataRescue = function() {
+        window.globalDataRescue = function () {
             console.log("Démarrage de la recherche globale...");
             if (labels.length === 0) {
                 alert("La base 'labels' est vide en mémoire. Le problème vient probablement de la connexion au projet Firebase (Mauvais identifiants ou compte différent).");
                 return;
             }
             // On force l'affichage de TOUT ce qui est dans 'labels' dans la table
-            currentSection = 'history'; 
+            currentSection = 'history';
             showSection('history');
             const tbody = document.getElementById('labelTableBody');
             if (tbody) {
@@ -3810,10 +3823,10 @@
         // Fusion des écouteurs pour plus de stabilité et tri en mémoire pour éviter les erreurs d'index Firestore
         onSnapshot(collection(db, "labels"), (snapshot) => {
             const allDocs = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
-            
+
             // On trie manuellement par ID décroissant (Timestamp)
             labels = [...allDocs].sort((a, b) => (b.id || 0) - (a.id || 0));
-            
+
             souchierLabels = allDocs
                 .filter(l => (l.type || '').toLowerCase() === 'souchier')
                 .sort((a, b) => {
@@ -3832,7 +3845,7 @@
         onSnapshot(collection(db, "inventory"), (snapshot) => {
             const allInv = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
             inventoryData = allInv.sort((a, b) => (b.id || 0) - (a.id || 0));
-            
+
             if (typeof renderTable === 'function') renderTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
             if (typeof updateInventoryGroups === 'function') updateInventoryGroups();
@@ -3844,7 +3857,7 @@
             souches = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
             // Tri par updatedAt
             souches.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
-            
+
             if (typeof renderSouches === 'function') renderSouches();
             if (typeof updateSoucheDatalist === 'function') updateSoucheDatalist();
             if (typeof renderSouchierHistory === 'function') renderSouchierHistory();
@@ -4844,7 +4857,7 @@
 
         async function bulkDelete() {
             if (selectedBulkIds.size === 0) return;
-            
+
             // Password security for more than 1 item
             if (selectedBulkIds.size > 1) {
                 const pass = prompt(`SÉCURITÉ : La suppression de ${selectedBulkIds.size} produits est une action critique.\nEntrez le mot de passe de sécurité pour continuer :`);
@@ -5071,7 +5084,7 @@
                 const panel = document.getElementById(`${s}-panel`);
                 if (panel) panel.style.display = 'none';
             });
-            
+
             // Remettre le layout par défaut
             const mainContent = document.querySelector('.main-content');
             if (mainContent) mainContent.style.flexDirection = 'column';
@@ -5200,7 +5213,7 @@
             });
 
             // Specific toggles
-            if (document.getElementById('petri-link-row')) 
+            if (document.getElementById('petri-link-row'))
                 document.getElementById('petri-link-row').style.display = (sectionId === 'petri') ? 'flex' : 'none';
 
             const sterFields = document.getElementById('sterilisation-fields-custom');
@@ -5248,7 +5261,7 @@
                 if (document.getElementById('classeur-fields')) document.getElementById('classeur-fields').style.display = 'none';
             } else {
                 if (formGrid) formGrid.style.display = 'grid';
-                
+
                 // Ensure location group is visible by default (unless binder)
                 if (document.getElementById('locationGroup') && !isBinder) document.getElementById('locationGroup').style.display = 'flex';
 
@@ -5310,11 +5323,11 @@
                 const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
                 theadTr.innerHTML = `
                     <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
-                    <th style="width: 80px;">Année</th>
-                    <th style="width: 150px;">Type de Fiches</th>
-                    <th style="width: 300px;">Titre de classeur</th>
-                    <th style="width: 180px;">Référence (SOP)</th>
-                    <th style="width: 100px;">N° Index</th>
+                    <th style="width: 80px; cursor: pointer;" onclick="handleSort('main', 'classeurAnnee')">Année <span class="sort-icon-main" data-col="classeurAnnee"></span></th>
+                    <th style="width: 150px; cursor: pointer;" onclick="handleSort('main', 'classeurFiche')">Type de Fiches <span class="sort-icon-main" data-col="classeurFiche"></span></th>
+                    <th style="width: 250px; cursor: pointer;" onclick="handleSort('main', 'classeurTitre')">Titre de classeur <span class="sort-icon-main" data-col="classeurTitre"></span></th>
+                    <th style="width: 150px; cursor: pointer;" onclick="handleSort('main', 'classeurRef')">Référence (SOP) <span class="sort-icon-main" data-col="classeurRef"></span></th>
+                    <th style="width: 80px; cursor: pointer;" onclick="handleSort('main', 'classeurNum')">N° Index <span class="sort-icon-main" data-col="classeurNum"></span></th>
                     <th style="text-align: center; width: 140px;">Action</th>
                 `;
             } else if (currentSection === 'milieux' || currentSection === 'petri') {
@@ -5663,7 +5676,7 @@
             if (sDDP) sDDP.value = label.prepDate || '';
             if (sDDV) sDDV.value = label.expDate || '';
             if (sUser) sUser.value = label.preparator || '';
-            
+
             // Binder Section
             const cAnnee = document.getElementById('classeurAnnee');
             const cFiche = document.getElementById('classeurFiche');
@@ -5711,7 +5724,7 @@
 
             // Clear fields
             const fields = [
-                'codeInput', 'preparatorInput', 'supplierInput', 'locationInput', 'quantityInput', 
+                'codeInput', 'preparatorInput', 'supplierInput', 'locationInput', 'quantityInput',
                 'openDateInput', 'linkedMilieuSelect', 'lotInput',
                 'classeurAnnee', 'classeurFiche', 'classeurRef', 'classeurNum', 'classeurTitre',
                 'ster-date', 'ster-equip', 'ster-cycle-057', 'ster-cycle-056', 'ster-ddp', 'ster-ddv', 'ster-user'
@@ -5801,7 +5814,7 @@
             const sterDDP = gVal('ster-ddp');
             const sterDDV = gVal('ster-ddv');
             const sterUser = gVal('ster-user');
-            
+
             // Classeur (Formulaire Custom)
             const clsAnnee = gVal('classeurAnnee');
             const clsFiche = gVal('classeurFiche');
@@ -6242,7 +6255,7 @@
             if (label.type === 'classeur') {
                 const tableStyle = "width: 8.5cm; border-collapse: collapse; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; border: 3.5px solid #000; margin: auto;";
                 const tdBase = "border: 2px solid #000; padding: 10px; text-align: center; vertical-align: middle;";
-                
+
                 return `
                     <div style="width: 8.5cm; height: 12.5cm; display: flex; align-items: center; justify-content: center; background: #fff;">
                         <table style="${tableStyle}">
@@ -6261,8 +6274,8 @@
                             <!-- Référence : Taille 12pt -->
                             <tr><td style="${tdBase} height: 50px; font-size: 12pt; font-weight: 800; border-left:none; border-right:none;">${label.classeurRef || 'REF'}</td></tr>
                             
-                            <!-- Numéro / Index -->
-                            <tr><td style="${tdBase} height: 100px; font-size: 30pt; font-weight: 1000; border-bottom:none; border-left:none; border-right:none;">${label.classeurNum || '...'}</td></tr>
+                            <!-- Numéro / Index (Afficher uniquement le numéro, enlever /A ou /B pour le rapport) -->
+                            <tr><td style="${tdBase} height: 100px; font-size: 30pt; font-weight: 1000; border-bottom:none; border-left:none; border-right:none;">${(label.classeurNum || '').split('/')[0]}</td></tr>
                         </table>
                     </div>
                 `;
@@ -7084,7 +7097,7 @@
                                             <div style="font-weight:bold; font-size: 11px;">${l.classeurTitre || ''}</div>
                                             <div style="font-size: 0.95em; color: #333;">${l.classeurFiche || ''}</div>
                                         </td>
-                                        <td style="border: 1px solid #000; padding: 6px; font-size: 12px; text-align: center; font-weight: bold;">${l.classeurNum || ''}</td>
+                                        <td style="border: 1px solid #000; padding: 6px; font-size: 12px; text-align: center; font-weight: bold;">${(l.classeurNum || '').split('/')[0]}</td>
                                     </tr>
                                 `;
                         } else {
@@ -8122,7 +8135,7 @@
         renderTable();
 
         Object.assign(window, {
-            formatSafeDate: function(val) {
+            formatSafeDate: function (val) {
                 if (!val) return '---';
                 if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) return val; // Déjà au format fr
                 const d = new Date(val);
@@ -8177,19 +8190,19 @@
             editAdminDbLabel,
             handleAdminImportFile,
             handleImportFile,
-            importChatData: async function() {
+            importChatData: async function () {
                 const text = prompt("Collez ici les données textuelles du chat :");
                 if (!text) return;
 
-                    function parseFrDate(str) {
-                        if (!str || typeof str !== 'string' || !str.includes('/')) return str;
-                        const parts = str.split('/');
-                        if (parts.length === 3) {
-                            return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
-                        }
-                        return str;
+                function parseFrDate(str) {
+                    if (!str || typeof str !== 'string' || !str.includes('/')) return str;
+                    const parts = str.split('/');
+                    if (parts.length === 3) {
+                        return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
                     }
-                
+                    return str;
+                }
+
                 const rows = text.split('\n');
                 let count = 0;
                 for (const row of rows) {
@@ -8213,7 +8226,7 @@
                         };
                         await addDoc(collection(db, "labels"), newObj);
                         count++;
-                    } catch(e) { console.error("Ligne ignorée:", row); }
+                    } catch (e) { console.error("Ligne ignorée:", row); }
                 }
                 alert(`${count} éléments importés avec succès !`);
                 window.location.reload();
@@ -8984,9 +8997,14 @@
         loadPrintSettings();
         generateLogbookGrid();
     </script>
-    <div style="margin-top: 80px; padding: 30px; text-align: center; width: 100%; border-top: 1px solid rgba(0,0,0,0.05);">
-        <span style="font-size: 0.9rem; color: #1a202c; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;">CREATED BY</span>
-        <span style="font-size: 1.1rem; color: #f00303; font-weight: 1000; letter-spacing: 1.5px; text-transform: uppercase; margin-left: 10px;">SOHAIB CHEKRI</span>
+    <div
+        style="margin-top: 80px; padding: 30px; text-align: center; width: 100%; border-top: 1px solid rgba(0,0,0,0.05);">
+        <span
+            style="font-size: 0.9rem; color: #1a202c; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;">CREATED
+            BY</span>
+        <span
+            style="font-size: 1.1rem; color: #f00303; font-weight: 1000; letter-spacing: 1.5px; text-transform: uppercase; margin-left: 10px;">SOHAIB
+            CHEKRI</span>
     </div>
     <div id="print-area"></div>
 </body>
