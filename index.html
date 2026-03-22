@@ -1862,6 +1862,13 @@
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('history')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
+                <button class="sidebar-btn" id="btn-classeur" onclick="showSection('classeur')"
+                    style="display:flex; align-items:center;">
+                    <span class="icon">📁</span>
+                    <span style="font-weight: 700;">Étiquettes Classeurs</span>
+                    <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('classeur')"
+                        title="Ouvrir dans une fenêtre séparée">↗️</span>
+                </button>
                 <button class="sidebar-btn" id="btn-logbook" onclick="showSection('logbook')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📖</span>
@@ -1962,6 +1969,8 @@
                             pour commencer.</p>
                     </div>
 
+                    <!-- DIAGNOSTIC BAR MOVED TO ADMIN -->
+
                     <div class="dashboard-grid">
                         <div class="dashboard-card" onclick="showSection('milieux')">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('milieux')"
@@ -2032,6 +2041,14 @@
                             <h3>Souchier</h3>
                             <p>Suivi et repiquage des souches de référence (Cycle 42j).</p>
                         </div>
+                        <div class="dashboard-card" onclick="showSection('classeur')" style="border-color: #27ae60;">
+                            <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('classeur')"
+                                title="Ouvrir dans une nouvelle fenêtre">↗️</div>
+                            <div class="icon-circle" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">📁
+                            </div>
+                            <h3>Étiquettes Classeurs</h3>
+                            <p>Création d'étiquettes pour l'identification des classeurs de laboratoire.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -2071,7 +2088,7 @@
                 <!-- FORMULAIRE (GLASS CARD) -->
                 <div id="main-form-card" class="glass-card" style="margin-top: 0; margin-bottom: 30px;">
                     <div class="form-grid">
-                        <div class="form-group">
+                        <div class="form-group" id="dateGroup">
                             <label>Date de création</label>
                             <input type="date" id="dateInput">
                         </div>
@@ -2101,7 +2118,7 @@
                             <label>DDP (Préparation)</label>
                             <input type="date" id="prepDateInput">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="expGroup">
                             <label>DDF (Péremption)</label>
                             <input type="date" id="expDateInput">
                         </div>
@@ -2118,7 +2135,7 @@
                             </div>
                         </div>
                         <div class="form-group" id="preparatorGroup">
-                            <label>Préparé par (Initiales)</label>
+                            <label>Fait par (Initiales)</label>
                             <input type="text" id="preparatorInput" placeholder="ex: CHS">
                         </div>
                         <div class="form-group" id="locationGroup">
@@ -2320,6 +2337,30 @@
                                 style="display: none; margin-top: 8px; padding: 10px; border-radius: 8px; border: 1px solid var(--input-border);">
                         </div>
                     </div>
+
+                    <!-- Champs spécifiques pour les Classeurs -->
+                    <div id="classeur-fields" class="form-grid" style="margin-top: 10px; display: none; background: rgba(48, 116, 199, 0.05); padding: 20px; border-radius: 15px; border: 1px dashed #3074c7;">
+                        <div class="form-group">
+                            <label>📅 Année du Classeur</label>
+                            <input type="text" id="classeurAnnee" placeholder="ex: 2025">
+                        </div>
+                        <div class="form-group">
+                            <label>📄 Type de Fiches</label>
+                            <input type="text" id="classeurFiche" placeholder="ex: FICHES DE PAILLASSE">
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label>🏷️ Titre de classeur</label>
+                            <input type="text" id="classeurTitre" placeholder="ex: Contrôle Qualité Milieux">
+                        </div>
+                        <div class="form-group">
+                            <label>🔢 Référence (SOP)</label>
+                            <input type="text" id="classeurRef" placeholder="ex: FE001/ CQ-SOP-046">
+                        </div>
+                        <div class="form-group">
+                            <label>📍 Numéro / Index</label>
+                            <input type="text" id="classeurNum" placeholder="ex: 01/A">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="btn-container">
@@ -2379,6 +2420,16 @@
                         <button onclick="openProfileSettings('inventory')" title="Paramètres Inventaire"
                             style="background:#6c3483;color:white;border:none;border-left:1px solid rgba(255,255,255,0.3);border-radius:0 8px 8px 0;padding:0 10px;cursor:pointer;">⚙️</button>
                     </div>
+
+                    <!-- CLASSEURS -->
+                    <div style="display:flex" id="div-btn-classeur">
+                        <button onclick="printLabelsByType('classeur')"
+                            style="background:linear-gradient(135deg,#2ecc71,#27ae60);color:white;border:none;border-radius:8px 0 0 8px;padding:10px 14px;cursor:pointer;font-size:0.82rem;font-weight:700;font-family:inherit;">
+                            📁 Impr. Étiquettes Classeurs
+                        </button>
+                        <button onclick="openProfileSettings('classeur')" title="Paramètres Classeurs"
+                            style="background:#27ae60;color:white;border:none;border-left:1px solid rgba(255,255,255,0.3);border-radius:0 8px 8px 0;padding:0 10px;cursor:pointer;">⚙️</button>
+                    </div>
                     <button class="btn-modern btn-print" id="printBlankSterBtn" onclick="printBlankSterilisation()"
                         style="display:none; background: #e67e22;">
                         🖨️ Modèle Vierge
@@ -2426,7 +2477,7 @@
                             <th style="width: 90px;">DDP</th>
                             <th style="width: 90px;">DDF</th>
                             <th style="width: 150px;">Condition de conservation</th>
-                            <th style="width: 80px;">Par</th>
+                            <th style="width: 80px;">Fait par</th>
                             <th style="text-align: center; width: 130px;">Action</th>
                         </tr>
                     </thead>
@@ -2465,6 +2516,23 @@
                         <!-- Rempli dynamiquement par JS -->
                     </tbody>
                 </table>
+            </div>
+
+            <!-- SECTION SECOURS ADMIN (Déplacé ici) -->
+            <div class="glass-card" style="margin-top: 25px; background: rgba(231, 76, 60, 0.1); border: 1px solid rgba(231, 76, 60, 0.3); padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin:0; color:#e74c3c;">🛠️ Outils de Diagnostic & Secours</h4>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="importChatData()" class="btn-mini" style="background:#3498db; color:white;">📥 Import Chat</button>
+                        <button onclick="globalDataRescue()" class="btn-mini" style="background:#e74c3c; color:white;">🆘 Secours</button>
+                    </div>
+                </div>
+                <div style="font-size: 0.8rem; color: #e74c3c; border: 1px dashed #e74c3c; padding: 10px; border-radius: 8px;">
+                    <p style="margin:0 0 5px 0; font-weight:bold;">Changer de projet Firebase (Secours) :</p>
+                    <button class="btn-mini" onclick="switchFirebaseProject('etiq-chs')" style="background:#3498db; color:white;">Default</button>
+                    <button class="btn-mini" onclick="switchFirebaseProject('biocare-biotech')" style="background:#9b59b6; color:white;">BioCare</button>
+                    <button class="btn-mini" onclick="switchFirebaseProject('mon-app-9ea26')" style="background:#27ae60; color:white;">Mon-App</button>
+                </div>
             </div>
         </div>
 
@@ -3323,6 +3391,8 @@
 
         // --- GLOBAL STATE ---
         let labels = [];
+        let currentSection = 'dashboard';
+        window.currentSection = currentSection;
         let inventoryData = [];
         let users = [];
         let souchierLabels = [];
@@ -3594,7 +3664,8 @@
             admin: [{ col: 'date', asc: false }],
             expiry: [{ col: 'expDate', asc: false }],
             users: [{ col: 'status', asc: false }],
-            souchier: [{ col: 'prepDate', asc: false }]
+            souchier: [{ col: 'prepDate', asc: false }],
+            classeur: [{ col: 'classeurNum', asc: true }]
         };
 
         function multiColumnSort(data, criteria) {
@@ -3612,6 +3683,9 @@
                         let dA = valA ? new Date(valA).getTime() : 0;
                         let dB = valB ? new Date(valB).getTime() : 0;
                         comparison = dA - dB;
+                    } else if (col === 'classeurNum' || col === 'classeurAnnee') {
+                        comparison = parseFloat(valA) - parseFloat(valB);
+                        if (isNaN(comparison)) comparison = 0;
                     } else {
                         if (typeof valA === 'string') valA = valA.toLowerCase();
                         if (typeof valB === 'string') valB = valB.toLowerCase();
@@ -3673,42 +3747,105 @@
             else if (table === 'expiry') updateExpiryAlertStatus();
             else if (table === 'users') renderUserTable();
             else if (table === 'souchier') renderSouchierHistory();
+            updateDiagnostic();
         }
+
+        window.switchFirebaseProject = function(pid) {
+            const configs = {
+                'etiq-chs': { apiKey: "AIzaSyAGegoUv1mwcxCtmssP2MBT_3RRIIWyYtA", authDomain: "etiq-chs.firebaseapp.com", projectId: "etiq-chs", storageBucket: "etiq-chs.firebasestorage.app", appId: "1:430451080731:web:3d8ee352bb6708f03782be" },
+                'biocare-biotech': { apiKey: "AIzaSyBSSVxLYLN2hx0hNCkbYwfGl--H8UZFnCw", authDomain: "biocare-biotech.firebaseapp.com", projectId: "biocare-biotech", storageBucket: "biocare-biotech.firebasestorage.app", appId: "1:136143925673:web:8c2b51a2bdbee662e594b8" },
+                'mon-app-9ea26': { apiKey: "AIzaSyC3TxNxKsvXI-cGTUep1gh5EY6mgdA8NWE", authDomain: "mon-app-9ea26.firebaseapp.com", projectId: "mon-app-9ea26", storageBucket: "mon-app-9ea26.firebasestorage.app", appId: "1:894578123456:web:abcd123456789" }
+            };
+            if (confirm(`Voulez-vous basculer sur le projet ${pid} ? L'application va redémarrer.`)) {
+                localStorage.setItem('tempFirebaseConfig', JSON.stringify(configs[pid]));
+                window.location.reload();
+            }
+        };
+
+        // On vérifie si un config temporaire existe au démarrage
+        const tempConfig = localStorage.getItem('tempFirebaseConfig');
+        if (tempConfig) {
+            const parsed = JSON.parse(tempConfig);
+            Object.assign(firebaseConfig, parsed);
+            console.log("Using dynamic project config:", firebaseConfig.projectId);
+        }
+
+        window.updateDiagnostic = function() {
+            const diag = document.getElementById('diagnostic-text');
+            if (diag) {
+                const countMilieux = labels.filter(l => (l.type || '').toLowerCase() === 'milieux' || (l.type || '').toLowerCase() === 'milieux de culture' || !l.type).length;
+                const countHistory = labels.length;
+                const countInv = inventoryData.length;
+                const countSouches = souches.length;
+                diag.innerText = `Détectés : ${countMilieux} Milieux de culture, ${countInv} Réactifs/Inventaire, ${countSouches} Souches. (Total Labels: ${countHistory})`;
+                
+                // Si tout est à zéro, alerte rouge
+                if (countHistory === 0 && countInv === 0) {
+                    diag.style.color = "#e74c3c";
+                    diag.innerText += " - ⚠️ AUCUNE DONNÉE TROUVÉE DANS CE PROJET FIREBASE.";
+                } else {
+                    diag.style.color = "inherit";
+                }
+            }
+        };
+
+        window.globalDataRescue = function() {
+            console.log("Démarrage de la recherche globale...");
+            if (labels.length === 0) {
+                alert("La base 'labels' est vide en mémoire. Le problème vient probablement de la connexion au projet Firebase (Mauvais identifiants ou compte différent).");
+                return;
+            }
+            // On force l'affichage de TOUT ce qui est dans 'labels' dans la table
+            currentSection = 'history'; 
+            showSection('history');
+            const tbody = document.getElementById('labelTableBody');
+            if (tbody) {
+                document.getElementById('historySearchInput').value = '';
+                renderHistoryTable();
+                alert(`Affichage de ${labels.length} documents trouvés dans la collection 'labels'. Si vos milieux sont ici, cliquez sur 'Récupérer' pour corriger leur type.`);
+            }
+        };
 
 
         // --- REAL-TIME SYNC ---
-        onSnapshot(query(collection(db, "labels"), orderBy("id", "desc")), (snapshot) => {
-            labels = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+        // Fusion des écouteurs pour plus de stabilité et tri en mémoire pour éviter les erreurs d'index Firestore
+        onSnapshot(collection(db, "labels"), (snapshot) => {
+            const allDocs = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+            
+            // On trie manuellement par ID décroissant (Timestamp)
+            labels = [...allDocs].sort((a, b) => (b.id || 0) - (a.id || 0));
+            
+            souchierLabels = allDocs
+                .filter(l => (l.type || '').toLowerCase() === 'souchier')
+                .sort((a, b) => {
+                    const da = a.date ? new Date(a.date).getTime() : 0;
+                    const dbVal = b.date ? new Date(b.date).getTime() : 0;
+                    return dbVal - da;
+                });
+
             if (typeof renderTable === 'function') renderTable();
             if (typeof renderHistoryTable === 'function') renderHistoryTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
-            if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection);
-        });
-
-        // Listener dédié pour l'historique Souchier - sans orderBy pour tout capturer
-        onSnapshot(collection(db, "labels"), (snapshot) => {
-            const all = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
-            souchierLabels = all
-                .filter(l => l.type === 'souchier')
-                .sort((a, b) => {
-                    const da = a.date ? new Date(a.date).getTime() : 0;
-                    const db2 = b.date ? new Date(b.date).getTime() : 0;
-                    return db2 - da;
-                });
             if (typeof renderSouchierHistory === 'function') renderSouchierHistory();
+            if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection || 'milieux');
         });
 
-        onSnapshot(query(collection(db, "inventory"), orderBy("id", "desc")), (snapshot) => {
-            inventoryData = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+        onSnapshot(collection(db, "inventory"), (snapshot) => {
+            const allInv = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+            inventoryData = allInv.sort((a, b) => (b.id || 0) - (a.id || 0));
+            
             if (typeof renderTable === 'function') renderTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
             if (typeof updateInventoryGroups === 'function') updateInventoryGroups();
-            if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection);
+            if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection || 'milieux');
             if (typeof renderRapport === 'function') renderRapport();
         });
 
-        onSnapshot(query(collection(db, "souches"), orderBy("updatedAt", "desc")), (snapshot) => {
+        onSnapshot(collection(db, "souches"), (snapshot) => {
             souches = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+            // Tri par updatedAt
+            souches.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+            
             if (typeof renderSouches === 'function') renderSouches();
             if (typeof updateSoucheDatalist === 'function') updateSoucheDatalist();
             if (typeof renderSouchierHistory === 'function') renderSouchierHistory();
@@ -4708,6 +4845,16 @@
 
         async function bulkDelete() {
             if (selectedBulkIds.size === 0) return;
+            
+            // Password security for more than 1 item
+            if (selectedBulkIds.size > 1) {
+                const pass = prompt(`SÉCURITÉ : La suppression de ${selectedBulkIds.size} produits est une action critique.\nEntrez le mot de passe de sécurité pour continuer :`);
+                if (pass !== '2026') {
+                    alert('Mot de passe incorrect. Action annulée.');
+                    return;
+                }
+            }
+
             if (confirm(`Voulez-vous vraiment supprimer les ${selectedBulkIds.size} éléments sélectionnés ?`)) {
                 try {
                     const allData = [...labels, ...inventoryData];
@@ -4825,7 +4972,6 @@
             });
         }
 
-        let currentSection = 'milieux';
 
         function normalizeStr(str) {
             return (str || '').toString().toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -4920,11 +5066,16 @@
 
         function showSection(sectionId) {
             currentSection = sectionId;
-            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation', 'logbook', 'souchier', 'rapport'];
+            window.currentSection = sectionId;
+            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation', 'logbook', 'souchier', 'rapport', 'classeur'];
             sections.forEach(s => {
                 const panel = document.getElementById(`${s}-panel`);
                 if (panel) panel.style.display = 'none';
             });
+            
+            // Remettre le layout par défaut
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) mainContent.style.flexDirection = 'column';
 
             // Scroll for logbook or souchier
             if (sectionId === 'logbook') {
@@ -4963,7 +5114,8 @@
                 'admindb': 'Gestion Base de Données',
                 'sterilisation': 'Etiquettes de Stérilisation',
                 'souchier': 'Gestion des Souches de Référence',
-                'rapport': 'Rapport Globale du Stock'
+                'rapport': 'Rapport Globale du Stock',
+                'classeur': 'Classeurs de Laboratoire Microbiologie'
             };
 
             // Titre dynamique pour l'inventaire
@@ -4991,10 +5143,15 @@
             document.getElementById('page-main-title').innerText = mainTitle;
 
             // Mise à jour des labels du formulaire selon le mode
-            const labelDate = document.querySelector('label[for="dateInput"]') || document.getElementById('dateInput').previousElementSibling;
-            const labelDesig = document.querySelector('label[for="designationInput"]') || document.getElementById('designationInput').previousElementSibling;
-            const labelCode = document.querySelector('label[for="codeInput"]') || document.getElementById('codeInput').previousElementSibling;
-            const labelExp = document.querySelector('label[for="expDateInput"]') || document.getElementById('expDateInput').previousElementSibling;
+            const dateInput = document.getElementById('dateInput');
+            const desigInput = document.getElementById('designationInput');
+            const codeInput = document.getElementById('codeInput');
+            const expInput = document.getElementById('expDateInput');
+
+            const labelDate = document.querySelector('label[for="dateInput"]') || (dateInput ? dateInput.previousElementSibling : null);
+            const labelDesig = document.querySelector('label[for="designationInput"]') || (desigInput ? desigInput.previousElementSibling : null);
+            const labelCode = document.querySelector('label[for="codeInput"]') || (codeInput ? codeInput.previousElementSibling : null);
+            const labelExp = document.querySelector('label[for="expDateInput"]') || (expInput ? expInput.previousElementSibling : null);
 
             if (sectionId === 'inventory') {
                 if (labelDate) labelDate.innerText = "Date de réception:";
@@ -5006,25 +5163,77 @@
                 if (labelDesig) labelDesig.innerText = "Nom du charge (ou LAISSER VIDE pour écrire au stylo)";
                 if (labelCode) labelCode.innerText = "Code interne (Optionnel)";
                 if (labelExp) labelExp.innerText = "Date de péremption";
+            } else if (sectionId === 'classeur') {
+                if (labelDate) labelDate.innerText = "Année (Fera office de date)";
+                if (labelDesig) labelDesig.innerText = "Titre de classeur";
+                if (labelCode) labelCode.innerText = "N/A";
+                if (labelExp) labelExp.innerText = "N/A";
+
+                // Masquer Année et Référence pour les classeurs comme demandé (on garde juste le Titre)
+                if (document.getElementById('dateGroup')) document.getElementById('dateGroup').style.display = 'none';
+                if (document.getElementById('codeGroup')) document.getElementById('codeGroup').style.display = 'none';
             } else {
                 if (labelDate) labelDate.innerText = "Date";
                 if (labelDesig) labelDesig.innerText = "Désignation de produit";
                 if (labelCode) labelCode.innerText = "Code interne";
                 if (labelExp) labelExp.innerText = "DDF (Péremption)";
+
+                // Réafficher les groupes pour les autres sections
+                if (document.getElementById('dateGroup')) document.getElementById('dateGroup').style.display = 'block';
+                if (document.getElementById('codeGroup')) document.getElementById('codeGroup').style.display = 'block';
             }
 
-            document.getElementById('prepDateGroup').style.display = (sectionId === 'inventory' || sectionId === 'sterilisation') ? 'none' : 'flex';
-            document.getElementById('preparatorGroup').style.display = (sectionId === 'inventory') ? 'none' : 'flex';
-            document.getElementById('petri-link-row').style.display = (sectionId === 'petri') ? 'flex' : 'none';
+            // Display management for form groups
+            const isBinder = (sectionId === 'classeur');
+            const isSter = (sectionId === 'sterilisation');
+            const isInv = (sectionId === 'inventory');
+
+            // Groups to hide for binders (yellow in user request)
+            const binderHiddenIds = ['designationGroup', 'codeGroup', 'prepDateGroup', 'conservationGroup', 'preparatorGroup', 'quantityGroup', 'locationGroup', 'expGroup', 'dateGroup'];
+            binderHiddenIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (isBinder) el.style.display = 'none';
+                    else if (id === 'prepDateGroup' && (isInv || isSter)) el.style.display = 'none';
+                    else if (id === 'preparatorGroup' && isInv) el.style.display = 'none';
+                    else el.style.display = 'flex';
+                }
+            });
+
+            // Specific toggles
+            if (document.getElementById('petri-link-row')) 
+                document.getElementById('petri-link-row').style.display = (sectionId === 'petri') ? 'flex' : 'none';
 
             const sterFields = document.getElementById('sterilisation-fields-custom');
-            if (sterFields) sterFields.style.display = (sectionId === 'sterilisation') ? 'block' : 'none';
+            if (sterFields) sterFields.style.display = isSter ? 'block' : 'none';
+
+            const clsFields = document.getElementById('classeur-fields');
+            if (clsFields) clsFields.style.display = isBinder ? 'grid' : 'none';
+
+            const mainFrm = document.getElementById('main-form-card');
+            const isFormSection = ['milieux', 'petri', 'inventory', 'sterilisation', 'souchier', 'classeur', 'logbook'].includes(sectionId);
+
+            if (mainFrm) {
+                mainFrm.style.display = isFormSection ? 'block' : 'none';
+            }
+
+            // Reset dashboard grid styles
+            const dashGrid = document.querySelector('.dashboard-grid');
+            if (dashGrid) {
+                dashGrid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                dashGrid.style.gap = '30px';
+                const dashPanel = document.getElementById('dashboard-panel');
+                if (dashPanel) {
+                    dashPanel.style.width = 'auto';
+                    dashPanel.style.minWidth = 'auto';
+                }
+            }
 
             const btnBlank = document.getElementById('printBlankSterBtn');
-            if (btnBlank) btnBlank.style.display = (sectionId === 'sterilisation') ? 'inline-flex' : 'none';
+            if (btnBlank) btnBlank.style.display = isSter ? 'inline-flex' : 'none';
 
             // Toggle print buttons for specific sections
-            const printBtnIds = ['div-btn-milieux', 'div-btn-petri', 'div-btn-sterilisation', 'div-btn-inventory'];
+            const printBtnIds = ['div-btn-milieux', 'div-btn-petri', 'div-btn-sterilisation', 'div-btn-inventory', 'div-btn-classeur'];
             printBtnIds.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
@@ -5032,23 +5241,23 @@
             const activePrintBtn = document.getElementById(`div-btn-${sectionId}`);
             if (activePrintBtn) activePrintBtn.style.display = 'flex';
 
-            // Masquer certains champs pour sterilisation
+            // Main form grid display
             const formGrid = document.querySelector('.glass-card .form-grid');
-            if (sectionId === 'sterilisation') {
+            if (isSter) {
                 if (formGrid) formGrid.style.display = 'none';
-                document.getElementById('petri-link-row').style.display = 'none';
                 if (document.getElementById('inventory-fields')) document.getElementById('inventory-fields').style.display = 'none';
+                if (document.getElementById('classeur-fields')) document.getElementById('classeur-fields').style.display = 'none';
             } else {
                 if (formGrid) formGrid.style.display = 'grid';
-                const consGrp = document.getElementById('conservationGroup');
-                if (consGrp) consGrp.style.display = 'block';
-                const locGrp = document.getElementById('locationGroup');
-                if (locGrp) locGrp.style.display = 'block';
-                const qtyGrp = document.getElementById('quantityGroup');
-                if (qtyGrp) qtyGrp.style.display = 'block';
+                
+                // Ensure location group is visible by default (unless binder)
+                if (document.getElementById('locationGroup') && !isBinder) document.getElementById('locationGroup').style.display = 'flex';
 
                 if (document.getElementById('inventory-fields')) {
-                    document.getElementById('inventory-fields').style.display = (sectionId === 'inventory') ? 'grid' : 'none';
+                    document.getElementById('inventory-fields').style.display = isInv ? 'grid' : 'none';
+                }
+                if (document.getElementById('classeur-fields')) {
+                    document.getElementById('classeur-fields').style.display = isBinder ? 'grid' : 'none';
                 }
             }
 
@@ -5068,11 +5277,11 @@
                 } else if (child.classList.contains('glass-card')) {
                     // Formula card
                     if (child.querySelector('.form-grid')) {
-                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'inventory' || sectionId === 'sterilisation') ? 'block' : 'none';
+                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'inventory' || sectionId === 'sterilisation' || sectionId === 'classeur') ? 'block' : 'none';
                     }
                     // Main Table card (labelTableBody)
                     else if (child.querySelector('#labelTableBody')) {
-                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'sterilisation') ? 'block' : 'none';
+                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'sterilisation' || sectionId === 'classeur') ? 'block' : 'none';
                     }
                     // Panels
                     else if (child.id && child.id.includes('-panel')) {
@@ -5098,6 +5307,17 @@
                     <th style="width: 120px;">Effectué par</th>
                     <th style="text-align: center; width: 140px;">Action</th>
                 `;
+            } else if (currentSection === 'classeur') {
+                const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
+                theadTr.innerHTML = `
+                    <th style="width: 30px;"><input type="checkbox" class="select-all-checkbox" onchange="toggleSelectAll(this, 'labelTableBody')" title="Tout sélectionner"></th>
+                    <th style="width: 80px;">Année</th>
+                    <th style="width: 150px;">Type de Fiches</th>
+                    <th style="width: 300px;">Titre de classeur</th>
+                    <th style="width: 180px;">Référence (SOP)</th>
+                    <th style="width: 100px;">N° Index</th>
+                    <th style="text-align: center; width: 140px;">Action</th>
+                `;
             } else if (currentSection === 'milieux' || currentSection === 'petri') {
                 // Restore default milieux/petri
                 const theadTr = document.querySelector('#labelTableBody').previousElementSibling.querySelector('tr');
@@ -5109,7 +5329,7 @@
                     <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'prepDate')">DDP <span class="sort-icon-main" data-col="prepDate"></span></th>
                     <th style="width: 100px; cursor: pointer;" onclick="handleSort('main', 'expDate')">DDF <span class="sort-icon-main" data-col="expDate"></span></th>
                     <th style="cursor: pointer;" onclick="handleSort('main', 'conservation')">Condition de conservation <span class="sort-icon-main" data-col="conservation"></span></th>
-                    <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'preparator')">Visa <span class="sort-icon-main" data-col="preparator"></span></th>
+                    <th style="width: 90px; cursor: pointer;" onclick="handleSort('main', 'preparator')">Fait par <span class="sort-icon-main" data-col="preparator"></span></th>
                     <th style="text-align: center; width: 140px;">Action</th>
                 `;
             }
@@ -5168,13 +5388,15 @@
             } else {
                 dataPool = labels;
                 if (tFilter !== 'ALL') {
-                    dataPool = dataPool.filter(l => l.type === tFilter);
+                    dataPool = dataPool.filter(l => (l.type || '').toLowerCase() === tFilter.toLowerCase());
                 } else if (currentSection === 'milieux') {
-                    dataPool = dataPool.filter(l => l.type === 'milieux' || !l.type);
+                    dataPool = dataPool.filter(l => (l.type || '').toLowerCase() === 'milieux' || (l.type || '').toLowerCase() === 'milieux de culture' || !l.type);
                 } else if (currentSection === 'petri') {
-                    dataPool = dataPool.filter(l => l.type === 'petri');
+                    dataPool = dataPool.filter(l => (l.type || '').toLowerCase() === 'petri');
                 } else if (currentSection === 'sterilisation') {
-                    dataPool = dataPool.filter(l => l.type === 'sterilisation');
+                    dataPool = dataPool.filter(l => (l.type || '').toLowerCase() === 'sterilisation');
+                } else if (currentSection === 'classeur') {
+                    dataPool = dataPool.filter(l => (l.type || '').toLowerCase() === 'classeur');
                 }
             }
 
@@ -5182,16 +5404,18 @@
             const filteredLabels = dataPool.filter(label => {
                 const searchLower = normalizeStr(searchTerm);
                 if (!searchLower) {
-                    // Si pas de recherche, on filtre par groupe dans l'inventaire
                     const currentGroup = document.getElementById('inventoryGroupInput') ? document.getElementById('inventoryGroupInput').value : '';
                     return !isInv || label.inventoryGroup === currentGroup;
                 }
 
-                // Si recherche active, on cherche partout (ignorant le groupe pour plus de facilité)
                 const ddo = label.openDate ? normalizeStr(new Date(label.openDate).toLocaleDateString('fr-FR')) : '';
                 const ddf = label.expDate ? normalizeStr(new Date(label.expDate).toLocaleDateString('fr-FR')) : '';
                 const ddp = label.prepDate ? normalizeStr(new Date(label.prepDate).toLocaleDateString('fr-FR')) : '';
                 const dr = label.date ? normalizeStr(new Date(label.date).toLocaleDateString('fr-FR')) : '';
+
+                // Add binder specific searchable fields
+                const binderSearch = (label.type === 'classeur') ?
+                    normalizeStr(label.classeurAnnee) + normalizeStr(label.classeurFiche) + normalizeStr(label.classeurTitre) + normalizeStr(label.classeurRef) + normalizeStr(label.classeurNum) : '';
 
                 return normalizeStr(label.designation).includes(searchLower) ||
                     normalizeStr(label.code).includes(searchLower) ||
@@ -5201,14 +5425,15 @@
                     normalizeStr(label.location).includes(searchLower) ||
                     normalizeStr(label.lotNumber).includes(searchLower) ||
                     normalizeStr(label.conservation).includes(searchLower) ||
-                    dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower);
+                    dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower) ||
+                    binderSearch.includes(searchLower);
             });
 
             // Trier avec les settings globaux de tri (multi-colonnes)
             multiColumnSort(filteredLabels, tableSort.main);
 
             if (filteredLabels.length === 0) {
-                const cols = isInv ? 12 : (currentSection === 'sterilisation' ? 8 : 9);
+                const cols = isInv ? 12 : (currentSection === 'sterilisation' ? 8 : (currentSection === 'classeur' ? 7 : 9));
                 tbody.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding: 30px; color:#718096;">Aucun élément trouvé.</td></tr>`;
             }
 
@@ -5219,11 +5444,11 @@
                 }
 
                 const optionsDate = { day: 'numeric', month: 'numeric', year: 'numeric' };
-                const dispDate = label.date ? new Date(label.date).toLocaleDateString('fr-FR') : '---';
-                const expDate = label.expDate ? new Date(label.expDate).toLocaleDateString('fr-FR') : '---';
+                const dispDate = formatSafeDate(label.date);
+                const expDate = formatSafeDate(label.expDate);
 
                 if (currentSection === 'inventory') {
-                    const ddo = label.openDate ? new Date(label.openDate).toLocaleDateString('fr-FR') : '---';
+                    const ddo = formatSafeDate(label.openDate);
                     tr.innerHTML = `
                                 <td style="text-align:center;"><input type="checkbox" class="row-checkbox" data-id="${label.id}" onchange="handleRowSelect(this)" ${selectedBulkIds.has(String(label.id)) ? 'checked' : ''}></td>
                                 <td>${dispDate}</td>
@@ -5246,8 +5471,8 @@
                             `;
                 } else if (currentSection === 'sterilisation') {
                     const cycleInfo = (label.sterEquipment === 'LAUTO057' ? label.sterCycle057 : (label.sterEquipment === 'LAUTO056' ? label.sterCycle056 : '---'));
-                    const ddp = label.prepDate ? new Date(label.prepDate).toLocaleDateString('fr-FR') : '---';
-                    const ddv = label.expDate ? new Date(label.expDate).toLocaleDateString('fr-FR') : '---';
+                    const ddp = formatSafeDate(label.prepDate);
+                    const ddv = formatSafeDate(label.expDate);
                     tr.innerHTML = `
                                 <td style="text-align:center;"><input type="checkbox" class="row-checkbox" data-id="${label.id}" onchange="handleRowSelect(this)" ${selectedBulkIds.has(String(label.id)) ? 'checked' : ''}></td>
                                 <td>${dispDate}</td>
@@ -5264,8 +5489,24 @@
                                     <button class="btn-modern" onclick="event.stopPropagation(); deleteLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #e74c3c; color: white;" title="Supprimer">🗑️</button>
                                 </td>
                             `;
+                } else if (currentSection === 'classeur') {
+                    tr.innerHTML = `
+                                <td style="text-align:center;"><input type="checkbox" class="row-checkbox" data-id="${label.id}" onchange="handleRowSelect(this)" ${selectedBulkIds.has(String(label.id)) ? 'checked' : ''}></td>
+                                <td>${label.classeurAnnee || '---'}</td>
+                                <td>${label.classeurFiche || '---'}</td>
+                                <td style="font-weight: bold; color: var(--primary);">${label.classeurTitre || '---'}</td>
+                                <td>${label.classeurRef || '---'}</td>
+                                <td style="font-weight: bold; color: #e67e22;">${label.classeurNum || '---'}</td>
+                                <td style="text-align: center; display: flex; gap: 5px; justify-content: center;">
+                                    <button class="btn-modern" onclick="event.stopPropagation(); previewLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #2ecc71; color: white;" title="Aperçu">🔍</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); printSingleLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #3498db; color: white;" title="Imprimer">🖨️</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); exportSinglePdf(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #9b59b6; color: white;" title="PDF">📄</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); editLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #f39c12; color: white;" title="Modifier">✏️</button>
+                                    <button class="btn-modern" onclick="event.stopPropagation(); deleteLabel(${label.id})" style="padding: 6px 12px; font-size: 0.8rem; background: #e74c3c; color: white;" title="Supprimer">🗑️</button>
+                                </td>
+                            `;
                 } else {
-                    const prepDate = label.prepDate ? new Date(label.prepDate).toLocaleDateString('fr-FR') : '---';
+                    const prepDate = formatSafeDate(label.prepDate);
                     tr.innerHTML = `
                                 <td style="text-align:center;"><input type="checkbox" class="row-checkbox" data-id="${label.id}" onchange="handleRowSelect(this)" ${selectedBulkIds.has(String(label.id)) ? 'checked' : ''}></td>
                                 <td>${dispDate}</td>
@@ -5423,6 +5664,19 @@
             if (sDDP) sDDP.value = label.prepDate || '';
             if (sDDV) sDDV.value = label.expDate || '';
             if (sUser) sUser.value = label.preparator || '';
+            
+            // Binder Section
+            const cAnnee = document.getElementById('classeurAnnee');
+            const cFiche = document.getElementById('classeurFiche');
+            const cRef = document.getElementById('classeurRef');
+            const cNum = document.getElementById('classeurNum');
+            const cTitre = document.getElementById('classeurTitre');
+
+            if (cAnnee) cAnnee.value = label.classeurAnnee || '';
+            if (cFiche) cFiche.value = label.classeurFiche || '';
+            if (cRef) cRef.value = label.classeurRef || '';
+            if (cNum) cNum.value = label.classeurNum || '';
+            if (cTitre) cTitre.value = label.classeurTitre || '';
 
             if (isInv) {
                 document.getElementById('lotInput').value = label.lotNumber || '';
@@ -5457,7 +5711,12 @@
             document.getElementById('cancelEditBtn').style.display = 'none';
 
             // Clear fields
-            const fields = ['codeInput', 'preparatorInput', 'supplierInput', 'locationInput', 'quantityInput', 'openDateInput', 'linkedMilieuSelect', 'lotInput'];
+            const fields = [
+                'codeInput', 'preparatorInput', 'supplierInput', 'locationInput', 'quantityInput', 
+                'openDateInput', 'linkedMilieuSelect', 'lotInput',
+                'classeurAnnee', 'classeurFiche', 'classeurRef', 'classeurNum', 'classeurTitre',
+                'ster-date', 'ster-equip', 'ster-cycle-057', 'ster-cycle-056', 'ster-ddp', 'ster-ddv', 'ster-user'
+            ];
             fields.forEach(f => {
                 const el = document.getElementById(f);
                 if (el) el.value = '';
@@ -5543,6 +5802,13 @@
             const sterDDP = gVal('ster-ddp');
             const sterDDV = gVal('ster-ddv');
             const sterUser = gVal('ster-user');
+            
+            // Classeur (Formulaire Custom)
+            const clsAnnee = gVal('classeurAnnee');
+            const clsFiche = gVal('classeurFiche');
+            const clsRef = gVal('classeurRef');
+            const clsNum = gVal('classeurNum');
+            const clsTitre = gVal('classeurTitre');
 
             let invGroup = gVal('inventoryGroupInput');
             if (invGroup === 'NEW') {
@@ -5550,8 +5816,12 @@
                 if (!invGroup) { alert("Veuillez saisir le nom de la nouvelle classe."); return; }
             }
 
-            if (currentSection !== 'sterilisation' && (!code || !expDate)) {
+            if (currentSection !== 'sterilisation' && currentSection !== 'classeur' && (!code || !expDate)) {
                 alert("Veuillez remplir au moins le code de produit et la date de péremption.");
+                return;
+            }
+            if (currentSection === 'classeur' && !clsTitre) {
+                alert("Veuillez remplir au moins le titre du classeur.");
                 return;
             }
 
@@ -5559,7 +5829,7 @@
                 const isInv = (currentSection === 'inventory');
                 const colName = isInv ? "inventory" : "labels";
 
-                let typeVal = currentSection === 'petri' ? 'petri' : (currentSection === 'sterilisation' ? 'sterilisation' : 'milieux');
+                let typeVal = currentSection === 'petri' ? 'petri' : (currentSection === 'sterilisation' ? 'sterilisation' : (currentSection === 'classeur' ? 'classeur' : 'milieux'));
                 if (isInv) typeVal = 'inventory';
 
                 const data = {
@@ -5578,6 +5848,12 @@
                     inventoryGroup: invGroup || '',
                     barcode: barcode || '',
                     type: typeVal,
+                    // Champs Classeurs
+                    classeurAnnee: clsAnnee,
+                    classeurFiche: clsFiche,
+                    classeurRef: clsRef,
+                    classeurNum: clsNum,
+                    classeurTitre: clsTitre,
                     updatedAt: new Date().toISOString()
                 };
 
@@ -5604,7 +5880,8 @@
                         'openDateInput', 'linkedMilieuSelect', 'lotInput', 'customGroupInput',
                         'sterCycleInput', 'sterEquipmentInput',
                         'ster-date', 'ster-equip', 'ster-cycle-057', 'ster-cycle-056',
-                        'ster-ddp', 'ster-ddv', 'ster-user'
+                        'ster-ddp', 'ster-ddv', 'ster-user',
+                        'classeurAnnee', 'classeurFiche', 'classeurRef', 'classeurNum', 'classeurTitre'
                     ];
                     fields.forEach(f => {
                         const el = document.getElementById(f);
@@ -5963,6 +6240,35 @@
                     `;
             }
 
+            if (label.type === 'classeur') {
+                const tableStyle = "width: 8.5cm; border-collapse: collapse; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; border: 3.5px solid #000; margin: auto;";
+                const tdBase = "border: 2px solid #000; padding: 10px; text-align: center; vertical-align: middle;";
+                
+                return `
+                    <div style="width: 8.5cm; height: 12.5cm; display: flex; align-items: center; justify-content: center; background: #fff;">
+                        <table style="${tableStyle}">
+                            <!-- Logo -->
+                            <tr><td style="${tdBase} height: 60px; border-top:none; border-left:none; border-right:none;"><img src="logo.PNG" alt="Logo" style="width: 140px; height: auto;" onerror="this.onerror=null; this.src='logo.png'"></td></tr>
+                            
+                            <!-- Année : Taille 17pt -->
+                            <tr><td style="${tdBase} height: 50px; font-size: 17pt; font-weight: 1000; text-transform: uppercase; border-left:none; border-right:none;">Classeur : ${label.classeurAnnee || '2025'}</td></tr>
+                            
+                            <!-- Fiches : Taille 16pt -->
+                            <tr><td style="${tdBase} height: 80px; font-size: 16pt; font-weight: 1000; text-transform: uppercase; line-height: 1.1; border-left:none; border-right:none;">${label.classeurFiche || 'FICHES DE PAILLASSE'}</td></tr>
+                            
+                            <!-- Titre : Taille 12pt -->
+                            <tr><td style="${tdBase} height: 70px; font-size: 12pt; font-weight: 900; line-height: 1.1; border-left:none; border-right:none;">${label.classeurTitre || 'TITRE'}</td></tr>
+                            
+                            <!-- Référence : Taille 12pt -->
+                            <tr><td style="${tdBase} height: 50px; font-size: 12pt; font-weight: 800; border-left:none; border-right:none;">${label.classeurRef || 'REF'}</td></tr>
+                            
+                            <!-- Numéro / Index -->
+                            <tr><td style="${tdBase} height: 100px; font-size: 30pt; font-weight: 1000; border-bottom:none; border-left:none; border-right:none;">${label.classeurNum || '...'}</td></tr>
+                        </table>
+                    </div>
+                `;
+            }
+
             // Labels pour les étiquettes de préparation (Milieux)
             const refDoc = '-FE001/CQ-SOP-025-';
             const mainTitle = "ETIQUETTE D'IDENTIFICATION DES<br>MILIEUX DE CULTURE PREPARES";
@@ -5998,7 +6304,7 @@
                                 <span class="data-label" style="font-weight: 800;">Condition de conservation :</span> 
                                 <span class="data-value" style="font-weight: 900;">${label.conservation || ''}</span>
 
-                                <span class="data-label" style="font-weight: 800;">Préparé par :</span> 
+                                <span class="data-label" style="font-weight: 800;">Fait par :</span> 
                                 <span class="data-value" style="font-weight: 900;">${label.preparator}</span>
 
                                 <span class="data-label" style="font-weight: 800;">Visa :</span> 
@@ -6569,6 +6875,8 @@
                 finalTitle = "LISTE D'INVENTAIRE DES " + groupName.toUpperCase();
             } else if (currentSection === 'souchier') {
                 finalTitle = "SUIVI LES REPIQUAGES DES SOUCHES DE RÉFÉRENCES CONSERVEES  ENTRE (2-8C°)";
+            } else if (currentSection === 'classeur') {
+                finalTitle = "LISTE DES CLASSEURS DE LABORATOIRE MICROBIOLOGIE";
             } else {
                 finalTitle = (currentSection === 'petri') ? "LISTE DES BOITES PETRI PRECOULEES" : "LISTE DES MILIEUX DE CULTURE PREPARES";
             }
@@ -6743,13 +7051,16 @@
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">DDF</th>
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">DDO</th>
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Condition de conservation</th>
+                                    ` : (currentSection === 'classeur' ? `
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Titre de classeur</th>
+                                        <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 60px;">N°</th>
                                     ` : `
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 80px;">Prép.</th>
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px;">Désignation</th>
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 100px;">Code / Lot</th>
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 80px;">Périm.</th>
                                         <th style="border: 1px solid #000; padding: 5px; font-size: 10px; width: 60px;">Par</th>
-                                    `}
+                                    `)}
                                 </tr>
                             </thead>
                             <tbody>
@@ -6765,6 +7076,16 @@
                                         <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center; ${new Date(l.expDate) < new Date() ? 'color: red; font-weight: bold;' : ''}">${new Date(l.expDate).toLocaleDateString('fr-FR')}</td>
                                         <td style="border: 1px solid #000; padding: 4px; font-size: 9px; text-align:center;">${l.openDate ? new Date(l.openDate).toLocaleDateString('fr-FR') : '---'}</td>
                                         <td style="border: 1px solid #000; padding: 4px; font-size: 9px;">${l.conservation || '---'}</td>
+                                    </tr>
+                                `;
+                        } else if (currentSection === 'classeur') {
+                            return `
+                                    <tr>
+                                        <td style="border: 1px solid #000; padding: 6px; font-size: 10px;">
+                                            <div style="font-weight:bold; font-size: 11px;">${l.classeurTitre || ''}</div>
+                                            <div style="font-size: 0.95em; color: #333;">${l.classeurFiche || ''}</div>
+                                        </td>
+                                        <td style="border: 1px solid #000; padding: 6px; font-size: 12px; text-align: center; font-weight: bold;">${l.classeurNum || ''}</td>
                                     </tr>
                                 `;
                         } else {
@@ -7357,13 +7678,13 @@
                 if (h.includes('lot') || h.includes('n°')) map.lotNumber = idx;
                 if (h.includes('réception') || h.includes('reception') || h === 'date') map.date = idx;
                 if (h.includes('péremption') || h.includes('peremption') || h.includes('expir') || h === 'ddf') map.expDate = idx;
-                if (h.includes('préparation') || h.includes('prep') || h === 'ddp') map.prepDate = idx;
+                if (h.includes('préparation') || (h.includes('prep') && !h.includes('par')) || h === 'ddp') map.prepDate = idx;
                 if (h.includes('ouverture') || h === 'ddo') map.openDate = idx;
                 if (h.includes('quantité') || h.includes('quantite') || h === 'qté') map.quantity = idx;
                 if (h.includes('fournisseur') || h.includes('fourn')) map.supplier = idx;
                 if (h.includes('emplacement') || h.includes('location') || h.includes('empl.')) map.location = idx;
                 if (h.includes('conservation') || h.includes('ndition')) map.conservation = idx;
-                if (h.includes('préparateur') || h === 'par' || h.includes('prep')) map.preparator = idx;
+                if (h.includes('préparateur') || h.includes('fait par') || h.includes('visa') || h.includes('initiale') || (h.includes('par') && !h.includes('préparation') && !h.includes('date')) || h.includes('init.')) map.preparator = idx;
             });
 
             let importedCount = 0;
@@ -7802,6 +8123,13 @@
         renderTable();
 
         Object.assign(window, {
+            formatSafeDate: function(val) {
+                if (!val) return '---';
+                if (/^\d{2}\/\d{2}\/\d{4}$/.test(val)) return val; // Déjà au format fr
+                const d = new Date(val);
+                if (isNaN(d.getTime())) return val; // Retourner brut si invalide
+                return d.toLocaleDateString('fr-FR');
+            },
             showSection,
             renderTable,
             renderHistoryTable,
@@ -7850,6 +8178,47 @@
             editAdminDbLabel,
             handleAdminImportFile,
             handleImportFile,
+            importChatData: async function() {
+                const text = prompt("Collez ici les données textuelles du chat :");
+                if (!text) return;
+
+                    function parseFrDate(str) {
+                        if (!str || typeof str !== 'string' || !str.includes('/')) return str;
+                        const parts = str.split('/');
+                        if (parts.length === 3) {
+                            return `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+                        }
+                        return str;
+                    }
+                
+                const rows = text.split('\n');
+                let count = 0;
+                for (const row of rows) {
+                    if (!row.trim() || row.includes('date\tDésignation')) continue;
+                    const cols = row.split('\t');
+                    if (cols.length < 3) continue;
+                    try {
+                        const newObj = {
+                            id: Date.now() + Math.random(),
+                            type: 'milieux',
+                            date: parseFrDate(cols[0]) || new Date().toISOString().split('T')[0],
+                            designation: (cols[1] || 'SANS NOM').toUpperCase(),
+                            code: cols[2] || '',
+                            prepDate: parseFrDate(cols[3]) || '',
+                            expDate: parseFrDate(cols[4]) || '',
+                            conservation: cols[5] || 'T° ambiante',
+                            preparator: (cols[6] || 'LAB').toUpperCase(),
+                            location: cols[7] || '',
+                            quantity: cols[8] || '',
+                            updatedAt: new Date().toISOString()
+                        };
+                        await addDoc(collection(db, "labels"), newObj);
+                        count++;
+                    } catch(e) { console.error("Ligne ignorée:", row); }
+                }
+                alert(`${count} éléments importés avec succès !`);
+                window.location.reload();
+            },
             processRows,
             expandSidebar,
             collapseSidebar,
