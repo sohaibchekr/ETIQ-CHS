@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Gestion de Laboratoire CQ</title>
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
@@ -157,6 +157,17 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Times New Roman', Times, serif;
+        }
+
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         body {
@@ -1125,8 +1136,20 @@
             }
 
             .top-signature {
-                display: none;
+                display: none !important;
                 /* Too large for small mobile headers */
+            }
+
+            .logbook-grid-wrapper {
+                grid-template-columns: 1fr !important;
+            }
+
+            .souchier-container {
+                grid-template-columns: 1fr !important;
+            }
+
+            .ster-form-premium .grid-2 {
+                grid-template-columns: 1fr !important;
             }
         }
 
@@ -1697,7 +1720,11 @@
                 width: 100% !important;
                 justify-content: center !important;
                 padding: 10px 15px !important;
-                font-size: 0.9rem !important;
+                font-size: 16px !important;
+            }
+
+            input, select, textarea {
+                font-size: 16px !important;
             }
 
             .search-bar-container {
@@ -1741,8 +1768,15 @@
             td {
                 padding: 10px 8px !important;
                 font-size: 0.8rem !important;
-                white-space: nowrap !important;
-                /* Keep together, scrollable wrapper handles it */
+                white-space: normal !important; /* Allow wrapping on small screens if needed */
+            }
+
+            .logbook-grid-wrapper {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .souchier-card-grid {
+                grid-template-columns: 1fr !important;
             }
         }
     </style>
