@@ -1673,6 +1673,75 @@
                 grid-template-columns: repeat(4, 1fr) !important;
             }
         }
+
+        /* 📱 OPTIMISATION MOBILE (RESPONSIVE) */
+        @media screen and (max-width: 768px) {
+            .auth-card {
+                width: 90% !important;
+                max-width: 400px;
+                padding: 25px !important;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+
+            .btn-container {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+
+            .btn-modern {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 10px 15px !important;
+                font-size: 0.9rem !important;
+            }
+
+            .search-bar-container {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+
+            #searchInput, #typeFilter {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .table-wrapper {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+
+            /* Dashboard Cards stack on mobile */
+            .dashboard-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .main-content {
+                padding: 15px !important;
+            }
+
+            .page-header h1 {
+                font-size: 1.4rem !important;
+            }
+
+            #header-user-info {
+                display: none !important;
+            }
+
+            /* Adjust table for better mobile visibility */
+            th, td {
+                padding: 10px 8px !important;
+                font-size: 0.8rem !important;
+                white-space: nowrap !important; /* Keep together, scrollable wrapper handles it */
+            }
+        }
     </style>
 </head>
 
@@ -1916,13 +1985,13 @@
                                 style="position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; background: #2ecc71; border: 2px solid white; border-radius: 50%;">
                             </div>
                         </div>
-                        <div style="display: flex; flex-direction: column; white-space: nowrap;">
+                        <div id="header-user-info" style="display: flex; flex-direction: column; white-space: nowrap;">
                             <span id="header-user-name"
                                 style="font-weight: 800; font-size: 0.95rem; color: var(--text-dark);">Utilisateur</span>
                             <span id="header-user-role"
                                 style="font-size: 0.75rem; font-weight: 600; color: #3074c7; text-transform: uppercase; letter-spacing: 0.5px;">Chargement...</span>
                         </div>
-                        <div
+                        <div class="top-signature"
                             style="margin-left: 20px; border-left: 2px solid #3074c7; padding-left: 15px; display: flex; flex-direction: column; align-items: flex-end;">
                             <span
                                 style="font-size: 0.7rem; color: #1a202c; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;">CREATED
@@ -2457,7 +2526,7 @@
 
         <!-- TABLEAU DE DONNÉES -->
         <div class="glass-card" style="padding: 20px; margin-top: 30px;">
-            <div
+            <div class="search-bar-container"
                 style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; max-width: 900px; margin-left: auto; margin-right: auto;">
                 <input type="text" id="searchInput" placeholder="🔍 Rechercher une étiquette..." onkeyup="renderTable()"
                     autocomplete="off"
