@@ -2471,15 +2471,19 @@
 
                 <div class="btn-container">
                     <button class="btn-modern btn-add" id="mainAddBtn" onclick="addLabel()">
-                        <svg style="width:18px; height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg style="width:18px; height:18px;" fill="none; stroke:currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                         Ajouter l'étiquette
                     </button>
+                    <button class="btn-modern" id="mainClearBtn" onclick="clearMainForm()"
+                        style="background: #f7fafc; color: #e74c3c; border: 1px solid #fed7d7;">
+                        ❌ Annuler
+                    </button>
                     <button class="btn-modern btn-add" id="cancelEditBtn" onclick="cancelEdit()"
                         style="display:none; border-color:#e74c3c; color:#e74c3c;">
-                        Annuler
+                        Annuler Modification
                     </button>
                     <!-- BOUTON GENÉRIQUE (garde-fou) -->
                     <button class="btn-modern btn-print" onclick="printLabels()" id="btn-generic-print"
@@ -3151,7 +3155,11 @@
                             style="background: #fff5f5; border-color: #feb2b2; color: #c53030; font-weight: 800; border-radius: 12px;">
                     </div>
                 </div>
-                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px;">
+                <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; flex-wrap: wrap;">
+                    <button class="btn-modern" onclick="clearSoucheForm()"
+                        style="background: #f7fafc; color: #e74c3c; border: 1px solid #fed7d7;">
+                        ❌ Annuler
+                    </button>
                     <button class="btn-modern" onclick="saveAndPrintSouche(false)"
                         style="background: white; border: 1px solid #e2e8f0; color: #4a5568;">
                         💾 Enregistrer
@@ -3195,21 +3203,21 @@
 
                 <!-- BARRE D'ACTIONS GROUPÉES (Souchier) -->
                 <div id="souchier-bulk-bar"
-                    style="display:none; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 15px; margin-bottom: 20px; align-items: center; justify-content: space-between; animation: slideDown 0.3s ease;">
+                    style="display:none; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 15px; padding: 12px; margin-bottom: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; animation: slideDown 0.3s ease;">
                     <div style="display:flex; align-items:center; gap:12px;">
                         <div style="width:10px; height:10px; border-radius:50%; background:#3074c7;"></div>
                         <span id="souchier-selected-count" style="font-weight:700; color:#3074c7; font-size:0.95rem;">0
                             sélectionné(s)</span>
                     </div>
-                    <div style="display:flex; gap:10px;">
+                    <div style="display:flex; gap:8px; flex-wrap: wrap; justify-content: center;">
                         <button class="btn-mini" onclick="souchierBulkPrint()"
-                            style="background:#3074c7; color:white; padding:8px 15px; border-radius:8px; border:none; cursor:pointer; font-weight:600;">🖨️
-                            Réimprimer</button>
+                            style="background:#3074c7; color:white; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; font-size: 0.8rem;">🖨️
+                            Imprimer</button>
                         <button class="btn-mini" onclick="souchierBulkDelete()"
-                            style="background:#ef4444; color:white; padding:8px 15px; border-radius:8px; border:none; cursor:pointer; font-weight:600;">🗑️
+                            style="background:#ef4444; color:white; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; font-size: 0.8rem;">🗑️
                             Supprimer</button>
                         <button class="btn-mini" onclick="souchierClearSelection()"
-                            style="background:#e2e8f0; color:#64748b; padding:8px 15px; border-radius:8px; border:none; cursor:pointer; font-weight:600;">Annuler</button>
+                            style="background:#e2e8f0; color:#64748b; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; font-size: 0.8rem;">❌ Annuler</button>
                     </div>
                 </div>
 
@@ -8426,7 +8434,9 @@
             rescueLostSouchierData,
             startLabelCamera,
             takeLabelSnapshot,
-            closeLabelCamera
+            closeLabelCamera,
+            clearMainForm,
+            clearSoucheForm
         });
 
         // --- GESTION DU SOUCHIER ---
@@ -9318,6 +9328,28 @@
             if (img.style.display === 'none') {
                 previewContainer.style.display = 'none';
             }
+        }
+
+        function clearMainForm() {
+            if (!confirm("Voulez-vous vider tout le formulaire ?")) return;
+            document.getElementById('designationInput').value = '';
+            document.getElementById('codeInput').value = '';
+            document.getElementById('prepDateInput').value = '';
+            document.getElementById('expDateInput').value = '';
+            document.getElementById('preparatorInput').value = '';
+            document.getElementById('locationInput').value = '';
+            document.getElementById('quantityInput').value = '';
+            document.getElementById('label-scan-preview').style.display = 'none';
+            document.getElementById('label-preview-img').src = '';
+        }
+
+        function clearSoucheForm() {
+            if (!confirm("Voulez-vous annuler la saisie en cours ?")) return;
+            document.getElementById('s-form-name').value = '';
+            document.getElementById('s-form-code').value = '';
+            document.getElementById('s-form-cryo').value = '1';
+            document.getElementById('s-form-rep-date').value = '';
+            document.getElementById('s-form-exp-date').value = '';
         }
 
         async function rescueLostSouchierData() {
