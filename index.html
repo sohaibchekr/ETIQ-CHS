@@ -987,7 +987,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #718096;
             cursor: pointer;
             padding: 4px 8px;
@@ -3438,6 +3438,10 @@
 
     <!-- Navigation mobile en bas (visible uniquement sur mobile via CSS) -->
     <div class="mobile-bottom-nav">
+        <button onclick="showSection('dashboard')" class="mobile-nav-btn" id="m-btn-dashboard">
+            <span class="nav-icon">🏠</span>
+            <span>Dashboard</span>
+        </button>
         <button onclick="showSection('milieux')" class="mobile-nav-btn" id="m-btn-milieux">
             <span class="nav-icon">🧪</span>
             <span>Milieux</span>
