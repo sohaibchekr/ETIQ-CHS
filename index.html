@@ -1099,6 +1099,18 @@
                 margin-bottom: 12px !important;
             }
 
+            .pending-badge {
+                background: #e74c3c;
+                color: white !important;
+                font-size: 0.75rem;
+                font-weight: 800;
+                padding: 2px 8px;
+                border-radius: 12px;
+                margin-left: 8px;
+                box-shadow: 0 2px 5px rgba(231, 76, 60, 0.4);
+                display: none;
+            }
+
             .form-grid {
                 grid-template-columns: 1fr !important;
                 gap: 12px !important;
@@ -2200,6 +2212,21 @@
                             <div class="icon-circle" style="background: rgba(46, 204, 113, 0.1); color: #2ecc71;">🌍</div>
                             <h3>Export Global</h3>
                             <p>Générer un fichier Excel compressant toutes les bases de données.</p>
+                        </div>
+                        <div class="dashboard-card admin-only-card" onclick="showSection('admin')" style="border-color: #e74c3c; display: none;">
+                            <div class="icon-circle" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">👥</div>
+                            <h3>Membres en attente <span id="pending-count-badge" class="pending-badge">0</span></h3>
+                            <p>Approuver ou gérer les nouveaux comptes utilisateurs.</p>
+                        </div>
+                        <div class="dashboard-card admin-only-card" onclick="showSection('admindb')" style="border-color: #34495e; display: none;">
+                            <div class="icon-circle" style="background: rgba(52, 73, 94, 0.1); color: #34495e;">🗄️</div>
+                            <h3>Gestion Base</h3>
+                            <p>Import/Export massif et nettoyage des données.</p>
+                        </div>
+                        <div class="dashboard-card admin-only-card" onclick="showSection('admin'); setTimeout(() => { window.scrollTo({top: document.getElementById('admin-panel').scrollHeight, behavior: 'smooth'}) }, 500)" style="border-color: #e67e22; display: none;">
+                            <div class="icon-circle" style="background: rgba(230, 126, 34, 0.1); color: #e67e22;">🛠️</div>
+                            <h3>Diagnostic & Secours</h3>
+                            <p>Outils de maintenance et récupération de données.</p>
                         </div>
                     </div>
                 </div>
@@ -3738,56 +3765,52 @@
 
             const searchInput = document.getElementById('rapportSearchInput');
             const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
-
+            const searchLower = searchTerm ? normalizeStr(searchTerm) : '';
             const todayStr = new Date().toISOString().split('T')[0];
 
             const summary = {};
-            inventoryData.forEach(item => {
-                // Filtre des entamés et périmés
-                const strData = JSON.stringify(item).toLowerCase();
-                if (strData.includes('entamé') || strData.includes('entame')) return;
-                if (strData.includes('périmé') || strData.includes('perime')) return;
-                if (strData.includes('epuisé') || strData.includes('epuise')) return;
-                if (strData.includes('dons')) return;
-                // Exclure également si la date d'expiration est dépassée selon l'ordinateur
-                if (item.expDate && item.expDate < todayStr) return;
+            const qtyRegex = /^(\d+)\s*(flacons?|u|units?|petri|boites?|pcs|pce|fl)?/i;
+            
+            if (inventoryData) {
+                for (let i = 0; i < inventoryData.length; i++) {
+                    const item = inventoryData[i];
+                    const desig = (item.designation || 'INCONNU').toUpperCase();
+                    const note = (item.observations || item.note || '').toLowerCase();
+                    const quantityLower = (item.quantity || '').toLowerCase();
+                    
+                    if (note.includes('entamé') || note.includes('entame') || quantityLower.includes('entame') ||
+                        note.includes('périmé') || note.includes('perime') || quantityLower.includes('perime') ||
+                        note.includes('epuisé') || note.includes('epuise') || quantityLower.includes('epuise') ||
+                        note.includes('dons') || quantityLower.includes('dons')) continue;
+                    
+                    if (item.expDate && item.expDate < todayStr) continue;
 
-                const desig = (item.designation || 'INCONNU').toUpperCase();
-
-                // Filtre de recherche utilisateur étendu matching renderTable
-                if (searchTerm) {
-                    const searchLower = normalizeStr(searchTerm);
-                    const ddo = item.openDate ? normalizeStr(new Date(item.openDate).toLocaleDateString('fr-FR')) : '';
-                    const ddf = item.expDate ? normalizeStr(new Date(item.expDate).toLocaleDateString('fr-FR')) : '';
-                    const dr = item.date ? normalizeStr(new Date(item.date).toLocaleDateString('fr-FR')) : '';
-
-                    const searchable = normalizeStr(`${desig} ${item.code || ''} ${item.lotNumber || ''} ${item.supplier || ''} ${item.location || ''} ${item.conservation || ''} ${item.barcode || ''} ${dr} ${ddf} ${ddo}`);
-                    if (!searchable.includes(searchLower)) return;
-                }
-
-                if (!summary[desig]) {
-                    summary[desig] = { count: 0, details: new Set() };
-                }
-
-                // Analyser la quantité pour sommer les unités (ex: "5 flacons" -> 5)
-                let qtyVal = 1;
-                if (item.quantity) {
-                    const qStr = String(item.quantity).trim();
-                    const numericMatch = qStr.match(/^(\d+)$/);
-                    if (numericMatch) {
-                        qtyVal = parseInt(numericMatch[1], 10);
-                    } else {
-                        // Match "10 flacons", "10 units", etc.
-                        const unitsMatch = qStr.match(/^(\d+)\s*(flacons?|u|units?|petri|boites?|pcs|pce|fl)/i);
-                        if (unitsMatch) {
-                            qtyVal = parseInt(unitsMatch[1], 10);
-                        }
-                        // Par défaut 1 pour les descriptions de type "500 GR" (un contenant unique)
+                    if (searchLower) {
+                        const matches = 
+                            normalizeStr(desig).includes(searchLower) ||
+                            (item.code && normalizeStr(item.code).includes(searchLower)) ||
+                            (item.lotNumber && normalizeStr(item.lotNumber).includes(searchLower)) ||
+                            (item.supplier && normalizeStr(item.supplier).includes(searchLower)) ||
+                            (item.location && normalizeStr(item.location).includes(searchLower)) ||
+                            (item.expDate && normalizeStr(new Date(item.expDate).toLocaleDateString('fr-FR')).includes(searchLower));
+                        
+                        if (!matches) continue;
                     }
+
+                    if (!summary[desig]) {
+                        summary[desig] = { count: 0, details: new Set() };
+                    }
+
+                    let qtyVal = 1;
+                    if (item.quantity) {
+                        const qStr = String(item.quantity).trim();
+                        const m = qStr.match(qtyRegex);
+                        if (m) qtyVal = parseInt(m[1], 10);
+                    }
+                    summary[desig].count += qtyVal;
+                    if (item.quantity) summary[desig].details.add(item.quantity);
                 }
-                summary[desig].count += qtyVal;
-                if (item.quantity) summary[desig].details.add(item.quantity);
-            });
+            }
 
             let html = '';
             Object.keys(summary).sort().forEach(desig => {
@@ -3825,11 +3848,14 @@
                 const itemDesig = (item.designation || 'INCONNU').toUpperCase();
                 if (itemDesig !== desig) return false;
 
-                const strData = JSON.stringify(item).toLowerCase();
-                if (strData.includes('entamé') || strData.includes('entame')) return false;
-                if (strData.includes('périmé') || strData.includes('perime')) return false;
-                if (strData.includes('epuisé') || strData.includes('epuise')) return false;
-                if (strData.includes('dons')) return false;
+                // Optimisation : éviter JSON.stringify
+                const note = (item.observations || item.note || '').toLowerCase();
+                const quantityLower = (item.quantity || '').toLowerCase();
+                
+                if (note.includes('entamé') || note.includes('entame') || quantityLower.includes('entame')) return false;
+                if (note.includes('périmé') || note.includes('perime') || quantityLower.includes('perime')) return false;
+                if (note.includes('epuisé') || note.includes('epuise') || quantityLower.includes('epuise')) return false;
+                if (note.includes('dons') || quantityLower.includes('dons')) return false;
                 if (item.expDate && item.expDate < todayStr) return false;
 
                 return true;
@@ -3935,8 +3961,9 @@
                 td.style.fontSize = '10pt';
             });
 
+            const settings = getProfileSettings('report');
             const opt = {
-                margin: 0,
+                margin: [settings.marginTop || 0, settings.marginLeft || 0, 0, 0],
                 filename: `Rapport_Stock_${new Date().getTime()}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
@@ -4133,7 +4160,7 @@
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
             if (typeof updateInventoryGroups === 'function') updateInventoryGroups();
             if (typeof updateDesignationOptions === 'function') updateDesignationOptions(currentSection || 'milieux');
-            if (typeof renderRapport === 'function') renderRapport();
+            if (typeof renderRapport === 'function' && window.currentSection === 'rapport') renderRapport();
         });
 
         onSnapshot(collection(db, "souches"), (snapshot) => {
@@ -4400,6 +4427,14 @@
             const tbody = document.getElementById('userTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
+
+            // Update pending badge
+            const pendingCount = users.filter(u => u.status === 'pending').length;
+            const badge = document.getElementById('pending-count-badge');
+            if (badge) {
+                badge.innerText = pendingCount;
+                badge.style.display = pendingCount > 0 ? 'inline-block' : 'none';
+            }
 
             // Appliquer le tri
             const sortedUsers = [...users].sort((a, b) => {
@@ -5275,8 +5310,14 @@
         }
 
 
+        const normalizationCache = new Map();
         function normalizeStr(str) {
-            return (str || '').toString().toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            if (!str) return '';
+            const val = String(str);
+            if (normalizationCache.has(val)) return normalizationCache.get(val);
+            const norm = val.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+            normalizationCache.set(val, norm);
+            return norm;
         }
 
         // --- FONCTION RECHERCHE MILEUX LIES ---
@@ -5401,7 +5442,10 @@
                 const rp = document.getElementById('rapport-panel');
                 if (rp) {
                     rp.style.display = 'block';
-                    if (typeof renderRapport === 'function') renderRapport();
+                    // Délai pour laisser l'interface s'afficher avant le calcul lourd
+                    setTimeout(() => {
+                        if (typeof renderRapport === 'function') renderRapport();
+                    }, 50);
                 }
             }
 
@@ -7150,28 +7194,23 @@
                 });
                 multiColumnSort(filtered, tableSort.main);
             } else if (currentSection !== 'souchier') {
+                const searchLower = normalizeStr(searchTerm);
                 filtered = dataPool.filter(label => {
-                    const searchLower = normalizeStr(searchTerm);
-                    const dr = label.date ? normalizeStr(new Date(label.date).toLocaleDateString('fr-FR')) : '';
-                    const ddf = label.expDate ? normalizeStr(new Date(label.expDate).toLocaleDateString('fr-FR')) : '';
-                    const ddp = label.prepDate ? normalizeStr(new Date(label.prepDate).toLocaleDateString('fr-FR')) : '';
-                    const ddo = label.openDate ? normalizeStr(new Date(label.openDate).toLocaleDateString('fr-FR')) : '';
-
                     const matchesSearch = !searchLower || (
                         normalizeStr(label.designation).includes(searchLower) ||
                         normalizeStr(label.code).includes(searchLower) ||
-                        normalizeStr(label.preparator).includes(searchLower) ||
+                        normalizeStr(label.lotNumber).includes(searchLower) ||
                         normalizeStr(label.supplier).includes(searchLower) ||
                         normalizeStr(label.location).includes(searchLower) ||
-                        normalizeStr(label.lotNumber).includes(searchLower) ||
-                        normalizeStr(label.conservation).includes(searchLower) ||
-                        dr.includes(searchLower) || ddf.includes(searchLower) || ddp.includes(searchLower) || ddo.includes(searchLower)
+                        (label.date && normalizeStr(new Date(label.date).toLocaleDateString('fr-FR')).includes(searchLower)) ||
+                        (label.expDate && normalizeStr(new Date(label.expDate).toLocaleDateString('fr-FR')).includes(searchLower)) ||
+                        (label.prepDate && normalizeStr(new Date(label.prepDate).toLocaleDateString('fr-FR')).includes(searchLower))
                     );
 
                     let matchesSection = true;
                     if (!isInv) {
                         if (currentSection === 'history') {
-                            matchesSection = true; // Include all labels in history
+                            matchesSection = true;
                         } else {
                             matchesSection = (currentSection === 'petri') ? (label.type === 'petri') : (label.type === 'milieux' || !label.type);
                         }
@@ -8469,10 +8508,14 @@
             if (currentUser) {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                if (currentUser.role === 'admin') {
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+                if (currentUser.role === 'admin' && currentUser.email === 'sohaibchekri@gmail.com') {
                     document.getElementById('admin-sidebar').style.display = 'block';
+                    document.querySelectorAll('.admin-only-card').forEach(card => card.style.display = 'flex');
                 } else {
                     document.getElementById('admin-sidebar').style.display = 'none';
+                    document.querySelectorAll('.admin-only-card').forEach(card => card.style.display = 'none');
                 }
                 showSection('dashboard');
             } else {
