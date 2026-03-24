@@ -11,7 +11,7 @@
     <link rel="apple-touch-icon" href="logo.PNG">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="GEST-LABO">
+    <meta name="apple-mobile-web-app-title" content="GEST-LAB">
 
     <script>
         if ('serviceWorker' in navigator) {
@@ -1044,99 +1044,100 @@
 
             .main-content {
                 margin-left: 0 !important;
-                padding: 12px !important;
+                padding: 10px !important;
                 padding-bottom: 90px !important;
-                gap: 15px;
+                gap: 12px;
                 width: 100% !important;
                 max-width: 100vw !important;
                 overflow-x: hidden;
             }
 
             .page-title {
-                font-size: 1.2rem !important;
+                font-size: 1.1rem !important;
             }
 
             .page-header {
                 flex-direction: column !important;
                 align-items: stretch !important;
-                gap: 12px !important;
-                padding: 12px !important;
+                gap: 10px !important;
+                padding: 10px !important;
             }
 
             .btn-modern {
-                padding: 12px 15px !important;
-                font-size: 0.95rem !important;
-                width: 100% !important;
+                padding: 10px 12px !important;
+                font-size: 0.85rem !important;
+                width: 100% !important; /* Default for most */
                 justify-content: center !important;
             }
 
+            /* Allow some buttons to be side-by-side */
+            .btn-container {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+            }
+
+            .btn-container .btn-modern {
+                width: calc(50% - 4px) !important;
+                min-width: 120px;
+                padding: 12px 10px !important;
+            }
+            
+            /* Full width for specific large buttons */
+            .btn-container .btn-add, .btn-container .btn-print, .btn-container #div-btn-milieux, .btn-container #div-btn-petri, .btn-container #div-btn-sterilisation, .btn-container #div-btn-inventory, .btn-container #div-btn-classeur {
+                width: 100% !important;
+            }
+            
+            /* Actually, let's make the main add/clear also smaller if possible */
+            #mainAddBtn, #mainClearBtn {
+                 width: calc(50% - 4px) !important;
+            }
+
             .glass-card {
-                padding: 20px !important;
+                padding: 15px !important;
                 border-radius: 12px;
-                background: rgba(255, 255, 255, 0.98);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-                margin-bottom: 15px !important;
+                margin-bottom: 12px !important;
             }
 
             .form-grid {
                 grid-template-columns: 1fr !important;
-                gap: 15px !important;
+                gap: 12px !important;
             }
 
             #inventory-fields,
             #classeur-fields,
             #souche-form .form-grid {
                 grid-template-columns: 1fr !important;
-                padding: 15px !important;
+                padding: 12px !important;
             }
 
             .form-group {
                 grid-column: span 1 !important;
-                margin-bottom: 12px !important;
-            }
-
-            .form-group-full {
-                grid-column: span 1 !important;
+                margin-bottom: 10px !important;
             }
 
             .dashboard-grid {
                 grid-template-columns: 1fr !important;
-                gap: 15px;
+                gap: 12px;
             }
 
             .dashboard-card {
-                padding: 20px 15px !important;
-                border-radius: 16px;
+                padding: 15px 12px !important;
             }
 
             .dashboard-card .icon-circle {
-                width: 55px !important;
-                height: 55px !important;
-                font-size: 1.8rem !important;
-            }
-
-            .dashboard-card h3 {
-                font-size: 1.1rem !important;
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 1.6rem !important;
             }
 
             .table-wrapper {
-                margin: 15px 0 !important;
-                border-radius: 8px !important;
-                overflow-x: auto !important;
-                width: 100% !important;
-                background: white !important;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
-                margin-bottom: 20px !important;
+                margin: 10px 0 !important;
+                font-size: 0.7rem !important;
             }
 
-            table {
-                font-size: 0.75rem !important;
-                width: 100% !important;
-            }
-
-            th,
-            td {
-                padding: 10px 6px !important;
+            th, td {
+                padding: 8px 4px !important;
             }
 
             .mobile-bottom-nav {
@@ -1145,55 +1146,39 @@
                 bottom: 0;
                 left: 0;
                 width: 100%;
-                background: rgba(255, 255, 255, 0.95);
+                background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                height: 70px;
+                height: 65px;
                 z-index: 4000;
                 border-top: 1px solid rgba(0, 0, 0, 0.1);
-                box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.05);
                 justify-content: space-around;
                 align-items: center;
-                padding: 0 5px;
+                padding: 0 2px;
             }
-
-            #btn-theme-toggle {
-                position: absolute !important;
-                top: 15px;
-                right: 15px;
-                width: 45px !important;
-                height: 45px !important;
-                border-radius: 50% !important;
-                padding: 0 !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                background: rgba(255, 255, 255, 0.9) !important;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-                z-index: 100 !important;
-                color: #333 !important;
+            
+            .mobile-nav-btn {
+                padding: 4px 2px !important;
+                font-size: 0.6rem !important;
             }
 
             .bulk-action-bar {
-                bottom: 85px;
-                width: 95%;
-                font-size: 0.75rem;
-                padding: 12px;
+                bottom: 75px;
+                width: 98%;
+                font-size: 0.7rem;
+                padding: 8px;
                 flex-direction: column;
-                gap: 10px;
-                border-radius: 12px;
-                box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+                gap: 8px;
+                border-radius: 10px;
             }
             .bulk-action-bar div {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px !important;
+                gap: 5px !important;
             }
             .bulk-action-bar button {
-                padding: 6px 10px;
-                min-width: 80px;
-                flex: 1 1 auto;
+                padding: 5px 8px !important;
+                font-size: 0.7rem !important;
+                min-width: 60px;
             }
+
 
             .top-signature {
                 display: none !important;
@@ -1377,35 +1362,55 @@
         .top-signature {
             position: fixed;
             top: 20px;
-            left: 20px;
-            z-index: 99999;
-            background: rgba(45, 55, 72, 0.95);
-            padding: 12px 24px;
-            border-radius: 50px;
+            right: 20px;
+            z-index: 10000;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
             border: 2px solid #3074c7;
-            font-weight: 900;
-            font-size: 0.85rem;
-            color: white;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            align-items: flex-end;
             pointer-events: auto;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
         }
 
         .top-signature:hover {
-            transform: scale(1.08) translateY(-3px);
-            box-shadow: 0 15px 45px rgba(48, 116, 199, 0.4);
+            transform: scale(1.02);
         }
 
-        .top-signature span {
+        .top-signature span:first-child {
+            font-size: 0.6rem;
+            color: #718096;
+            font-weight: 800;
+        }
+
+        .top-signature span:last-child {
+            font-size: 1.1rem;
             color: #3074c7;
-            text-shadow: 0 0 15px rgba(48, 116, 199, 0.6);
+            font-weight: 1000;
+            line-height: 1;
+        }
+
+        .top-signature .analyst-title {
+            font-size: 0.7rem;
+            color: #1a202c;
+            font-weight: 800;
+            margin-top: 2px;
+        }
+
+        .top-signature .whatsapp-link {
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #25D366;
+            font-size: 0.75rem;
             font-weight: 900;
+            text-decoration: none;
         }
 
 
@@ -1789,7 +1794,7 @@
     <!-- OVERLAY DE CONNEXION -->
     <div id="auth-overlay">
         <div class="auth-card" id="auth-card">
-            <h2 id="auth-title">Connexion - ETIQ-CHS</h2>
+            <h2 id="auth-title">Connexion - GEST-LAB</h2>
 
             <!-- Section Photo (Uniquement en mode inscription) -->
             <div id="reg-photo-section" style="display: none;">
@@ -1857,6 +1862,14 @@
                             style="color: #3074c7; font-weight: 600; text-decoration: none;">S'inscrire</a>
                     </p>
                 </div>
+                <div class="auth-signature" style="text-align: center; margin-top: 15px; border: 2px solid #3074c7; padding: 12px; border-radius: 12px; background: #f8f9fa;">
+                    <div style="font-size: 0.5rem; color: #718096; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;">CREATED BY</div>
+                    <div style="font-size: 1.1rem; color: #3074c7; font-weight: 1000; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: -2px;">SOHAIB CHEKRI</div>
+                    <div style="font-size: 0.65rem; color: #1a202c; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">MICROBIOLOGY-ANALYST</div>
+                    <a href="https://wa.me/213675758220" target="_blank" style="margin-top: 5px; display: flex; align-items: center; gap: 5px; color: #25D366; font-size: 0.8rem; font-weight: 900; text-decoration: none; justify-content: center;">
+                        🟢 WhatsApp: +213 675 75 82 20
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -1871,7 +1884,7 @@
                     style="text-align: center; margin-bottom: 5px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 5px;">
                     <img id="app-logo" src="logo.PNG" alt="Logo"
                         style="max-width: 80px; margin-bottom: 5px; border-radius: 8px;">
-                    <h2 style="font-weight: 800; font-size: 1.4rem; color: #1a202c; margin-bottom: 0;">GEST-LABO</h2>
+                    <h2 style="font-weight: 800; font-size: 1.4rem; color: #1a202c; margin-bottom: 0;">GEST-LAB</h2>
                     <p style="font-size: 0.65rem; color: #718096; margin-bottom: 5px; font-weight: 600;">v1.1 (Mise à
                         jour Auto)</p>
 
@@ -2020,13 +2033,13 @@
                                 style="font-size: 0.75rem; font-weight: 600; color: #3074c7; text-transform: uppercase; letter-spacing: 0.5px;">Chargement...</span>
                         </div>
                         <div class="top-signature"
-                            style="margin-left: 20px; border-left: 2px solid #3074c7; padding-left: 15px; display: flex; flex-direction: column; align-items: flex-end;">
-                            <span
-                                style="font-size: 0.7rem; color: #1a202c; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase;">CREATED
-                                BY</span>
-                            <span
-                                style="font-size: 1rem; color: #3074c7; font-weight: 1000; letter-spacing: 0.5px; text-transform: uppercase;">SOHAIB
-                                CHEKRI</span>
+                            style="margin-left: 15px; border-left: 2px solid #3074c7; padding-left: 15px; display: flex; flex-direction: column; align-items: flex-end; position: static; background: transparent; box-shadow: none; border-radius: 0; padding: 0;">
+                            <span style="font-size: 0.6rem; color: #718096; font-weight: 800; text-transform: uppercase;">CREATED BY</span>
+                            <span style="font-size: 1rem; color: #3074c7; font-weight: 900; text-transform: uppercase;">SOHAIB CHEKRI</span>
+                            <div style="font-size: 0.7rem; color: #1a202c; font-weight: 800; text-transform: uppercase;">MICROBIOLOGY-ANALYST</div>
+                            <a href="https://wa.me/213675758220" target="_blank" style="margin-top: 3px; display: flex; align-items: center; gap: 4px; color: #25D366; font-size: 0.75rem; font-weight: 900; text-decoration: none;">
+                                🟢 +213 675 75 82 20
+                            </a>
                         </div>
                     </div>
 
@@ -2074,10 +2087,19 @@
 
                 <!-- DASHBOARD PANEL -->
                 <div id="dashboard-panel" style="display: none; margin-top: -35px;">
-                    <div style="margin-bottom: 5px;">
-                        <h2 style="font-size: 1.3rem; color: #3074c7;">Tableau de Bord</h2>
-                        <p style="color: var(--text-light); margin-top: 2px; font-size: 0.9rem;">Sélectionnez une action
-                            pour commencer.</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <div>
+                            <h2 style="font-size: 1.5rem; color: #3074c7; font-weight: 800;">Tableau de Bord</h2>
+                            <p style="color: var(--text-light); margin-top: 2px; font-size: 1rem;">Sélectionnez une action pour commencer.</p>
+                        </div>
+                        <div class="dashboard-signature" style="text-align: right; background: white; padding: 12px 20px; border-radius: 15px; border: 2.5px solid #3074c7; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+                            <div style="font-size: 0.65rem; color: #718096; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;">CREATED BY</div>
+                            <div style="font-size: 1.3rem; color: #3074c7; font-weight: 1000; letter-spacing: 0.5px; text-transform: uppercase;">SOHAIB CHEKRI</div>
+                            <div style="font-size: 0.8rem; color: #1a202c; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">MICROBIOLOGY-ANALYST</div>
+                            <a href="https://wa.me/213675758220" target="_blank" style="margin-top: 5px; display: flex; align-items: center; gap: 6px; color: #25D366; font-size: 0.9rem; font-weight: 900; text-decoration: none; justify-content: flex-end;">
+                                <span style="font-size: 1.2rem;">📱</span> WhatsApp: +213 675 75 82 20
+                            </a>
+                        </div>
                     </div>
 
                     <!-- DIAGNOSTIC BAR MOVED TO ADMIN -->
@@ -2173,6 +2195,11 @@
                             </div>
                             <h3>Étiquettes Classeurs</h3>
                             <p>Création d'étiquettes pour l'identification des classeurs de laboratoire.</p>
+                        </div>
+                        <div class="dashboard-card" onclick="exportAllData()" style="border-color: #2ecc71;">
+                            <div class="icon-circle" style="background: rgba(46, 204, 113, 0.1); color: #2ecc71;">🌍</div>
+                            <h3>Export Global</h3>
+                            <p>Générer un fichier Excel compressant toutes les bases de données.</p>
                         </div>
                     </div>
                 </div>
@@ -3381,6 +3408,9 @@
             <h2>Historique des étiquettes</h2>
             <button class="btn-modern btn-print" onclick="exportToCsv()">
                 📤 Sauvegarder l'historique (CSV)
+            </button>
+            <button class="btn-modern btn-print" onclick="exportAllData()" style="background: #27ae60;">
+                🌍 Export Global (Tout)
             </button>
             <button class="btn-modern btn-print" onclick="exportTableToPdf('history-panel')"
                 style="background: #9b59b6;">
@@ -7905,6 +7935,87 @@
             document.body.removeChild(link);
         }
 
+        async function exportAllData() {
+            if (!confirm("Voulez-vous générer un export global de toutes les données (Milieux, Inventaire, Souchier, Classeurs) dans un seul fichier Excel ?")) return;
+            
+            try {
+                // S'assurer que XLSX est chargé
+                if (typeof XLSX === 'undefined') {
+                    alert("La bibliothèque d'export Excel n'est pas chargée.");
+                    return;
+                }
+
+                const wb = XLSX.utils.book_new();
+                
+                // 1. Onglet Milieux & Petri & Sterilisation (la collection labels)
+                const labelsSheetData = labels.map(l => ({
+                    Type: l.type || 'milieux',
+                    Date: l.date || '',
+                    Designation: l.designation || '',
+                    Code: l.code || '',
+                    'Date Prep': l.prepDate || '',
+                    'Date Exp': l.expDate || '',
+                    Conservation: l.conservation || '',
+                    Preparateur: l.preparator || '',
+                    Emplacement: l.location || '',
+                    'Lot/Cycle': l.lotNumber || l.sterCycle056 || l.sterCycle057 || '',
+                    'Equipment Ste': l.sterEquipment || '',
+                    Quantite: l.quantity || '',
+                    Classeur_Annee: l.classeurAnnee || '',
+                    Classeur_Titre: l.classeurTitre || '',
+                    UpdateAt: l.updatedAt || ''
+                }));
+                const wsLabels = XLSX.utils.json_to_sheet(labelsSheetData);
+                XLSX.utils.book_append_sheet(wb, wsLabels, "Etiquettes_Historique");
+                
+                // 2. Onglet Inventaire
+                const invSheetData = inventoryData.map(l => ({
+                    Groupe: l.inventoryGroup || '',
+                    'Date Rec.': l.date || '',
+                    Designation: l.designation || '',
+                    Code: l.code || '',
+                    Lot: l.lotNumber || '',
+                    Fournisseur: l.supplier || '',
+                    'Date Ouv.': l.openDate || '',
+                    'Date Exp.': l.expDate || '',
+                    Conservation: l.conservation || '',
+                    Emplacement: l.location || '',
+                    Quantite: l.quantity || ''
+                }));
+                const wsInv = XLSX.utils.json_to_sheet(invSheetData);
+                XLSX.utils.book_append_sheet(wb, wsInv, "Inventaire");
+                
+                // 3. Onglet Souchier (Historique des repiquages)
+                const souchierSheetData = souchierLabels.map(l => ({
+                    Souche: l.designation || '',
+                    Code: l.code || '',
+                    'Cryo N°': l.cryoNum || '',
+                    'Date Rep.': l.prepDate || '',
+                    'Date Exp.': l.expDate || '',
+                    Preparateur: l.preparator || ''
+                }));
+                const wsSouche = XLSX.utils.json_to_sheet(souchierSheetData);
+                XLSX.utils.book_append_sheet(wb, wsSouche, "Souchier_Historique");
+                
+                // 4. Onglet Souches (Etat actuel des 12 cryos)
+                const souchesStateData = [];
+                souches.forEach(s => {
+                    const row = { 'Nom Souche': s.name, 'Code': s.code };
+                    (s.cryotubes || []).forEach((t, i) => {
+                        row[`Cryo ${i+1}`] = t.status === 'used' ? `Périmé (${t.expirationDate})` : 'Disponible';
+                    });
+                    souchesStateData.push(row);
+                });
+                const wsSouchesState = XLSX.utils.json_to_sheet(souchesStateData);
+                XLSX.utils.book_append_sheet(wb, wsSouchesState, "Etat_Souchier");
+
+                XLSX.writeFile(wb, `GEST_LABO_GLOBAL_EXPORT_${new Date().toISOString().split('T')[0]}.xlsx`);
+            } catch (err) {
+                console.error(err);
+                alert("Erreur lors de l'export global : " + err.message);
+            }
+        }
+
         function handleImportFile(input) {
             const file = input.files[0];
             if (!file) return;
@@ -8217,7 +8328,7 @@
             document.getElementById('auth-error').innerText = '';
 
             if (isLoginMode) {
-                title.innerText = 'Connexion - ETIQ-CHS';
+                title.innerText = 'Connexion - GEST-LAB';
                 btnText.innerText = 'Se connecter';
                 switchPrompt.innerHTML = `Pas encore de compte ? <a href="#" onclick="toggleAuthMode()" style="color: #3074c7; font-weight: 600; text-decoration: none;">S'inscrire</a>`;
                 regPhoto.style.display = 'none';
@@ -8226,7 +8337,7 @@
                 authCard.style.maxWidth = '400px';
                 stopCamera();
             } else {
-                title.innerText = 'Inscription - ETIQ-CHS';
+                title.innerText = 'Inscription - GEST-LAB';
                 btnText.innerText = "S'inscrire";
                 switchPrompt.innerHTML = `Déjà un compte ? <a href="#" onclick="toggleAuthMode()" style="color: #3074c7; font-weight: 600; text-decoration: none;">Se connecter</a>`;
                 regPhoto.style.display = 'block';
@@ -8606,7 +8717,8 @@
             openFeedbackModal,
             closeFeedbackModal,
             setRating,
-            submitFeedback
+            submitFeedback,
+            exportAllData
         });
 
         // --- GESTION DU SOUCHIER ---
