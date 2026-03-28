@@ -2214,7 +2214,7 @@
                         </div>
                         <div class="dashboard-card" onclick="openAboutModal()" style="border-color: #34495e;">
                             <div class="icon-circle" style="overflow:hidden; background: #f0f2f5;">
-                                <img src="sohaib.jpeg"
+                                <img src="sohaib.jpeg?v=1.2"
                                     onerror="this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=34495e&color=fff'"
                                     style="width:100%; height:100%; object-fit:cover;">
                             </div>
@@ -3721,8 +3721,8 @@
                 style="position:absolute; top:15px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer; color:var(--text-light);">&times;</button>
             <div
                 style="width:130px; height:130px; border-radius:50%; margin:0 auto 20px auto; border:4px solid white; box-shadow:0 10px 25px rgba(0,0,0,0.15); overflow:hidden; background:#f0f2f5; display:flex; align-items:center; justify-content:center;">
-                <img src="sohaib.jpeg" alt="Sohaib Chekri"
-                    onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=3074c7&color=fff&size=128'"
+                <img src="sohaib.jpeg?v=1.2" alt="Sohaib Chekri"
+                    onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=3074c7&color=fff&size=200'"
                     style="width:100%; height:100%; object-fit:cover;">
             </div>
             <h2 style="color:#3074c7; margin-bottom:10px; font-weight:900; letter-spacing:-0.5px;">Sohaib Chekri</h2>
@@ -3804,12 +3804,17 @@
 
         // --- GLOBAL STATE ---
         let labels = [];
+        window.labels = labels;
         let currentSection = 'dashboard';
         window.currentSection = currentSection;
         let inventoryData = [];
+        window.inventoryData = inventoryData;
         let users = [];
+        window.users = users;
         let souchierLabels = [];
+        window.souchierLabels = souchierLabels;
         let currentUser = null;
+        window.currentUser = currentUser;
         let isLoginMode = true;
         let isInitialAuthCheck = true;
         let userPhotoBase64 = null;
@@ -4196,6 +4201,7 @@
 
             // On trie manuellement par ID décroissant (Timestamp)
             labels = [...allDocs].sort((a, b) => (b.id || 0) - (a.id || 0));
+            window.labels = labels;
 
             souchierLabels = allDocs
                 .filter(l => (l.type || '').toLowerCase() === 'souchier')
@@ -4204,6 +4210,7 @@
                     const dbVal = b.date ? new Date(b.date).getTime() : 0;
                     return dbVal - da;
                 });
+            window.souchierLabels = souchierLabels;
 
             if (typeof renderTable === 'function') renderTable();
             if (typeof renderHistoryTable === 'function') renderHistoryTable();
@@ -4215,6 +4222,7 @@
         onSnapshot(collection(db, "inventory"), (snapshot) => {
             const allInv = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
             inventoryData = allInv.sort((a, b) => (b.id || 0) - (a.id || 0));
+            window.inventoryData = inventoryData;
 
             if (typeof renderTable === 'function') renderTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
@@ -4225,6 +4233,7 @@
 
         onSnapshot(collection(db, "souches"), (snapshot) => {
             souches = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+            window.souches = souches;
             // Tri par updatedAt
             souches.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
 
@@ -4259,6 +4268,7 @@
 
         onSnapshot(collection(db, "users"), (snapshot) => {
             users = snapshot.docs.map(doc => doc.data());
+            window.users = users;
             if (typeof renderUserTable === 'function') renderUserTable();
 
             // Populate Sterilisation User Dropdown
@@ -5531,7 +5541,10 @@
                 'sterilisation': 'Etiquettes de Stérilisation',
                 'souchier': 'Gestion des Souches de Référence',
                 'rapport': 'Rapport Globale du Stock',
-                'classeur': 'Classeurs de Laboratoire Microbiologie'
+                'classeur': 'Classeurs de Laboratoire Microbiologie',
+                'prelevement': "Prélèvement d'eau",
+                'prelevement_mp_pf': 'Prélèvement MP/PF',
+                'pieces_machines': 'Pièces Machines'
             };
 
             // Titre dynamique pour l'inventaire
@@ -5693,11 +5706,11 @@
                 } else if (child.classList.contains('glass-card')) {
                     // Formula card
                     if (child.querySelector('.form-grid')) {
-                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'inventory' || sectionId === 'sterilisation' || sectionId === 'classeur') ? 'block' : 'none';
+                        child.style.display = (['milieux', 'petri', 'inventory', 'sterilisation', 'classeur'].includes(sectionId)) ? 'block' : 'none';
                     }
                     // Main Table card (labelTableBody)
                     else if (child.querySelector('#labelTableBody')) {
-                        child.style.display = (sectionId === 'milieux' || sectionId === 'petri' || sectionId === 'sterilisation' || sectionId === 'classeur') ? 'block' : 'none';
+                        child.style.display = (['milieux', 'petri', 'sterilisation', 'classeur'].includes(sectionId)) ? 'block' : 'none';
                     }
                     // Panels
                     else if (child.id && child.id.includes('-panel')) {
@@ -5774,7 +5787,12 @@
             }
 
             // Auto scroll vers le formulaire si visible, sinon vers le haut
-            if (sectionId !== 'dashboard' && sectionId !== 'history' && sectionId !== 'admin') {
+            if (sectionId === 'prelevement' || sectionId === 'prelevement_mp_pf' || sectionId === 'pieces_machines') {
+                const target = document.getElementById(`${sectionId}-panel`);
+                if (target) {
+                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+                }
+            } else if (sectionId !== 'dashboard' && sectionId !== 'history' && sectionId !== 'admin') {
                 setTimeout(() => {
                     const formCard = document.getElementById('main-form-card');
                     if (formCard && formCard.style.display !== 'none') {
@@ -7321,7 +7339,7 @@
 
             const fullDateTime = new Date().toLocaleString('fr-FR');
             const settings = getProfileSettings('report');
-            const finalOrientation = (currentSection === 'classeur') ? 'portrait' : 'landscape';
+            const finalOrientation = settings.orientation || 'landscape';
             const isPortrait = finalOrientation === 'portrait';
             let pagesHtml = '';
 
@@ -7703,8 +7721,10 @@
         const PROFILE_LABELS = {
             milieux: { label: 'Milieux Préparés', color: '#1a6fa8', emoji: '🧪' },
             petri: { label: 'Boîtes Petri Pré-coulées', color: '#1e8449', emoji: '🧫' },
-            sterilisation: { label: 'Stérilisation', color: '#ca6f1e', emoji: '<img src="sterilisation.png" style="width:1.4rem;height:1.4rem;vertical-align:middle;margin-right:8px;">' },
+            sterilisation: { label: 'Stérilisation', color: '#ca6f1e', emoji: '🔥' },
             inventory: { label: 'Inventaire', color: '#6c3483', emoji: '📦' },
+            prelevement: { label: "Prélèvement d'eau", color: '#3498db', emoji: '💧' },
+            prel_mp_pf: { label: "Prélèvement MP/PF", color: '#27ae60', emoji: '🔬' },
             report: { label: 'Rapports État (A4)', color: '#9b59b6', emoji: '📋' }
         };
 
@@ -8583,11 +8603,10 @@
             if (currentUser) {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
-                document.getElementById('auth-overlay').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                if (currentUser.role === 'admin' && currentUser.email === 'sohaibchekri@gmail.com') {
+                if (currentUser.role === 'admin') {
                     document.getElementById('admin-sidebar').style.display = 'block';
                     document.querySelectorAll('.admin-only-card').forEach(card => card.style.display = 'flex');
+                    if (typeof window.initDashboardSortUI === 'function') window.initDashboardSortUI();
                 } else {
                     document.getElementById('admin-sidebar').style.display = 'none';
                     document.querySelectorAll('.admin-only-card').forEach(card => card.style.display = 'none');
@@ -8621,6 +8640,7 @@
                     userDoc = await getDoc(doc(db, "users", normalizedEmail));
                 }
                 currentUser = userDoc.data();
+                window.currentUser = currentUser;
                 if (currentUser.status === 'approved') {
                     // Update user profile header
                     const headerPhoto = document.getElementById('header-user-photo');
@@ -8657,6 +8677,7 @@
                 }
             } else {
                 currentUser = null;
+                window.currentUser = null;
                 checkAuth();
             }
         });
@@ -8699,6 +8720,8 @@
             generateDetailedReport,
             exportToCsv,
             cleanDataManual,
+            applyPrintSettings,
+            PROFILE_LABELS,
             handleAuth,
             toggleAuthMode,
             logout,
@@ -10121,6 +10144,9 @@
                                 Points de prélèvement 
                                 <button class="btn-mini" onclick="addPrelevementPoint()" style="float: right; background: #2ecc71; color: white; cursor: pointer;">➕ Ajouter un point</button>
                             </h3>
+                            <div style="margin-bottom: 15px;">
+                                <input type="text" id="prel-search" placeholder="🔍 Filtrer les points..." oninput="renderPrelevementTable()" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.5); outline: none; font-size: 0.95rem;">
+                            </div>
                             <div class="table-wrapper">
                                 <table style="width: 100%;">
                                     <thead>
@@ -10243,6 +10269,47 @@
                     </div>
                 `;
             }
+            if (label.type === 'prel_mp_pf') {
+                const pc = label.pc ? '☑' : '☐', mc = label.micro ? '☑' : '☐';
+                const df = (dt) => { if(!dt) return '--/--/----'; const [y,m,d]=dt.split('-'); return `${d}/${m}/${y}`; };
+                return `
+                    <div class="etiquette" style="border: 2px solid #000; padding: 15px; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; display: flex; flex-direction: column;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 5px;">
+                            <img src="logo.PNG" style="width: 100px;">
+                            <div style="flex: 1; text-align: center; font-weight: 900; font-size: 1.15em; text-transform: uppercase; padding-top: 10px;">
+                                ETIQUETTE D'IDENTIFICATION DE PRELEVEMENT
+                            </div>
+                        </div>
+                        <div style="border-top: 1px solid #000; padding-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">Désignation de produit:</span><span style="flex: 1;">${label.name}</span></div>
+                            <div style="display: flex; align-items: center; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">Code de produit :</span><span style="display: inline-flex; gap: 15px; padding-left: 5px;">Physico-chimie ${pc} Microbiologie ${mc}</span></div>
+                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">Date et heure de prélèvem</span><span style="flex: 1;">${df(label.date)} à ${label.time?label.time.replace(':','H'):'H'}</span></div>
+                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">N° de lot:</span><span style="flex: 1;">${label.lot}</span></div>
+                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">DDF:</span><span style="flex: 1;">${df(label.ddf)}</span></div>
+                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">DDP:</span><span style="flex: 1;">${df(label.ddp)}</span></div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; font-size: 10pt;">
+                                <div style="display: flex;"><span style="font-weight: 900;">Prélevé par:</span><span style="margin-left: 15px;">${label.initials}</span></div>
+                                <div style="font-weight: 900; font-size: 0.85em;">FE001/ CQ-SOP – 0008/02</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            if (label.type === 'pieces_machines') {
+                const df = (dt) => { if(!dt) return ''; const [y,m,d]=dt.split('-'); return `${d}/${m}/${y}`; };
+                return `
+                    <div class="etiquette" style="border: 1px solid #000; padding: 10px; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', serif; color: #000; display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; border-collapse: collapse;">
+                        <div style="font-weight: bold; font-size: 11pt; text-align: center; margin-top: 5px; line-height: 1.2;">
+                            ${label.name}
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 10pt; font-weight: bold; margin-bottom: 5px; text-align: left;">
+                            <div>Lot : <span style="font-weight: normal; margin-left: 5px;">${label.lot || ''}</span></div>
+                            <div>Date : <span style="font-weight: normal; margin-left: 5px;">${df(label.date)}</span></div>
+                            <div>Fait par : <span style="font-weight: normal; margin-left: 2px;">${label.initials || ''}</span></div>
+                        </div>
+                    </div>
+                `;
+            }
             if (originalGenerateLabelHTML) return originalGenerateLabelHTML(label);
             return '';
         };
@@ -10303,15 +10370,17 @@
             const tbody = document.getElementById('prel-points-body');
             if(!tbody) return;
             tbody.innerHTML = '';
+            const search = document.getElementById('prel-search') ? document.getElementById('prel-search').value.toLowerCase().trim() : '';
             
             currentDayPointsList.forEach((item, idx) => {
+                if(search && !item.point.toLowerCase().includes(search)) return;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="text-align: center;">
                         <input type="checkbox" class="row-checkbox" ${item.print ? 'checked' : ''} onchange="currentDayPointsList[${idx}].print = this.checked">
                     </td>
                     <td>
-                        <input type="text" value="${item.point}" onchange="currentDayPointsList[${idx}].point = this.value; savePrelevementConfig();" style="width: 100%; border: 1px solid #e2e8f0; padding: 8px; border-radius: 6px;">
+                        <input type="text" id="point-input-${idx}" value="${item.point}" onchange="currentDayPointsList[${idx}].point = this.value; savePrelevementConfig();" style="width: 100%; border: 1px solid #e2e8f0; padding: 8px; border-radius: 6px;">
                     </td>
                     <td style="text-align: center;">
                         <input type="checkbox" class="row-checkbox" ${item.phch ? 'checked' : ''} onchange="currentDayPointsList[${idx}].phch = this.checked">
@@ -10319,12 +10388,29 @@
                     <td style="text-align: center;">
                         <input type="checkbox" class="row-checkbox" ${item.micro ? 'checked' : ''} onchange="currentDayPointsList[${idx}].micro = this.checked">
                     </td>
-                    <td style="text-align: center;">
-                        <button onclick="deletePrelevementPoint(${idx})" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 1.2rem;">🗑️</button>
+                    <td style="text-align: center; display: flex; gap: 8px; justify-content: center;">
+                        <button onclick="printPrelevementSingle(${idx})" title="Imprimer ce point" style="background: none; border: none; color: #3498db; cursor: pointer; font-size: 1.1rem;">🖨️</button>
+                        <button onclick="document.getElementById('point-input-${idx}').focus()" title="Modifier" style="background: none; border: none; color: #f39c12; cursor: pointer; font-size: 1.1rem;">✏️</button>
+                        <button onclick="deletePrelevementPoint(${idx})" title="Supprimer" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 1.1rem;">🗑️</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
             });
+        }
+
+        function printPrelevementSingle(idx) {
+            // Save current print flags to restore later
+            const originalFlags = currentDayPointsList.map(p => p.print);
+            
+            // Set only the target point to print
+            currentDayPointsList.forEach((p, i) => p.print = (i === idx));
+            
+            // Trigger print
+            printPrelevementLabels();
+            
+            // Restore original flags
+            currentDayPointsList.forEach((p, i) => p.print = originalFlags[i]);
+            renderPrelevementTable();
         }
 
         function deletePrelevementPoint(idx) {
@@ -10370,11 +10456,11 @@
                 window.PROFILE_LABELS['prelevement'] = { label: "Prélèvement d'eau", color: '#3498db', emoji: '💧' };
             }
             
-            const settings = window.getProfileSettings ? window.getProfileSettings('prelevement') : null;
+            const settings = window.getProfileSettings ? window.getProfileSettings('prelevement') : {width: 9.5, height: 4.5, orientation: 'portrait'};
             const printArea = document.getElementById('print-area');
             printArea.innerHTML = '';
             
-            if(window.applyPrintSettings) window.applyPrintSettings(settings || {width: 9.5, height: 4.5}, 'prelevement');
+            if(window.applyPrintSettings) window.applyPrintSettings(settings, 'prelevement');
             
             printArea.removeAttribute('style');
             printArea.style.setProperty('display', 'flex', 'important');
@@ -10425,11 +10511,634 @@
             }, 1000);
         }
 
-        // Hook it up when DOM is loaded
+        function initPrelevementMpPfTab() {
+            const btnHtml = `<button class="sidebar-btn" id="btn-prelevement_mp_pf" onclick="showSection('prelevement_mp_pf')" style="display:flex; align-items:center;"><span class="icon">🏭</span><span style="font-weight: 700;">Prélèvement MP/PF</span></button>`;
+            const preBtn = document.getElementById('btn-prelevement');
+            if (preBtn) preBtn.insertAdjacentHTML('afterend', btnHtml);
+
+            const mobileNav = document.querySelector('.mobile-bottom-nav');
+            if (mobileNav) {
+                const mBtnHtml = `<button onclick="showSection('prelevement_mp_pf')" class="mobile-nav-btn" id="m-btn-prelevement_mp_pf"><span class="nav-icon">🏭</span><span>MP/PF</span></button>`;
+                mobileNav.insertAdjacentHTML('beforeend', mBtnHtml);
+            }
+
+            const dashboardGrid = document.querySelector('.dashboard-grid');
+            if(dashboardGrid) {
+                const dCard = `<div class="dashboard-card" id="card-prelevement_mp_pf" onclick="showSection('prelevement_mp_pf')" style="border-color: #27ae60;"><div class="icon-circle" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">🏭</div><h3>Prélèvement MP/PF</h3><p>Identification des prélèvements de Matières Premières et Produits Finis.</p></div>`;
+                dashboardGrid.insertAdjacentHTML('beforeend', dCard);
+            }
+
+            const panelHtml = `
+                <div id="prelevement_mp_pf-panel" style="display: none; width: 100%;">
+                    <div class="glass-card" style="padding: 20px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                            <h2 style="color: #27ae60;">📦 Prélèvement MP / PF</h2>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn-modern" onclick="printAllMpPf()" style="background: #27ae60; color: white; display: flex; align-items: center; gap: 8px;">
+                                    🖨️ Imprimer la sélection
+                                </button>
+                                <button class="btn-modern" onclick="openProfileSettings('prel_mp_pf')" style="background: #7f8c8d; color: white;">
+                                    ⚙️ Calibration
+                                </button>
+                                <button class="btn-modern" onclick="importMpPfChatData()" style="background: #e67e22; color: white;">
+                                    📥 Importer Données Chat
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group"><label>Format</label><select id="mppf-format"><option value="mp">MP (Petit format)</option><option value="pf" selected>PF (Grand format)</option></select></div>
+                            <div class="form-group"><label>Désignation</label><input type="text" id="mppf-name" list="all-designations"></div>
+                            <div class="form-group"><label>Date de prélèvement</label><input type="date" id="mppf-date"></div>
+                            <div class="form-group"><label>Heure</label><input type="time" id="mppf-time"></div>
+                            <div class="form-group"><label>Lot</label><input type="text" id="mppf-lot"></div>
+                            <div class="form-group"><label>DDF</label><input type="date" id="mppf-ddf"></div>
+                            <div class="form-group"><label>DDP</label><input type="date" id="mppf-ddp"></div>
+                            <div class="form-group"><label>Prélevé par</label><input type="text" id="mppf-initials" value="DDE"></div>
+                            <div class="form-group" style="grid-column: span 2; display: flex; gap: 20px; align-items: center;">
+                                <label style="font-weight: bold;">Analyses:</label>
+                                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" id="mppf-pc" checked> Ph-ch</label>
+                                <label style="display: flex; align-items: center; gap: 5px;"><input type="checkbox" id="mppf-micro" checked> Micro</label>
+                            </div>
+                        </div>
+                        <div id="mppf-form-actions" style="display: flex; justify-content: flex-end; margin-top: 15px; gap: 10px;">
+                            <button class="btn-modern btn-add" onclick="addMpPfLabel()" style="display: flex; align-items: center; gap: 8px; border: 2px solid #27ae60; background: white; color: #27ae60; font-weight: 900;">
+                                ➕ AJOUTER
+                            </button>
+                        </div>
+                    </div>
+                    <div class="glass-card" style="padding: 20px;">
+                        <div style="margin-bottom: 15px;">
+                            <input type="text" id="mppf-search" placeholder="🔍 Rechercher un produit ou lot..." oninput="renderMpPfTable()" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; background: rgba(255,255,255,0.5); outline: none; font-size: 0.95rem;">
+                        </div>
+                        <div class="table-wrapper">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px;"><input type="checkbox" checked onchange="toggleAllMpPf(this)"></th>
+                                        <th style="width: 100px; cursor: pointer;" onclick="sortMpPf('date')">DATE <span id="sort-icon-date"></span></th>
+                                        <th style="cursor: pointer;" onclick="sortMpPf('name')">PRODUIT <span id="sort-icon-name"></span></th>
+                                        <th style="cursor: pointer;" onclick="sortMpPf('lot')">LOT <span id="sort-icon-lot"></span></th>
+                                        <th style="cursor: pointer; width: 80px;" onclick="sortMpPf('format')">FORMAT <span id="sort-icon-format"></span></th>
+                                        <th style="width: 150px; text-align: center;">ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mppf-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            const mc = document.querySelector('.main-content');
+            if (mc) mc.insertAdjacentHTML('beforeend', panelHtml);
+            
+            const now = new Date();
+            document.getElementById('mppf-date').value = now.toISOString().split('T')[0];
+            document.getElementById('mppf-time').value = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+            try { mppfItems = JSON.parse(localStorage.getItem('GEST_LAB_MPPF_DATA')) || []; } catch(e) {}
+            renderMpPfTable();
+        }
+
+        window.importMpPfChatData = function() {
+            const text = prompt("Copiez-collez ici les données brutes du prélèvement (lignes du chat) :");
+            if (!text) return;
+
+            const lines = text.split('\n');
+            let count = 0;
+            const today = new Date().toISOString().split('T')[0];
+
+            function parseFrDate(str) {
+                if(!str) return ""; str = str.trim();
+                if(str.includes('/')) {
+                    const p = str.split('/');
+                    if(p.length === 3) {
+                        let y = p[2]; if(y.length === 2) y = "20"+y;
+                        return `${y}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+                    }
+                    if(p.length === 2) {
+                        let y = p[1]; if(y.length === 2) y = "20"+y;
+                        return `${y}-${p[0].padStart(2,'0')}-01`;
+                    }
+                }
+                return str;
+            }
+
+            lines.forEach(line => {
+                const cols = line.split('\t');
+                if(cols.length < 2 || line.toLowerCase().includes('désignation')) return;
+
+                const name = cols[0] ? cols[0].trim() : "";
+                if(!name || name === "INSULINE ASPART" && cols.length === 1) return; // Skip empty rows
+
+                const dateVal = parseFrDate(cols[1]) || today;
+                let timeVal = cols[2] ? cols[2].trim().toUpperCase().replace('H', ':') : "10:30";
+                if(timeVal.includes('PM') || timeVal.includes('AM')) {
+                    // Simple AM/PM conversion
+                    let labs = timeVal.split(' ');
+                    let parts = labs[0].split(':');
+                    let h = parseInt(parts[0]);
+                    if(timeVal.includes('PM') && h < 12) h += 12;
+                    if(timeVal.includes('AM') && h === 12) h = 0;
+                    timeVal = String(h).padStart(2,'0') + ":" + (parts[1]||"00");
+                }
+                if(!timeVal.includes(':')) timeVal += ":00";
+
+                const lot = cols[3] ? cols[3].trim() : "LOT-INCONNU";
+                const ddf = parseFrDate(cols[4]);
+                const ddp = parseFrDate(cols[5]);
+
+                mppfItems.unshift({
+                    name: name.toUpperCase(),
+                    lot: lot,
+                    date: dateVal,
+                    time: timeVal,
+                    ddf: ddf,
+                    ddp: ddp,
+                    initials: "IMPORT",
+                    pc: true,
+                    micro: true,
+                    format: "pf",
+                    selected: true
+                });
+                count++;
+            });
+
+            if(count > 0) {
+                localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));
+                renderMpPfTable();
+                alert(`${count} prélèvements importés !`);
+            } else {
+                alert("Aucune donnée valide n'a été détectée.");
+            }
+        };
+
+        let mppfItems = [];
+        let editingMpPfIndex = null;
+        let mppfSortCol = 'date';
+        let mppfSortDir = 'desc';
+
+        window.cancelEditMpPf = function() {
+            editingMpPfIndex = null;
+            document.getElementById('mppf-name').value = '';
+            document.getElementById('mppf-lot').value = '';
+            const actions = document.getElementById('mppf-form-actions');
+            if(actions) {
+                actions.innerHTML = `
+                    <button class="btn-modern btn-add" onclick="addMpPfLabel()" style="display: flex; align-items: center; gap: 8px; border: 2px solid #27ae60; background: white; color: #27ae60; font-weight: 900;">
+                        ➕ AJOUTER
+                    </button>
+                `;
+            }
+        }
+
+        window.renderMpPfTable = function() {
+            const b = document.getElementById('mppf-table-body'); if(!b) return; b.innerHTML = '';
+            const search = document.getElementById('mppf-search') ? document.getElementById('mppf-search').value.toLowerCase().trim() : '';
+            
+            // Update sort icons
+            ['date', 'name', 'lot', 'format'].forEach(c => {
+                const span = document.getElementById('sort-icon-' + c);
+                if(span) span.innerText = (mppfSortCol === c) ? (mppfSortDir === 'asc' ? ' 🔼' : ' 🔽') : '';
+            });
+
+            mppfItems.forEach((it, i) => {
+                if(search && !it.name.toLowerCase().includes(search) && !it.lot.toLowerCase().includes(search)) return;
+                const tr = document.createElement('tr');
+                const dt = it.date ? it.date.split('-').reverse().join('/') : '';
+                tr.innerHTML = `
+                    <td><input type="checkbox" ${it.selected?'checked':''} onchange="mppfItems[${i}].selected=this.checked; localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));"></td>
+                    <td style="font-size: 0.85rem; color: #666;">${dt}</td>
+                    <td style="font-weight:700;">${it.name}</td>
+                    <td style="color: #2c3e50;">${it.lot}</td>
+                    <td>${it.format.toUpperCase()}</td>
+                    <td style="text-align:right; white-space: nowrap;">
+                        <button onclick="editMpPf(${i})" class="btn-mini" style="background: #3498db; color: white;" title="Modifier">✏️</button>
+                        <button onclick="previewMpPf(${i})" class="btn-mini" style="background: #9b59b6; color: white;" title="Aperçu">🔍</button>
+                        <button onclick="printSingleMpPf(${i})" class="btn-mini" style="background: #27ae60; color: white;" title="Imprimer">🖨️</button>
+                        <button onclick="deleteMpPf(${i})" class="btn-mini" style="background: #e74c3c; color: white;" title="Supprimer">🗑️</button>
+                    </td>
+                `;
+                b.appendChild(tr);
+            });
+        }
+
+        window.sortMpPf = function(col) {
+            if (mppfSortCol === col) {
+                mppfSortDir = (mppfSortDir === 'asc' ? 'desc' : 'asc');
+            } else {
+                mppfSortCol = col;
+                mppfSortDir = 'desc';
+            }
+            
+            mppfItems.sort((a, b) => {
+                let vA = (a[col] || "").toString().toLowerCase();
+                let vB = (b[col] || "").toString().toLowerCase();
+                if (col === 'date') { vA = a.date || ""; vB = b.date || ""; }
+                
+                if (vA < vB) return mppfSortDir === 'asc' ? -1 : 1;
+                if (vA > vB) return mppfSortDir === 'asc' ? 1 : -1;
+                return 0;
+            });
+            
+            renderMpPfTable();
+        }
+
+        window.addMpPfLabel = function() {
+            const n = document.getElementById('mppf-name').value, l = document.getElementById('mppf-lot').value;
+            if(!n || !l) return;
+            const newItem = { 
+                name: n.toUpperCase(), 
+                lot: l, 
+                date: document.getElementById('mppf-date').value, 
+                time: document.getElementById('mppf-time').value, 
+                ddf: document.getElementById('mppf-ddf').value, 
+                ddp: document.getElementById('mppf-ddp').value, 
+                initials: document.getElementById('mppf-initials').value, 
+                pc: document.getElementById('mppf-pc').checked, 
+                micro: document.getElementById('mppf-micro').checked, 
+                format: document.getElementById('mppf-format').value, 
+                selected: true 
+            };
+
+            if(editingMpPfIndex !== null) {
+                mppfItems[editingMpPfIndex] = newItem;
+                editingMpPfIndex = null;
+                const btn = document.querySelector('.btn-add');
+                if(btn) btn.innerHTML = '➕ AJOUTER';
+            } else {
+                mppfItems.unshift(newItem);
+            }
+            
+            localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems)); 
+            renderMpPfTable();
+        }
+
+        window.editMpPf = function(i) {
+            const it = mppfItems[i];
+            document.getElementById('mppf-name').value = it.name;
+            document.getElementById('mppf-lot').value = it.lot;
+            document.getElementById('mppf-date').value = it.date;
+            document.getElementById('mppf-time').value = it.time;
+            document.getElementById('mppf-ddf').value = it.ddf;
+            document.getElementById('mppf-ddp').value = it.ddp;
+            document.getElementById('mppf-initials').value = it.initials;
+            document.getElementById('mppf-pc').checked = it.pc;
+            document.getElementById('mppf-micro').checked = it.micro;
+            document.getElementById('mppf-format').value = it.format;
+            
+            editingMpPfIndex = i;
+            const actions = document.getElementById('mppf-form-actions');
+            if(actions) {
+                actions.innerHTML = `
+                    <button class="btn-modern" onclick="cancelEditMpPf()" style="background: #95a5a6; color: white;">
+                        ❌ ANNULER
+                    </button>
+                    <button class="btn-modern" onclick="addMpPfLabel()" style="background: #27ae60; color: white; font-weight: 900;">
+                        💾 ENREGISTRER
+                    </button>
+                `;
+            }
+            
+            document.getElementById('prelevement_mp_pf-panel').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.previewMpPf = function(i) {
+            const it = { ...mppfItems[i], type: 'prel_mp_pf' };
+            const previewOverlay = document.createElement('div');
+            previewOverlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; display:flex; align-items:center; justify-content:center; flex-direction:column;";
+            
+            const closeBtn = document.createElement('button');
+            closeBtn.innerText = "FERMER";
+            closeBtn.style = "margin-bottom:20px; padding:10px 20px; background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;";
+            closeBtn.onclick = () => document.body.removeChild(previewOverlay);
+            
+            const container = document.createElement('div');
+            container.style = "background:white; padding:10px; border-radius:10px;";
+            container.innerHTML = generateLabelHTML(it);
+            
+            previewOverlay.appendChild(closeBtn);
+            previewOverlay.appendChild(container);
+            document.body.appendChild(previewOverlay);
+        }
+
+        window.printSingleMpPf = function(i) {
+            const it = { ...mppfItems[i], type: 'prel_mp_pf' };
+            const s = window.getProfileSettings ? window.getProfileSettings('prel_mp_pf') : {width: 10, height: 6, orientation: 'portrait'};
+            const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
+            if(window.applyPrintSettings) window.applyPrintSettings(s, 'prel_mp_pf');
+            
+            const w = document.createElement('div'); 
+            w.style.display = 'inline-flex'; 
+            w.innerHTML = generateLabelHTML(it);
+            const et = w.querySelector('.etiquette'); 
+            if(et) {
+                let sc = (it.format === 'mp' ? 0.7 : 1.0); 
+                et.style.width = ((s.width || 10) * sc) + 'cm'; 
+                et.style.minHeight = ((s.height || 6) * sc) + 'cm';
+            }
+            pa.appendChild(w);
+            
+            window.print();
+            setTimeout(() => { pa.innerHTML = ''; }, 1000);
+        }
+
+        window.deleteMpPf = function(i) { 
+            if(prompt("SÉCURITÉ: Mot de passe ?")==='FARAH2025+') { 
+                mppfItems.splice(i,1); 
+                localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems)); 
+                renderMpPfTable(); 
+            } 
+        }
+
+        window.toggleAllMpPf = function(c) { 
+            mppfItems.forEach(i => i.selected = c.checked); 
+            renderMpPfTable(); 
+        }
+
+        // --- DASHBOARD SORTING FOR ADMINS ---
+        window.moveDashboardCard = function(id, dir) {
+            const grid = document.querySelector('.dashboard-grid');
+            const cards = Array.from(grid.children);
+            const index = cards.findIndex(c => c.getAttribute('data-id') === id || c.id === id);
+            if(index === -1) return;
+            
+            if(dir === 'up' && index > 0) {
+                grid.insertBefore(cards[index], cards[index-1]);
+            } else if(dir === 'down' && index < cards.length - 1) {
+                grid.insertBefore(cards[index+1], cards[index]);
+            }
+            saveDashboardOrder();
+        };
+
+        window.saveDashboardOrder = function() {
+            const grid = document.querySelector('.dashboard-grid');
+            const order = Array.from(grid.children).map(c => c.id || c.getAttribute('data-id') || c.innerHTML.substring(0,20));
+            localStorage.setItem('GEST_LAB_DASHBOARD_ORDER', JSON.stringify(order));
+        };
+
+        window.loadDashboardOrder = function() {
+            const order = JSON.parse(localStorage.getItem('GEST_LAB_DASHBOARD_ORDER'));
+            if(!order) return;
+            const grid = document.querySelector('.dashboard-grid');
+            const cards = Array.from(grid.children);
+            order.forEach(id => {
+                const card = cards.find(c => (c.id || c.getAttribute('data-id') || c.innerHTML.substring(0,20)) === id);
+                if(card) grid.appendChild(card);
+            });
+        };
+
+        window.initDashboardSortUI = function() {
+            if(!currentUser || currentUser.role !== 'admin') return;
+            const grid = document.querySelector('.dashboard-grid');
+            Array.from(grid.children).forEach(card => {
+                if(card.querySelector('.sort-controls')) return;
+                const controls = document.createElement('div');
+                controls.className = 'sort-controls';
+                controls.style = "position:absolute; bottom:5px; left:5px; display:flex; gap:5px; opacity:0; transition:opacity 0.3s; z-index:10;";
+                controls.innerHTML = `
+                    <button class="btn-mini" onclick="event.stopPropagation(); moveDashboardCard('${card.id || card.getAttribute('data-id')}','up')" style="background:rgba(255,255,255,0.8); padding:2px 5px;">⬅️</button>
+                    <button class="btn-mini" onclick="event.stopPropagation(); moveDashboardCard('${card.id || card.getAttribute('data-id')}','down')" style="background:rgba(255,255,255,0.8); padding:2px 5px;">➡️</button>
+                `;
+                card.style.position = 'relative';
+                card.appendChild(controls);
+                card.onmouseenter = () => controls.style.opacity = '1';
+                card.onmouseleave = () => controls.style.opacity = '0';
+            });
+        };
+
+        // Initialize dashboard state
+        setTimeout(() => {
+            // Assign IDs to existing cards for sorting
+            const grid = document.querySelector('.dashboard-grid');
+            if(grid) {
+                const defaultIds = ['milieux','petri','inventory','rapport','history','sterilisation','logbook','about','feedback','souchier','classeur','export','admin','admindb','diagnostic'];
+                Array.from(grid.children).forEach((c, idx) => {
+                    if(!c.id) c.id = 'card-' + (defaultIds[idx] || idx);
+                });
+                loadDashboardOrder();
+                initDashboardSortUI();
+            }
+        }, 1000);
+
+        async function printAllMpPf() {
+            const l = mppfItems.filter(i => i.selected).map(i => ({ ...i, type: 'prel_mp_pf' }));
+            if(!l.length) return alert("Sélectionnez au moins un lot.");
+            
+            const s = window.getProfileSettings ? window.getProfileSettings('prel_mp_pf') : {width: 10, height: 6, orientation: 'portrait'};
+            const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
+            if(window.applyPrintSettings) window.applyPrintSettings(s, 'prel_mp_pf');
+            
+            // Force grid regrouping for MP labels specifically
+            Object.assign(pa.style, { 
+                display: 'flex', 
+                flexDirection: 'row', 
+                flexWrap: 'wrap', 
+                justifyContent: 'flex-start', 
+                alignContent: 'flex-start',
+                gap: '8px', 
+                paddingTop: (s.marginTop || 0) + 'cm', 
+                paddingLeft: (s.marginLeft || 0) + 'cm' 
+            });
+
+            l.forEach(item => {
+                const w = document.createElement('div'); 
+                w.style.display = 'inline-flex'; 
+                w.innerHTML = generateLabelHTML(item);
+                const et = w.querySelector('.etiquette'); 
+                if(et) {
+                    let sc = (item.format === 'mp' ? 0.7 : 1.0); 
+                    et.style.width = ((s.width || 10) * sc) + 'cm'; 
+                    et.style.minHeight = ((s.height || 6) * sc) + 'cm';
+                    if(item.format === 'mp') {
+                        et.style.fontSize = '8.5pt';
+                        et.style.margin = '2px';
+                    }
+                }
+                w.style.pageBreakInside = 'avoid'; 
+                pa.appendChild(w);
+            });
+
+            await Promise.all([...pa.querySelectorAll('img')].map(i => i.complete ? Promise.resolve() : new Promise(r => i.onload = i.onerror = r)));
+            
+            const mn = document.querySelector('.mobile-bottom-nav'); 
+            if(mn) mn.style.setProperty('display', 'none', 'important');
+            
+            window.print(); 
+            setTimeout(() => { 
+                if(mn) mn.style.display = ''; 
+                pa.innerHTML = ''; 
+            }, 1000);
+        }
+
+        let MACHINES_PARTS = JSON.parse(localStorage.getItem('GEST_LAB_PIECES_LIST')) || [
+            "Cuve tampon",
+            "Tube en silicone entre ligne transfert et la cuve tampon",
+            "Tube en silicone entre la cuve de transfert et distributeur",
+            "Tube en silicone des aiguilles",
+            "Tube en PTFE des aiguilles",
+            "Distributeur",
+            "Les aiguilles de remplissage",
+            "TC Clamps",
+            "Joint",
+            "WFI"
+        ];
+
+        function initPiecesMachinesTab() {
+            const btnHtml = `<button class="sidebar-btn" id="btn-pieces_machines" onclick="showSection('pieces_machines')" style="display:flex; align-items:center;"><span class="icon">⚙️</span><span style="font-weight: 700;">Pièces Machines</span></button>`;
+            const mppfBtn = document.getElementById('btn-prelevement_mp_pf');
+            if (mppfBtn) mppfBtn.insertAdjacentHTML('afterend', btnHtml);
+            const mobileNav = document.querySelector('.mobile-bottom-nav');
+            if (mobileNav) {
+                mobileNav.insertAdjacentHTML('beforeend', `<button onclick="showSection('pieces_machines')" class="mobile-nav-btn" id="m-btn-pieces_machines"><span class="nav-icon">⚙️</span><span>Pièces</span></button>`);
+            }
+            const dashboardGrid = document.querySelector('.dashboard-grid');
+            if(dashboardGrid) {
+                dashboardGrid.insertAdjacentHTML('beforeend', `<div class="dashboard-card" id="card-pieces_machines" onclick="showSection('pieces_machines')" style="border-color: #34495e;"><div class="icon-circle" style="background: rgba(52, 73, 94, 0.1); color: #34495e;">⚙️</div><h3>Pièces Machines</h3><p>Étiquetage des pièces et accessoires de machines (Tubes, aiguilles, joints...).</p></div>`);
+            }
+
+            const panelHtml = `
+                <div id="pieces_machines-panel" style="display: none; width: 100%;">
+                    <div class="glass-card" style="padding: 20px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap;">
+                            <h2 style="color: #34495e;">⚙️ Pièces Machines</h2>
+                            <div style="display: flex; gap: 10px;">
+                                <button class="btn-modern" onclick="addNewPiece()" style="background: #27ae60; color: white;">➕ Ajouter une pièce</button>
+                                <button class="btn-modern" onclick="printAllPieces()" style="background: #34495e; color: white;">🖨️ Imprimer la sélection</button>
+                                <button class="btn-modern" onclick="openProfileSettings('pieces_machines')" style="background: #7f8c8d; color: white;">⚙️ Calibration</button>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group"><label>N° Lot Global</label><input type="text" id="pieces-lot" placeholder="ex: LOT2024-01" onchange="localStorage.setItem('GEST_LAB_PIECES_LOT', this.value)"></div>
+                            <div class="form-group"><label>Date</label><input type="date" id="pieces-date" onchange="localStorage.setItem('GEST_LAB_PIECES_DATE', this.value)"></div>
+                            <div class="form-group"><label>Fait par</label><input type="text" id="pieces-initials" placeholder="Initiales" onchange="localStorage.setItem('GEST_LAB_PIECES_INITIALS', this.value)"></div>
+                        </div>
+                        <div style="margin-top:20px;">
+                            <h3 style="margin-bottom:15px;">Sélection des pièces</h3>
+                            <div class="table-wrapper">
+                                <table style="width:100%;">
+                                    <thead><tr><th style="width:50px;"><input type="checkbox" checked onchange="toggleAllPieces(this)"></th><th>Désignation de la pièce</th><th style="width:50px;">Action</th></tr></thead>
+                                    <tbody id="pieces-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.querySelector('.main-content').insertAdjacentHTML('beforeend', panelHtml);
+            
+            const savedLot = localStorage.getItem('GEST_LAB_PIECES_LOT') || '';
+            const savedInit = localStorage.getItem('GEST_LAB_PIECES_INITIALS') || '';
+            const savedDate = localStorage.getItem('GEST_LAB_PIECES_DATE') || '';
+            
+            document.getElementById('pieces-lot').value = savedLot;
+            document.getElementById('pieces-initials').value = savedInit;
+            document.getElementById('pieces-date').value = savedDate;
+
+            renderPiecesTable();
+        }
+
+        function renderPiecesTable() {
+            const tbody = document.getElementById('pieces-body');
+            tbody.innerHTML = MACHINES_PARTS.map((p, i) => `
+                <tr>
+                    <td style="text-align:center;"><input type="checkbox" class="piece-checkbox" checked data-name="${p}"></td>
+                    <td style="font-weight:700;">${p}</td>
+                    <td style="text-align:center;">
+                        <button onclick="deletePiece(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer;">🗑️</button>
+                    </td>
+                </tr>
+            `).join('');
+            localStorage.setItem('GEST_LAB_PIECES_LIST', JSON.stringify(MACHINES_PARTS));
+        }
+
+        function addNewPiece() {
+            const name = prompt("Nom de la nouvelle pièce :");
+            if (name && name.trim()) {
+                MACHINES_PARTS.push(name.trim());
+                renderPiecesTable();
+            }
+        }
+
+        function deletePiece(idx) {
+            if (confirm("Supprimer cette pièce de la liste ?")) {
+                MACHINES_PARTS.splice(idx, 1);
+                renderPiecesTable();
+            }
+        }
+
+        function toggleAllPieces(cb) {
+            document.querySelectorAll('.piece-checkbox').forEach(c => c.checked = cb.checked);
+        }
+
+        async function printAllPieces() {
+            const lot = document.getElementById('pieces-lot').value;
+            const date = document.getElementById('pieces-date').value;
+            const initials = document.getElementById('pieces-initials').value;
+            const items = Array.from(document.querySelectorAll('.piece-checkbox:checked')).map(cb => ({
+                name: cb.getAttribute('data-name'),
+                lot, date, initials, type: 'pieces_machines'
+            }));
+
+            if(!items.length) return alert("Sélectionnez au moins une pièce.");
+            
+            const s = window.getProfileSettings ? window.getProfileSettings('pieces_machines') : {width: 4, height: 4, orientation: 'portrait'};
+            const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
+            if(window.applyPrintSettings) window.applyPrintSettings(s, 'pieces_machines');
+            
+            Object.assign(pa.style, { 
+                display: 'block', 
+                paddingTop: (s.marginTop || 0) + 'cm', paddingLeft: (s.marginLeft || 0) + 'cm' 
+            });
+
+            // Using a real table for perfect border-collapse like the model
+            const table = document.createElement('table');
+            Object.assign(table.style, {
+                borderCollapse: 'collapse',
+                width: '17.5cm', 
+                backgroundColor: '#fff',
+                tableLayout: 'fixed',
+                border: '1px solid #000'
+            });
+            pa.appendChild(table);
+
+            let row;
+            items.forEach((item, idx) => {
+                if (idx % 5 === 0) row = table.insertRow();
+                const cell = row.insertCell();
+                Object.assign(cell.style, {
+                    width: '3.5cm',
+                    height: '4.5cm',
+                    border: '1px solid #000', // One continuous line
+                    padding: '0',
+                    margin: '0',
+                    boxSizing: 'border-box',
+                    verticalAlign: 'top'
+                });
+                
+                cell.innerHTML = `
+                    <div style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 10px; box-sizing: border-box; font-family: 'Times New Roman', serif;">
+                        <div style="font-weight: bold; font-size: 11pt; text-align: center; margin-top: 5px; line-height: 1.2;">
+                            ${item.name}
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 10pt; font-weight: bold; margin-bottom: 5px;">
+                            <div>Lot : <span style="font-weight: normal; margin-left: 5px;">${item.lot || ''}</span></div>
+                            <div>Date : <span style="font-weight: normal; margin-left: 5px;">${(item.date ? item.date.split('-').reverse().join('/') : '')}</span></div>
+                            <div>Fait par : <span style="font-weight: normal; margin-left: 5px;">${item.initials || ''}</span></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const mn = document.querySelector('.mobile-bottom-nav'); 
+            if(mn) mn.style.setProperty('display', 'none', 'important');
+            window.print(); 
+            setTimeout(() => { if(mn) mn.style.display = ''; pa.innerHTML = ''; }, 1000);
+        }
+
+        function startModules() { initPrelevementTab(); initPrelevementMpPfTab(); initPiecesMachinesTab(); }
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPrelevementTab);
+            document.addEventListener('DOMContentLoaded', startModules);
         } else {
-            initPrelevementTab();
+            startModules();
         }
     </script>
 </body>
