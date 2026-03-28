@@ -1,9 +1,10 @@
-const CACHE_NAME = 'gest-labo-v1.1';
+const CACHE_NAME = 'gest-labo-v1.2';
 const ASSETS = [
     './',
     './index.html',
     './manifest.json',
-    './logo.PNG'
+    './logo.PNG',
+    './sohaib.jpeg'
 ];
 
 // Installation
