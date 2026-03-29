@@ -1937,14 +1937,14 @@
                         </div>
                     </div>
                 </div>
-                <button class="sidebar-btn" id="btn-dashboard" onclick="showSection('dashboard')"
-                    style="display:flex; align-items:center;">
+                <button class="sidebar-btn" id="btn-dashboard" data-module="dashboard"
+                    onclick="showSection('dashboard')" style="display:flex; align-items:center;">
                     <span class="icon">🏠</span>
                     <span style="font-weight: 700;">Tableau de bord</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('dashboard')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-milieux" onclick="showSection('milieux')"
+                <button class="sidebar-btn" id="btn-milieux" data-module="milieux" onclick="showSection('milieux')"
                     style="display:flex; align-items:center;">
                     <span class="icon">
                         <svg style="width:18px; height:18px; vertical-align:middle; margin-right:8px;" fill="none"
@@ -1958,56 +1958,70 @@
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('milieux')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-petri" onclick="showSection('petri')"
+                <button class="sidebar-btn" id="btn-petri" data-module="petri" onclick="showSection('petri')"
                     style="display:flex; align-items:center;">
                     <span class="icon">🧫</span>
                     <span style="font-weight: 700;">Boîtes Petri</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('petri')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-inventory" onclick="showSection('inventory')"
-                    style="display:flex; align-items:center;">
+                <button class="sidebar-btn" id="btn-inventory" data-module="inventory"
+                    onclick="showSection('inventory')" style="display:flex; align-items:center;">
                     <span class="icon">📦</span>
                     <span style="font-weight: 700;">Inventaire</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('inventory')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-rapport" onclick="showSection('rapport')"
+                <button class="sidebar-btn" id="btn-rapport" data-module="rapport" onclick="showSection('rapport')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📊</span>
                     <span style="font-weight: 700;">Rapport Stock</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('rapport')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-sterilisation" onclick="showSection('sterilisation')"
-                    style="display:flex; align-items:center;">
+                <button class="sidebar-btn" id="btn-sterilisation" data-module="sterilisation"
+                    onclick="showSection('sterilisation')" style="display:flex; align-items:center;">
                     <span class="icon">🌡️</span>
                     <span style="font-weight: 700;">Stérilisation</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('sterilisation')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-souchier" onclick="showSection('souchier')"
+                <button class="sidebar-btn" id="btn-souchier" data-module="souchier" onclick="showSection('souchier')"
                     style="display:flex; align-items:center;">
                     <span class="icon">🦠</span>
                     <span style="font-weight: 700;">Souchier</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('souchier')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-history" onclick="showSection('history')"
+                <button class="sidebar-btn" id="btn-history" data-module="history" onclick="showSection('history')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📜</span>
                     <span style="font-weight: 700;">Historique</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('history')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-classeur" onclick="showSection('classeur')"
+                <div id="admin-sidebar" style="display: none;">
+                    <div class="admin-sidebar-divider"
+                        style="height: 1px; background: rgba(0,0,0,0.1); margin: 15px 0;"></div>
+                    <button class="sidebar-btn" id="btn-members" data-module="members" onclick="showSection('members')"
+                        style="display:flex; align-items:center;">
+                        <span class="icon">👥</span>
+                        <span style="font-weight: 700;">Membres</span>
+                    </button>
+                    <button class="sidebar-btn" id="btn-activity" data-module="activity" onclick="showSection('activity')"
+                        style="display:flex; align-items:center; margin-top: 8px; background: rgba(48,116,199,0.05); border: 1px dashed rgba(48,116,199,0.2);">
+                        <span class="icon">👣</span>
+                        <span style="font-weight: 700;">Audit Activité</span>
+                    </button>
+                </div>
+                <button class="sidebar-btn" id="btn-classeur" data-module="classeur" onclick="showSection('classeur')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📁</span>
                     <span style="font-weight: 700;">Étiquettes Classeurs</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('classeur')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
-                <button class="sidebar-btn" id="btn-logbook" onclick="showSection('logbook')"
+                <button class="sidebar-btn" id="btn-logbook" data-module="logbook" onclick="showSection('logbook')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📖</span>
                     <span style="font-weight: 700;">Suivre numéro d'action</span>
@@ -2119,8 +2133,13 @@
 
                 <!-- BOUTON RETOUR EN HAUT -->
                 <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-                    style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;">
+                    style="position: fixed; bottom: 90px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;" title="Retour en haut">
                     🔝
+                </button>
+                <!-- BOUTON ALLER EN BAS -->
+                <button id="scrollToBottomBtn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})"
+                    style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;" title="Aller en bas">
+                    ⬇️
                 </button>
 
                 <!-- DASHBOARD PANEL -->
@@ -2153,7 +2172,7 @@
                     <!-- DIAGNOSTIC BAR MOVED TO ADMIN -->
 
                     <div class="dashboard-grid">
-                        <div class="dashboard-card" onclick="showSection('milieux')">
+                        <div class="dashboard-card" data-module="milieux" onclick="showSection('milieux')">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('milieux')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">🧪</div>
@@ -2161,7 +2180,7 @@
                             <p>Préparation et étiquetage des milieux de culture en laboratoire.</p>
                         </div>
 
-                        <div class="dashboard-card" onclick="showSection('petri')">
+                        <div class="dashboard-card" data-module="petri" onclick="showSection('petri')">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('petri')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">🧫</div>
@@ -2169,7 +2188,7 @@
                             <p>Suivi et identification des boîtes de Petri précoulées.</p>
                         </div>
 
-                        <div class="dashboard-card" onclick="showSection('inventory')">
+                        <div class="dashboard-card" data-module="inventory" onclick="showSection('inventory')">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('inventory')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">📦</div>
@@ -2177,7 +2196,8 @@
                             <p>Gestion des stocks, réactifs et consommables de laboratoire.</p>
                         </div>
 
-                        <div class="dashboard-card" onclick="showSection('rapport')" style="border-color: #f39c12;">
+                        <div class="dashboard-card" data-module="rapport" onclick="showSection('rapport')"
+                            style="border-color: #f39c12;">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('rapport')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle" style="background: rgba(243, 156, 18, 0.1); color: #f39c12;">📊
@@ -2186,7 +2206,7 @@
                             <p>Vue d'ensemble et décompte global des produits en stock.</p>
                         </div>
 
-                        <div class="dashboard-card" onclick="showSection('history')">
+                        <div class="dashboard-card" data-module="history" onclick="showSection('history')">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('history')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle">📜</div>
@@ -2194,7 +2214,7 @@
                             <p>Consultation et export de l'historique complet des étiquettes.</p>
                         </div>
 
-                        <div class="dashboard-card" onclick="showSection('sterilisation')"
+                        <div class="dashboard-card" data-module="sterilisation" onclick="showSection('sterilisation')"
                             style="border-color: #e74c3c;">
                             <div class="popout-btn-card"
                                 onclick="event.stopPropagation(); popoutSection('sterilisation')"
@@ -2204,7 +2224,8 @@
                             <h3>Stérilisation</h3>
                             <p>Génération d'étiquettes de stérilisation conformes aux normes CQ.</p>
                         </div>
-                        <div class="dashboard-card" onclick="showSection('logbook')" style="border-color: #9b59b6;">
+                        <div class="dashboard-card" data-module="logbook" onclick="showSection('logbook')"
+                            style="border-color: #9b59b6;">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('logbook')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6;">📖
@@ -2212,7 +2233,8 @@
                             <h3>Suivre numéro d'action</h3>
                             <p>Coordination des codes et suivi du cahier de traçabilité.</p>
                         </div>
-                        <div class="dashboard-card" onclick="openAboutModal()" style="border-color: #34495e;">
+                        <div class="dashboard-card" data-module="about" onclick="openAboutModal()"
+                            style="border-color: #34495e;">
                             <div class="icon-circle" style="overflow:hidden; background: #f0f2f5;">
                                 <img src="sohaib.jpeg?v=1.2"
                                     onerror="this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=34495e&color=fff'"
@@ -2222,13 +2244,15 @@
                             <p>Découvrez le créateur de GEST-LABO et la vision derrière ce projet.</p>
                         </div>
 
-                        <div class="dashboard-card" onclick="openFeedbackModal()" style="border-color: #9b59b6;">
+                        <div class="dashboard-card" data-module="feedback" onclick="openFeedbackModal()"
+                            style="border-color: #9b59b6;">
                             <div class="icon-circle" style="background: rgba(155, 89, 182, 0.1); color: #9b59b6;">⭐
                             </div>
                             <h3>Votre Avis</h3>
                             <p>Partagez votre expérience et aidez-moi à améliorer l'application.</p>
                         </div>
-                        <div class="dashboard-card" onclick="showSection('souchier')" style="border-color: #3074c7;">
+                        <div class="dashboard-card" data-module="souchier" onclick="showSection('souchier')"
+                            style="border-color: #3074c7;">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('souchier')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle" style="background: rgba(48, 116, 199, 0.1); color: #3074c7;">🧬
@@ -2236,13 +2260,14 @@
                             <h3>Souchier</h3>
                             <p>Suivi et repiquage des souches de référence (Cycle 42j).</p>
                         </div>
-                        <div class="dashboard-card" onclick="showSection('classeur')" style="border-color: #27ae60;">
+                        <div class="dashboard-card" data-module="classeur" onclick="showSection('classeur')"
+                            style="border-color: #27ae60;">
                             <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('classeur')"
                                 title="Ouvrir dans une nouvelle fenêtre">↗️</div>
                             <div class="icon-circle" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">📁
                             </div>
                             <h3>Étiquettes Classeurs</h3>
-                            <p>Création d'étiquettes pour l'identification des classeurs de laboratoire.</p>
+                            <p>Création d'étiquettes for l'identification des classeurs de laboratoire.</p>
                         </div>
                         <div class="dashboard-card" onclick="exportAllData()" style="border-color: #2ecc71;">
                             <div class="icon-circle" style="background: rgba(46, 204, 113, 0.1); color: #2ecc71;">🌍
@@ -2771,6 +2796,7 @@
                                     class="sort-icon-users" data-col="nom"></span></th>
                             <th style="width: 180px; cursor: pointer;" onclick="handleSort('users', 'fonction')">
                                 Fonction <span class="sort-icon-users" data-col="fonction"></span></th>
+                            <th style="width: 150px; text-align: center;">Mot de Passe</th>
                             <th style="width: 120px; text-align: center; cursor: pointer;"
                                 onclick="handleSort('users', 'status')">Statut <span class="sort-icon-users"
                                     data-col="status"></span></th>
@@ -2810,91 +2836,209 @@
             </div>
         </div>
 
+        <!-- SECTION AUDIT ACTIVITÉ (ADMIN) -->
+        <div id="activity-panel" class="glass-card" style="display: none;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                <h2 style="color: #3074c7;">👣 Audit des Activités & Traçabilité</h2>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn-modern" onclick="exportActivityCsv()"
+                        style="background: #2ecc71; color: white; padding: 10px 18px; font-weight: 700;" title="Sauvegarder les logs d'activité localement">
+                        💾 Sauvegarder (CSV)
+                    </button>
+                    <button class="btn-modern" onclick="exportTableToPdf('activity-panel')"
+                        style="background: #e74c3c; color: white; padding: 10px 18px; font-weight: 700;">
+                        📄 Export PDF
+                    </button>
+                    <button class="btn-modern" onclick="refreshActivityLogs()"
+                        style="background: #3498db; color: white; padding: 10px 18px; font-weight: 700;">
+                        🔄 Rafraîchir
+                    </button>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px; position:relative;">
+                <span style="position:absolute; left: 15px; top:50%; transform:translateY(-50%); color:#94a3b8;">🔍</span>
+                <input type="text" id="activitySearchInput" placeholder="Rechercher par membre, action ou date..."
+                    onkeyup="renderActivityTable()"
+                    style="width: 100%; padding: 12px 12px 12px 45px; border-radius: 12px; border: 1px solid #e2e8f0; background: white; outline:none; font-size:1rem;">
+            </div>
+
+            <div class="table-wrapper">
+                <table style="font-size: 0.9rem;">
+                    <thead>
+                        <tr style="background: #f8fafc;">
+                            <th style="width: 180px;">Date & Heure</th>
+                            <th style="width: 200px;">Membre</th>
+                            <th style="width: 150px;">Action</th>
+                            <th>Détails de l'opération</th>
+                            <th style="width: 100px; text-align: center;">Rôle</th>
+                        </tr>
+                    </thead>
+                    <tbody id="activityTableBody">
+                        <!-- Rempli par Firebase -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- MODAL INVITATION / AJOUT / EDITION MEMBRE -->
         <div id="member-modal" class="auth-overlay"
             style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 100000; align-items: center; justify-content: center;">
             <div class="glass-card"
-                style="width: 95%; max-width: 500px; position: relative; animation: slideUp 0.3s ease;">
-                <button onclick="closeMemberModal()"
-                    style="position: absolute; top: 15px; right: 15px; border: none; background: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
-                <h2 id="member-modal-title" style="margin-bottom: 20px; color: #3074c7;">Ajouter un nouveau membre</h2>
+                style="width: 95%; max-width: 500px; position: relative; animation: slideUp 0.3s ease; max-height: 85vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; border: 2px solid #3074c7;">
 
-                <!-- Photo section for Modal -->
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div class="profile-photo-container" style="width: 120px; height: 120px;"
-                        onclick="document.getElementById('memberPhotoInput').click()">
-                        <img id="member-photo-preview" src="" alt="" class="profile-photo-preview"
-                            style="display: none;">
-                        <span id="member-photo-placeholder" style="font-size: 2.5rem;">👤</span>
-                    </div>
-                    <div class="photo-actions" style="margin-top: 10px;">
-                        <button class="photo-btn" onclick="document.getElementById('memberPhotoInput').click()">📁
-                            Galerie</button>
-                        <button class="photo-btn" onclick="startMemberCamera()">📷 Caméra</button>
-                    </div>
-                    <input type="file" id="memberPhotoInput" accept="image/*" style="display: none;"
-                        onchange="handleMemberPhotoSelect(this)">
+                <!-- Fixed Header inside Modal -->
+                <div
+                    style="padding: 20px; border-bottom: 1px solid rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.9);">
+                    <h2 id="member-modal-title" style="margin: 0; color: #3074c7; font-size: 1.3rem;">Ajouter un nouveau
+                        membre</h2>
+                    <button onclick="closeMemberModal()"
+                        style="border: 2px solid #e74c3c; background: #ffebeb; color: #e74c3c; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold;">&times;</button>
+                </div>
 
-                    <div id="member-camera-container" style="display: none; margin-top: 15px;">
-                        <video id="member-video" width="100%" autoplay
-                            style="border-radius: 10px; background: #000;"></video>
-                        <button class="btn-modern" onclick="takeMemberSnapshot()"
-                            style="margin-top: 10px; width: 100%; background: #2ecc71; color: white; justify-content: center;">
-                            📸 Capturer la photo
-                        </button>
+                <!-- Scrollable Body -->
+                <div style="padding: 20px; overflow-y: auto; flex: 1;">
+                    <!-- Photo section for Modal -->
+                    <div style="text-align: center; margin-bottom: 25px;">
+                        <div class="profile-photo-container" style="width: 100px; height: 100px;"
+                            onclick="document.getElementById('memberPhotoInput').click()">
+                            <img id="member-photo-preview" src="" alt="" class="profile-photo-preview"
+                                style="display: none;">
+                            <span id="member-photo-placeholder" style="font-size: 2rem;">👤</span>
+                        </div>
+                        <div class="photo-actions" style="margin-top: 10px;">
+                            <button class="photo-btn" onclick="document.getElementById('memberPhotoInput').click()">📁
+                                Galerie</button>
+                            <button class="photo-btn" onclick="startMemberCamera()">📷 Caméra</button>
+                        </div>
+                        <input type="file" id="memberPhotoInput" accept="image/*" style="display: none;"
+                            onchange="handleMemberPhotoSelect(this)">
+
+                        <div id="member-camera-container" style="display: none; margin-top: 15px;">
+                            <video id="member-video" width="100%" autoplay
+                                style="border-radius: 10px; background: #000;"></video>
+                            <button class="btn-modern" onclick="takeMemberSnapshot()"
+                                style="margin-top: 10px; width: 100%; background: #2ecc71; color: white; justify-content: center;">
+                                📸 Capturer la photo
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 18px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group">
+                                <label style="font-weight:700;">NOM</label>
+                                <input type="text" id="m-nom" placeholder="NOM">
+                            </div>
+                            <div class="form-group">
+                                <label style="font-weight:700;">PRÉNOM</label>
+                                <input type="text" id="m-prenom" placeholder="Prénom">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight:700;">EMAIL</label>
+                            <input type="email" id="m-email" placeholder="adresse@exemple.com">
+                        </div>
+                        <div class="form-group" id="m-pass-group"
+                            style="display: flex; flex-direction: column; gap: 8px; background: #fff5f5; padding: 10px; border-radius: 10px; border: 1px solid #fed7d7;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <label style="font-weight: 800; color: #c53030;">MOT DE PASSE (PROVISOIRE)</label>
+                                <span onclick="toggleMPassVisibility()" id="m-pass-toggle-btn"
+                                    style="cursor: pointer; font-size: 0.85rem; color: #3074c7; font-weight: bold;">👁️
+                                    Afficher</span>
+                            </div>
+                            <input type="password" id="m-pass" placeholder="Non enregistré"
+                                style="width: 100%; color: #e53e3e; font-weight: bold; font-family: monospace; font-size: 1.1rem; text-align: center; border-color: #feb2b2;">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight:700;">FONCTION / POSTE</label>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="m-fonction" onchange="toggleMemberCustomFonction()"
+                                    style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--input-border);">
+                                    <option value="Analyste Microbiologie">Analyste Microbiologie</option>
+                                    <option value="Responsable CQ">Responsable CQ</option>
+                                    <option value="AUTRE">Autre (Saisir...)</option>
+                                </select>
+                                <input type="text" id="m-custom-fonction" placeholder="Précisez..."
+                                    style="display: none; flex: 1;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight:700;">RÔLE SYSTÈME</label>
+                            <select id="m-role"
+                                style="padding: 12px; border-radius: 10px; border: 1px solid var(--input-border); font-weight: bold;">
+                                <option value="user">Utilisateur standard</option>
+                                <option value="admin">Administrateur</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 5px;">
+                            <label
+                                style="font-weight: 800; color: #2d3748; margin-bottom: 10px; display: block; border-bottom: 2px solid #3074c7; padding-bottom: 5px;">🔓
+                                ACCÈS AUX MODULES</label>
+                            <div
+                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(48,116,199,0.05); padding: 15px; border-radius: 12px; border: 1px solid rgba(48,116,199,0.1);">
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="milieux" checked
+                                        style="width:18px; height:18px;"> 🧪 MILIEUX</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="petri" checked
+                                        style="width:18px; height:18px;"> 🧫 PETRI</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="inventory" checked
+                                        style="width:18px; height:18px;"> 📦 INVENTAIRE</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="sterilisation" checked
+                                        style="width:18px; height:18px;"> 🧼 STÉRILI</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="souchier" checked
+                                        style="width:18px; height:18px;"> 🧬 SOUCHIER</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="prelevement" checked
+                                        style="width:18px; height:18px;"> 💧 EAU</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="prelevement_mp_pf" checked
+                                        style="width:18px; height:18px;"> 🏭 MP/PF</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="pieces_machines" checked
+                                        style="width:18px; height:18px;"> ⚙️ PIÈCES</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="logbook" checked
+                                        style="width:18px; height:18px;"> 📖 SUIVI</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="classeur" checked
+                                        style="width:18px; height:18px;"> 📁 CLASSEUR</label>
+                                <label
+                                    style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600;"><input
+                                        type="checkbox" class="perm-check" data-module="rapport" checked
+                                        style="width:18px; height:18px;"> 📊 RAPPORT</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div class="form-group">
-                            <label>Nom</label>
-                            <input type="text" id="m-nom" placeholder="Saisir le nom">
-                        </div>
-                        <div class="form-group">
-                            <label>Prénom</label>
-                            <input type="text" id="m-prenom" placeholder="Saisir le prénom">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="m-email" placeholder="adresse@exemple.com">
-                    </div>
-                    <div class="form-group" id="m-pass-group">
-                        <label>Mot de passe (provisoire)</label>
-                        <input type="password" id="m-pass" placeholder="Minimum 6 caractères">
-                    </div>
-                    <div class="form-group">
-                        <label>Fonction / Poste</label>
-                        <div style="display: flex; gap: 8px;">
-                            <select id="m-fonction" onchange="toggleMemberCustomFonction()"
-                                style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid var(--input-border);">
-                                <option value="Analyste Microbiologie">Analyste Microbiologie</option>
-                                <option value="Responsable CQ">Responsable CQ</option>
-                                <option value="AUTRE">Autre (Saisir...)</option>
-                            </select>
-                            <input type="text" id="m-custom-fonction" placeholder="Précisez..."
-                                style="display: none; flex: 1;">
-                        </div>
-                    </div>
-                    <div class="form-group" id="m-role-group">
-                        <label>Rôle Système</label>
-                        <select id="m-role"
-                            style="padding: 12px; border-radius: 10px; border: 1px solid var(--input-border);">
-                            <option value="user">Utilisateur standard</option>
-                            <option value="admin">Administrateur</option>
-                        </select>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
-                        <button class="btn-modern btn-print" onclick="saveMember()"
-                            style="padding: 15px; justify-content: center; background: #3074c7; color: white;">
-                            💾 Enregistrer
-                        </button>
-                        <button class="btn-modern" onclick="closeMemberModal()"
-                            style="padding: 15px; justify-content: center; background: #95a5a6; color: white;">
-                            ❌ Fermer
-                        </button>
-                    </div>
+                <!-- Fixed Footer inside Modal -->
+                <div
+                    style="padding: 20px; border-top: 1px solid rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f8fafc;">
+                    <button class="btn-modern" onclick="saveMember()"
+                        style="padding: 15px; justify-content: center; background: #3074c7; color: white; width: 100%; font-size: 1.1rem;">
+                        💾 Enregistrer
+                    </button>
+                    <button class="btn-modern" onclick="closeMemberModal()"
+                        style="padding: 15px; justify-content: center; background: #95a5a6; color: white; width: 100%; font-size: 1.1rem;">
+                        ❌ Fermer
+                    </button>
                 </div>
             </div>
         </div>
@@ -4265,6 +4409,74 @@
             });
             if (typeof loadPrintSettings === 'function') loadPrintSettings();
         });
+        
+        // --- AUDIT / ACTIVITY LOGS ---
+        window.logActivity = async function (action, details) {
+            if (!currentUser) return;
+            try {
+                const log = {
+                    timestamp: new Date().toISOString(),
+                    user: currentUser.email,
+                    userName: (currentUser.nom + ' ' + (currentUser.prenom || '')).trim().toUpperCase(),
+                    action: action,
+                    details: details || '',
+                    role: currentUser.role || 'user'
+                };
+                await addDoc(collection(db, 'activity_logs'), log);
+                console.log("Activity logged:", action);
+            } catch (e) {
+                console.error("Error logging activity:", e);
+            }
+        };
+
+        let activityLogs = [];
+        window.refreshActivityLogs = async function () {
+            try {
+                const q = query(collection(db, 'activity_logs'), orderBy('timestamp', 'desc'), limit(100));
+                const snapshot = await getDocs(q);
+                activityLogs = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+                renderActivityTable();
+            } catch (e) {
+                console.error("Error fetching activity logs:", e);
+            }
+        };
+
+        window.renderActivityTable = function () {
+            const tbody = document.getElementById('activityTableBody');
+            if (!tbody) return;
+
+            const term = (document.getElementById('activitySearchInput')?.value || '').toLowerCase().trim();
+            const filtered = activityLogs.filter(log => {
+                if (!term) return true;
+                return ((log.userName || '').toLowerCase().includes(term)) ||
+                    ((log.action || '').toLowerCase().includes(term)) ||
+                    ((log.details || '').toLowerCase().includes(term)) ||
+                    ((log.timestamp || '').includes(term));
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#a0aec0;">Aucune activité trouvée.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(log => {
+                const date = new Date(log.timestamp);
+                const dateStr = date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                const actionStr = log.action || 'INCONNU';
+                const actionColor = actionStr.toUpperCase().includes('SUPPRESSION') ? '#e53e3e' : (actionStr.toUpperCase().includes('AJOUT') ? '#38a169' : '#3074c7');
+                const roleColor = log.role === 'admin' ? '#805ad5' : '#718096';
+
+                return `/* ... existing template styles ... */
+                    <tr style="border-bottom: 1px solid #edf2f7; transition: background 0.2s;">
+                        <td style="font-weight:600; color:#4a5568;">${dateStr}</td>
+                        <td style="font-weight:700; color:#2d3748;">${log.userName || 'SYSTEM'}</td>
+                        <td style="font-weight:800; color:${actionColor}; text-transform:uppercase;">${actionStr}</td>
+                        <td style="color:#4a5568; font-size:0.85rem; line-height:1.4;">${log.details || '-'}</td>
+                        <td style="text-align:center;"><span style="background:${roleColor}; color:white; padding:2px 8px; border-radius:12px; font-size:0.7rem; font-weight:bold;">${(log.role || 'user').toUpperCase()}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        };
 
         onSnapshot(collection(db, "users"), (snapshot) => {
             users = snapshot.docs.map(doc => doc.data());
@@ -4529,7 +4741,7 @@
             });
 
             if (sortedUsers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding:30px; color:#718096;">Aucun membre enregistré.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:30px; color:#718096;">Aucun membre enregistré.</td></tr>';
                 return;
             }
 
@@ -4544,6 +4756,10 @@
                     '<span style="background:#fff3e0; color:#ef6c00; padding:6px 12px; border-radius:12px; font-size:0.75rem; font-weight:bold; border: 1px solid #ffe0b2;">EN ATTENTE</span>' :
                     '<span style="background:#e8f5e9; color:#2e7d32; padding:6px 12px; border-radius:12px; font-size:0.75rem; font-weight:bold; border: 1px solid #c8e6c9;">ACTIF</span>';
 
+                // Gestion de l'affichage du mot de passe (si dispo)
+                const passwordText = user.password || 'Non dispo';
+                const passwordId = `pass-${user.email.replace(/[@.]/g, '-')}`;
+
                 tr.innerHTML = `
                     <td>
                         <div class="member-info-cell">
@@ -4555,6 +4771,12 @@
                         </div>
                     </td>
                     <td><div style="font-weight:600; font-size:0.85rem;">${user.fonction || 'Non définie'}</div></td>
+                    <td style="text-align:center;">
+                        <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <span id="${passwordId}" style="font-family:monospace; font-size:0.85rem; color:#4a5568;">••••••••</span>
+                            <button onclick="toggleAdminPasswordVisibility('${passwordId}', '${passwordText}')" style="background:none; border:none; cursor:pointer; font-size:1rem; padding:0;">👁️</button>
+                        </div>
+                    </td>
                     <td style="text-align:center;">${statusBadge}</td>
                     <td style="text-align: center;">
                         <div style="display:flex; gap:8px; justify-content:center;">
@@ -4572,27 +4794,57 @@
             });
         }
 
-        async function approveUser(email) {
+        window.toggleAdminPasswordVisibility = function (id, pass) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            if (el.innerText === '••••••••') {
+                el.innerText = pass || 'Non disponible';
+                el.style.color = '#e53e3e';
+                el.style.fontWeight = 'bold';
+            } else {
+                el.innerText = '••••••••';
+                el.style.color = '#4a5568';
+                el.style.fontWeight = 'normal';
+            }
+        };
+
+        window.toggleMPassVisibility = function () {
+            const passInput = document.getElementById('m-pass');
+            const toggleBtn = document.getElementById('m-pass-toggle-btn');
+            if (passInput) {
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    toggleBtn.innerText = '🔒 Masquer';
+                } else {
+                    passInput.type = 'password';
+                    toggleBtn.innerText = '👁️ Afficher';
+                }
+            }
+        };
+
+
+        window.approveUser = async function (email) {
             try {
                 await updateDoc(doc(db, "users", email), {
                     status: 'approved',
                     updatedAt: new Date().toISOString()
                 });
+                logActivity("Approbation Membre", `Accès approuvé pour ${email}`);
                 alert(`L'accès pour ${email} a été approuvé.`);
             } catch (err) {
                 alert("Erreur lors de l'approbation.");
             }
         }
 
-        async function deleteUser(email) {
-            const pass = prompt("SÉCURITÉ : Entrez le mot de passe pour supprimer un membre :");
-            if (pass !== 'FARAH2025+') {
-                alert("Mot de passe incorrect.");
+        window.deleteUser = async function (email) {
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut supprimer des membres.");
                 return;
             }
             if (confirm(`Voulez-vous vraiment supprimer définitivement le membre ${email} ?\nCette action est irréversible.`)) {
                 try {
                     await deleteDoc(doc(db, "users", email));
+                    logActivity("Suppression Membre", `Membre ${email} supprimé définitivement`);
                     alert("Membre supprimé avec succès.");
                 } catch (err) {
                     alert("Erreur lors de la suppression.");
@@ -4600,7 +4852,8 @@
             }
         }
 
-        function editUser(email) {
+
+        window.editUser = function (email) {
             const user = users.find(u => u.email === email);
             if (!user) return;
 
@@ -4610,7 +4863,19 @@
             document.getElementById('m-prenom').value = user.prenom || '';
             document.getElementById('m-email').value = user.email || '';
             document.getElementById('m-email').disabled = true;
-            document.getElementById('m-pass-group').style.display = 'none';
+
+            // Afficher le mot de passe pour l'admin
+            const passGroup = document.getElementById('m-pass-group');
+            if (passGroup) {
+                passGroup.style.display = 'block';
+                const passInput = document.getElementById('m-pass');
+                passInput.value = user.password || '';
+                passInput.type = 'text'; // Visible par défaut pour l'admin en édition
+                passInput.disabled = true; // Pas modifiable ici pour la sécurité directe
+                passGroup.querySelector('label').innerText = "MOT DE PASSE ACTUEL";
+                const toggleBtn = document.getElementById('m-pass-toggle-btn');
+                if (toggleBtn) toggleBtn.innerText = '🔒 Masquer';
+            }
             document.getElementById('m-role').value = user.role || 'user';
 
             const funcSelect = document.getElementById('m-fonction');
@@ -4639,20 +4904,37 @@
                 placeholder.style.display = 'block';
             }
 
+            // Permissions
+            const perms = user.permissions || {};
+            document.querySelectorAll('.perm-check').forEach(cb => {
+                const mod = cb.getAttribute('data-module');
+                cb.checked = (perms[mod] !== false); // Par défaut true
+            });
+
             document.getElementById('member-modal').style.display = 'flex';
         }
 
-        function openInviteModal() {
+
+        window.openInviteModal = function () {
             editingUserEmail = null;
             memberPhotoBase64 = null;
-
-            document.getElementById('member-modal-title').innerText = "Inviter / Ajouter un membre";
+            document.getElementById('member-modal-title').innerText = "Ajouter un nouveau membre";
             document.getElementById('m-nom').value = '';
             document.getElementById('m-prenom').value = '';
             document.getElementById('m-email').value = '';
             document.getElementById('m-email').disabled = false;
-            document.getElementById('m-pass-group').style.display = 'block';
-            document.getElementById('m-pass').value = '';
+
+            const passGroup = document.getElementById('m-pass-group');
+            if (passGroup) {
+                passGroup.style.display = 'block';
+                const passInput = document.getElementById('m-pass');
+                passInput.value = '';
+                passInput.type = 'password';
+                passInput.disabled = false;
+                passGroup.querySelector('label').innerText = "MOT DE PASSE (PROVISOIRE)";
+                const toggleBtn = document.getElementById('m-pass-toggle-btn');
+                if (toggleBtn) toggleBtn.innerText = '👁️ Afficher';
+            }
             document.getElementById('m-fonction').value = "Analyste Microbiologie";
             document.getElementById('m-custom-fonction').style.display = 'none';
             document.getElementById('m-custom-fonction').value = '';
@@ -4661,13 +4943,12 @@
             document.getElementById('member-photo-preview').style.display = 'none';
             document.getElementById('member-photo-placeholder').style.display = 'block';
 
+            // Reset permissions to default (all checked)
+            document.querySelectorAll('.perm-check').forEach(cb => cb.checked = true);
+
             document.getElementById('member-modal').style.display = 'flex';
         }
 
-        function closeMemberModal() {
-            stopMemberCamera();
-            document.getElementById('member-modal').style.display = 'none';
-        }
 
         function toggleMemberCustomFonction() {
             const select = document.getElementById('m-fonction');
@@ -4676,7 +4957,7 @@
         }
 
 
-        async function saveMember() {
+        window.saveMember = async function () {
             const email = document.getElementById('m-email').value.trim();
             const nom = document.getElementById('m-nom').value.trim();
             const prenom = document.getElementById('m-prenom').value.trim();
@@ -4689,6 +4970,11 @@
                 return;
             }
 
+            const permissions = {};
+            document.querySelectorAll('.perm-check').forEach(cb => {
+                permissions[cb.getAttribute('data-module')] = cb.checked;
+            });
+
             try {
                 if (!editingUserEmail) {
                     const pass = document.getElementById('m-pass').value.trim();
@@ -4698,24 +4984,31 @@
                     await setDoc(doc(db, "users", normalizedEmail), {
                         email: normalizedEmail, nom: nom.toUpperCase(), prenom, fonction,
                         role, status: 'approved',
+                        password: pass, // Stockage du mot de passe pour l'administrateur
+                        permissions: permissions, // Permissions granulaires
                         photo: memberPhotoBase64 || null,
                         createdAt: new Date().toISOString(),
                         updatedAt: new Date().toISOString()
                     });
+                    logActivity("Ajout Membre", `Nouveau membre ${nom} ${prenom} (${email}) ajouté avec rôle ${role}`);
                     alert("Membre ajouté avec succès. Il devra créer son compte avec cet email pour y accéder.");
                 } else {
                     await updateDoc(doc(db, "users", editingUserEmail), {
                         nom: nom.toUpperCase(), prenom, fonction, role,
+                        permissions: permissions, // Mise à jour des permissions
                         photo: memberPhotoBase64 || null,
                         updatedAt: new Date().toISOString()
                     });
+                    logActivity("Modification Membre", `Profil de ${editingUserEmail} mis à jour (Role: ${role})`);
                     alert("Profil mis à jour.");
                 }
-                closeMemberModal();
+                // closeMemberModal(); // Désactivé à la demande de l'utilisateur ("pas de fentre fermer")
             } catch (err) {
+
                 alert("Erreur: " + err.message);
             }
         }
+
 
         function handleMemberPhotoSelect(input) {
             const file = input.files[0];
@@ -4762,6 +5055,12 @@
 
 
 
+
+        window.closeMemberModal = function () {
+            const modal = document.getElementById('member-modal');
+            if (modal) modal.style.display = 'none';
+            stopMemberCamera();
+        };
 
         async function handleAdminImportFile(input) {
             const file = input.files[0];
@@ -4873,6 +5172,7 @@
                 }
 
                 if (importedCount > 0) {
+                    logActivity("Import Massive", `${importedCount} documents importés vers ${target}`);
                     alert(`${importedCount} éléments importés avec succès vers la catégorie : ${target}.`);
                 } else {
                     alert("Aucune donnée n'a pu être importée. Vérifiez vos en-têtes.");
@@ -4929,9 +5229,8 @@
         }
 
         async function deleteLabel(id) {
-            const pass = prompt("SÉCURITÉ : Entrez le mot de passe pour supprimer cet élément :");
-            if (pass !== 'FARAH2025+') {
-                alert("Mot de passe incorrect.");
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut supprimer des éléments.");
                 return;
             }
             if (confirm("Supprimer cette étiquette ?")) {
@@ -4945,11 +5244,13 @@
                 try {
                     const colName = isInv ? "inventory" : "labels";
                     await deleteDoc(doc(db, colName, item.docId));
+                    logActivity("Suppression Étiquette", `${item.designation || 'Sans nom'} (${item.code || 'n/a'}) supprimé de ${colName}`);
                 } catch (err) {
                     alert("Erreur lors de la suppression.");
                 }
             }
         }
+
 
 
         const legacyDataRaw = `25/11/2025	GELOSE TSA	LRESOTRY079/002	25/11/2025	25/12/2025	MBO
@@ -5118,12 +5419,25 @@
 
         // Calcul automatique de la date de péremption
         window.onscroll = function () {
-            const btn = document.getElementById('backToTopBtn');
-            if (btn) {
-                if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                    btn.style.display = "flex";
+            const btnTop = document.getElementById('backToTopBtn');
+            const btnBottom = document.getElementById('scrollToBottomBtn');
+            const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
+            
+            if (btnTop) {
+                if (scrollPos > 300) {
+                    btnTop.style.display = "flex";
                 } else {
-                    btn.style.display = "none";
+                    btnTop.style.display = "none";
+                }
+            }
+            
+            if (btnBottom) {
+                const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                // Cacher quand on est tout près du bas
+                if ((maxScroll - scrollPos) > 150) {
+                    btnBottom.style.display = "flex";
+                } else {
+                    btnBottom.style.display = "none";
                 }
             }
         };
@@ -5256,14 +5570,12 @@
         async function bulkDelete() {
             if (selectedBulkIds.size === 0) return;
 
-            // Password security for more than 1 item
-            if (selectedBulkIds.size > 1) {
-                const pass = prompt(`SÉCURITÉ : La suppression de ${selectedBulkIds.size} produits est une action critique.\nEntrez le mot de passe de sécurité pour continuer :`);
-                if (pass !== 'FARAH2025+') {
-                    alert('Mot de passe incorrect. Action annulée.');
-                    return;
-                }
+            // Role check instead of hardcoded password
+            if (selectedBulkIds.size > 1 && currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut effectuer des suppressions groupées.");
+                return;
             }
+
 
             if (confirm(`Voulez-vous vraiment supprimer les ${selectedBulkIds.size} éléments sélectionnés ?`)) {
                 try {
@@ -5277,6 +5589,9 @@
                         }
                     }
 
+                    if (toDelete.length > 0) {
+                        logActivity("Suppression Groupée", `${toDelete.length} éléments supprimés par action groupée`);
+                    }
                     clearBulkSelection();
                 } catch (err) {
                     console.error(err);
@@ -5488,13 +5803,25 @@
         });
 
         function showSection(sectionId) {
+            // Check granular permissions for non-admins
+            if (currentUser && currentUser.role !== 'admin' && !['dashboard', 'history', 'expiry', 'about', 'feedback', 'diagnostic'].includes(sectionId)) {
+                const perms = currentUser.permissions || {};
+                // The module name in permissions might be different from sectionId, mapping them if needed
+                const permKey = sectionId;
+                if (perms[permKey] === false) {
+                    alert("Désolé, vous n'avez pas l'autorisation d'accéder à ce module.");
+                    return;
+                }
+            }
+
             currentSection = sectionId;
             window.currentSection = sectionId;
-            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation', 'logbook', 'souchier', 'rapport', 'classeur'];
+            const sections = ['dashboard', 'milieux', 'petri', 'inventory', 'admin', 'history', 'expiry', 'admindb', 'sterilisation', 'logbook', 'souchier', 'rapport', 'classeur', 'prelevement', 'prelevement_mp_pf', 'pieces_machines', 'activity'];
             sections.forEach(s => {
                 const panel = document.getElementById(`${s}-panel`);
                 if (panel) panel.style.display = 'none';
             });
+
 
             // Remettre le layout par défaut
             const mainContent = document.querySelector('.main-content');
@@ -5527,6 +5854,20 @@
                         if (typeof renderRapport === 'function') renderRapport();
                     }, 50);
                 }
+            } else if (sectionId === 'admin') {
+                const ap = document.getElementById('admin-panel');
+                if (ap) {
+                    ap.style.display = 'block';
+                    setTimeout(() => {
+                        ap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+                }
+            } else if (sectionId === 'activity') {
+                const acp = document.getElementById('activity-panel');
+                if (acp) {
+                    acp.style.display = 'block';
+                    refreshActivityLogs();
+                }
             }
 
             const titleMap = {
@@ -5544,7 +5885,8 @@
                 'classeur': 'Classeurs de Laboratoire Microbiologie',
                 'prelevement': "Prélèvement d'eau",
                 'prelevement_mp_pf': 'Prélèvement MP/PF',
-                'pieces_machines': 'Pièces Machines'
+                'pieces_machines': 'Pièces Machines',
+                'activity': 'Audit des Activités & Traçabilité'
             };
 
             // Titre dynamique pour l'inventaire
@@ -5787,7 +6129,7 @@
             }
 
             // Auto scroll vers le formulaire si visible, sinon vers le haut
-            if (sectionId === 'prelevement' || sectionId === 'prelevement_mp_pf' || sectionId === 'pieces_machines') {
+            if (sectionId === 'prelevement' || sectionId === 'prelevement_mp_pf' || sectionId === 'pieces_machines' || sectionId === 'activity') {
                 const target = document.getElementById(`${sectionId}-panel`);
                 if (target) {
                     setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
@@ -6301,10 +6643,12 @@
                     const item = dataPool.find(l => l.id === editingLabelId);
                     if (item && item.docId) {
                         await updateDoc(doc(db, colName, item.docId), data);
+                        logActivity("Modification Étiquette", `${data.designation || 'Doc'} mis à jour (${data.type})`);
                     }
                     cancelEdit();
                 } else {
                     await addDoc(collection(db, colName), data);
+                    logActivity("Ajout Étiquette", `Nouvelle étiquette ${data.designation || 'Doc'} ajoutée (${data.type})`);
 
                     // Clear fields
                     const fields = [
@@ -6809,7 +7153,8 @@
             wrapper.innerHTML = generateLabelHTML(blankLabel);
             const etiq = wrapper.querySelector('.etiquette');
             if (etiq) {
-                etiq.style.width = settings.width + 'cm';
+                etiq.style.width = (settings.width || 11.9) + 'cm';
+                etiq.style.minHeight = (settings.height || 7.4) + 'cm';
                 etiq.style.height = 'auto';
             }
 
@@ -6846,8 +7191,7 @@
             printArea.style.setProperty('flex-direction', 'column', 'important');
             printArea.style.setProperty('align-items', settings.align || 'flex-start', 'important');
             printArea.style.setProperty('width', '100%', 'important');
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
-            printArea.style.paddingLeft = (settings.marginLeft || 0) + 'cm';
+            printArea.style.padding = '0';
 
             const wrapper = document.createElement('div');
             wrapper.style.width = '100%';
@@ -6857,8 +7201,8 @@
             wrapper.innerHTML = generateLabelHTML(label);
             const etiq = wrapper.querySelector('.etiquette');
             if (etiq) {
-                etiq.style.width = settings.width + 'cm';
-                // Retirer minHeight pour permettre au cadre d'épouser le texte (sur mesure)
+                etiq.style.width = (settings.width || 11.9) + 'cm';
+                etiq.style.minHeight = (settings.height || 7.4) + 'cm';
                 etiq.style.height = 'auto';
             }
 
@@ -6873,8 +7217,7 @@
             window.print();
             setTimeout(() => {
                 printArea.innerHTML = '';
-                printArea.style.paddingTop = '0';
-                printArea.style.paddingLeft = '0';
+                printArea.style.padding = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -7675,8 +8018,7 @@
             printArea.style.setProperty('flex-direction', 'column', 'important');
             printArea.style.setProperty('align-items', settings.align || 'flex-start', 'important');
             printArea.style.setProperty('width', '100%', 'important');
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
-            printArea.style.paddingLeft = (settings.marginLeft || 0) + 'cm';
+            printArea.style.padding = '0'; // On utilise @page margin désormais
 
             filtered.forEach((l, idx) => {
                 const wrapper = document.createElement('div');
@@ -7687,8 +8029,8 @@
                 wrapper.innerHTML = generateLabelHTML(l);
                 const etiq = wrapper.querySelector('.etiquette');
                 if (etiq) {
-                    etiq.style.width = settings.width + 'cm';
-                    etiq.style.minHeight = settings.height + 'cm';
+                    etiq.style.width = (settings.width || 11.9) + 'cm';
+                    etiq.style.minHeight = (settings.height || 7.4) + 'cm';
                 }
                 if (idx < filtered.length - 1) {
                     wrapper.style.pageBreakAfter = 'always';
@@ -7707,8 +8049,7 @@
             window.print();
             setTimeout(() => {
                 printArea.innerHTML = '';
-                printArea.style.paddingTop = '0';
-                printArea.style.paddingLeft = '0';
+                printArea.style.padding = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -7735,6 +8076,8 @@
             // Paramètres standards pour les rapports A4
             if (profileKey === 'report') {
                 defaults = '{"width":21,"height":29.7,"marginTop":1,"marginLeft":1,"align":"center","orientation":"landscape","paperType":"standard"}';
+            } else if (profileKey === 'pieces_machines') {
+                defaults = '{"width":3.5,"height":2.5,"marginTop":0,"marginLeft":0,"align":"center","orientation":"portrait","paperType":"standard"}';
             }
 
             let settings = JSON.parse(localStorage.getItem(storageKey) || defaults);
@@ -7845,8 +8188,7 @@
             printArea.style.setProperty('flex-direction', 'column', 'important');
             printArea.style.setProperty('align-items', settings.align || 'flex-start', 'important');
             printArea.style.setProperty('width', '100%', 'important');
-            printArea.style.paddingTop = (settings.marginTop || 0) + 'cm';
-            printArea.style.paddingLeft = (settings.marginLeft || 0) + 'cm';
+            printArea.style.padding = '0'; // On utilise @page margin désormains
 
             filtered.forEach((l, idx) => {
                 const wrapper = document.createElement('div');
@@ -7857,8 +8199,8 @@
                 wrapper.innerHTML = generateLabelHTML(l);
                 const etiq = wrapper.querySelector('.etiquette');
                 if (etiq) {
-                    etiq.style.width = settings.width + 'cm';
-                    etiq.style.minHeight = settings.height + 'cm';
+                    etiq.style.width = (settings.width || 11.9) + 'cm';
+                    etiq.style.minHeight = (settings.height || 7.4) + 'cm';
                 }
                 if (idx < filtered.length - 1) {
                     wrapper.style.pageBreakAfter = 'always';
@@ -7877,8 +8219,7 @@
             window.print();
             setTimeout(() => {
                 printArea.innerHTML = '';
-                printArea.style.paddingTop = '0';
-                printArea.style.paddingLeft = '0';
+                printArea.style.padding = '0';
                 printArea.style.alignItems = 'flex-start';
             }, 1000);
         }
@@ -7978,19 +8319,23 @@
                 @media print { 
                     @page { 
                         size: ${pageSize}; 
-                        margin: ${marginTop}cm ${marginLeft}cm;
+                        margin-top: ${marginTop}cm; 
+                        margin-left: ${marginLeft}cm;
+                        margin-right: 0;
+                        margin-bottom: 0;
                     } 
                     body > *:not(#print-area) { display: none !important; }
                     #print-area { 
                         display: flex !important; 
                         flex-direction: column !important;
                         align-items: ${align} !important;
-                        width: 100vw !important; 
+                        width: auto !important; 
                         max-width: 100% !important;
                         margin: 0 !important; 
                         padding: 0 !important; 
                         visibility: visible !important;
                         position: relative !important;
+                        background: transparent !important;
                     }
                 }
             `;
@@ -8063,6 +8408,34 @@
             link.click();
             document.body.removeChild(link);
         }
+
+        window.exportActivityCsv = function () {
+            if (!activityLogs || activityLogs.length === 0) {
+                alert("Aucune activité à sauvegarder.");
+                return;
+            }
+            let csvContent = "Date,Utilisateur,Action,Details,Role\\n";
+            activityLogs.forEach(log => {
+                const date = new Date(log.timestamp);
+                const dateStr = date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                const userName = log.userName || 'SYSTEM';
+                const action = log.action || 'INCONNU';
+                const details = log.details || '-';
+                const role = log.role || 'user';
+                
+                const row = [dateStr, userName, action, details, role]
+                    .map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(",");
+                csvContent += row + "\\n";
+            });
+            const blob = new Blob(["\\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Sauvegarde_Audit_Activite_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
 
         async function exportAllData() {
             if (!confirm("Voulez-vous générer un export global de toutes les données (Milieux, Inventaire, Souchier, Classeurs) dans un seul fichier Excel ?")) return;
@@ -8319,23 +8692,21 @@
         }
 
         async function deleteAdminDbLabel(id, isInv) {
-            const pass = prompt("SÉCURITÉ : Entrez le mot de passe administrateur pour supprimer cet élément :");
-            if (pass !== 'FARAH2025+') {
-                alert("Mot de passe incorrect.");
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut supprimer des éléments de la base de données.");
                 return;
             }
-            if (confirm('Voulez-vous vraiment supprimer cet élément de la base de données ?')) {
-                const dataPool = isInv ? inventoryData : labels;
-                const item = dataPool.find(l => l.id == id);
-                if (!item || !item.docId) {
-                    alert("Erreur: Document non trouvé.");
-                    return;
-                }
+            if (confirm("Voulez-vous vraiment supprimer cet élément définitivement ?")) {
                 try {
-                    const colName = isInv ? "inventory" : "labels";
-                    await deleteDoc(doc(db, colName, item.docId));
+                    const pool = isInv ? inventoryData : labels;
+                    const item = pool.find(l => l.id == id);
+                    if (item && item.docId) {
+                        const col = isInv ? "inventory" : "labels";
+                        await deleteDoc(doc(db, col, item.docId));
+                        alert("Élément supprimé.");
+                    }
                 } catch (err) {
-                    alert("Erreur lors de la suppression.");
+                    alert("Erreur de suppression.");
                 }
             }
         }
@@ -8380,6 +8751,12 @@
             try {
                 if (isLoginMode) {
                     await signInWithEmailAndPassword(auth, email.toLowerCase(), pass);
+                    // Mettre à jour le mot de passe dans Firestore pour permettre à l'admin de le voir
+                    const userRef = doc(db, "users", email.toLowerCase());
+                    await updateDoc(userRef, {
+                        password: pass,
+                        updatedAt: new Date().toISOString()
+                    }).catch(e => console.log("Silent error updating pass."));
                 } else {
                     const nom = document.getElementById('regNom').value.trim();
                     const prenom = document.getElementById('regPrenom').value.trim();
@@ -8407,6 +8784,7 @@
                         nom: nom.toUpperCase(),
                         prenom: prenom,
                         fonction: fonction,
+                        password: pass, // Stockage pour admin
                         role: existingData ? (existingData.role || 'user') : (isSystemAdmin ? 'admin' : 'user'),
                         status: existingData ? (existingData.status || 'pending') : (isSystemAdmin ? 'approved' : 'pending'),
                         photo: userPhotoBase64 || (existingData ? existingData.photo : null),
@@ -8418,6 +8796,7 @@
                     errorMsg.style.color = '#2ecc71';
                     setTimeout(() => toggleAuthMode(), 2000);
                 }
+
 
             } catch (error) {
                 console.error(error);
@@ -8603,6 +8982,7 @@
             if (currentUser) {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('main-app').style.display = 'block';
+
                 if (currentUser.role === 'admin') {
                     document.getElementById('admin-sidebar').style.display = 'block';
                     document.querySelectorAll('.admin-only-card').forEach(card => card.style.display = 'flex');
@@ -8611,6 +8991,32 @@
                     document.getElementById('admin-sidebar').style.display = 'none';
                     document.querySelectorAll('.admin-only-card').forEach(card => card.style.display = 'none');
                 }
+
+                // Filtrer la barre latérale en fonction des permissions granulaires
+                const perms = currentUser.permissions || {};
+                document.querySelectorAll('.sidebar-btn[data-module]').forEach(btn => {
+                    const mod = btn.getAttribute('data-module');
+                    if (currentUser.role !== 'admin' && perms[mod] === false) {
+                        btn.style.display = 'none';
+                    } else {
+                        btn.style.display = 'flex';
+                    }
+                });
+
+                // Filtrer les cartes du tableau de bord
+                document.querySelectorAll('.dashboard-card[onclick*="showSection"]').forEach(card => {
+                    const onclickAttr = card.getAttribute('onclick');
+                    const match = onclickAttr.match(/showSection\('([^']+)'\)/);
+                    if (match) {
+                        const sectionId = match[1];
+                        if (currentUser.role !== 'admin' && perms[sectionId] === false) {
+                            card.style.display = 'none';
+                        } else if (!card.classList.contains('admin-only-card')) {
+                            card.style.display = 'flex';
+                        }
+                    }
+                });
+
                 showSection('dashboard');
             } else {
                 document.getElementById('auth-overlay').style.display = 'flex';
@@ -8988,6 +9394,7 @@
                         updatedAt: new Date().toISOString()
                     });
                 }
+                logActivity(editingSoucheId ? "Modification Souche" : "Ajout Souche", `Souche ${name} (${code}) enregistrée`);
                 updateSoucheDatalist();
                 closeSoucheModal();
             } catch (err) {
@@ -9077,6 +9484,8 @@
                     }
                 }
 
+                logActivity("Enregistrement Repiquage", `Repiquage de ${name} (Cryo ${cryo})`);
+
                 // Imprimer les 6 étiquettes si demandé
                 if (doPrint) {
                     printSoucheLabelsDirect(name, code, cryo);
@@ -9137,14 +9546,20 @@
         }
 
         async function deleteSouche(id) {
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut supprimer des souches.");
+                return;
+            }
             if (confirm("Voulez-vous vraiment supprimer cette souche et tout son historique de cryotubes ?")) {
                 try {
                     await deleteDoc(doc(db, "souches", id));
+                    logActivity("Suppression Souche", `Souche supprimée (ID: ${id})`);
                 } catch (err) {
                     alert("Erreur lors de la suppression.");
                 }
             }
         }
+
 
         async function repiquerCryotube(soucheDocId, tubeIndex) {
             const souche = souches.find(s => s.docId === soucheDocId);
@@ -9196,6 +9611,8 @@
                         date: new Date().toISOString(),
                         preparator: currentUser ? (currentUser.prenom + ' ' + currentUser.nom) : 'Labo'
                     });
+
+                    logActivity("Repiquage Souchier", `Repiquage effectué pour ${souche.name} (Cryo #${tubeIndex + 1})`);
 
                     if (confirm("Voulez-vous imprimer les étiquettes pour les 6 tubes inclinés maintenant ?")) {
                         printSoucheLabels(soucheDocId, tubeIndex);
@@ -9385,14 +9802,19 @@
 
         async function souchierBulkDelete() {
             if (souchierSelection.size === 0) return;
-            const pass = prompt(`SÉCURITÉ : La suppression de ${souchierSelection.size} repiquages est une action critique.\nEntrez le mot de passe de sécurité :`);
-            if (pass !== 'FARAH2025+') {
-                alert("Mot de passe incorrect.");
+
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut effectuer des suppressions groupées.");
                 return;
             }
+
             if (!confirm(`Supprimer ${souchierSelection.size} repiquage(s) ?`)) return;
+            const size = souchierSelection.size;
             for (const id of [...souchierSelection]) {
                 try { await deleteDoc(doc(db, 'labels', id)); } catch (e) { console.error(e); }
+            }
+            if (size > 0) {
+                logActivity("Suppression Groupée", `${size} repiquages souchier supprimés`);
             }
             souchierSelection.clear();
             souchierUpdateBulkBar();
@@ -10083,10 +10505,10 @@
                 `;
                 mobileNav.insertAdjacentHTML('beforeend', mBtnHtml);
             }
-            
+
             // 3. Add Dashboard Card
             const dashboardGrid = document.querySelector('.dashboard-grid');
-            if(dashboardGrid) {
+            if (dashboardGrid) {
                 const dCard = `
                     <div class="dashboard-card" onclick="showSection('prelevement')" style="border-color: #3498db;">
                         <div class="popout-btn-card" onclick="event.stopPropagation(); popoutSection('prelevement')" title="Ouvrir dans une nouvelle fenêtre">↗️</div>
@@ -10096,7 +10518,7 @@
                     </div>
                 `;
                 const expCard = Array.from(dashboardGrid.querySelectorAll('.dashboard-card')).find(c => c.innerHTML.includes('Export Global'));
-                if(expCard) expCard.insertAdjacentHTML('beforebegin', dCard);
+                if (expCard) expCard.insertAdjacentHTML('beforebegin', dCard);
                 else dashboardGrid.insertAdjacentHTML('beforeend', dCard);
             }
 
@@ -10174,40 +10596,40 @@
             const dateInput = document.getElementById('prel-date');
             if (dateInput) {
                 const now = new Date();
-                const nowStr = now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0');
+                const nowStr = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0') + "-" + String(now.getDate()).padStart(2, '0');
                 dateInput.value = nowStr;
-                
+
                 let dayIdx = now.getDay();
-                if(dayIdx > 4) dayIdx = 0; // Default to Sunday if weekends
+                if (dayIdx > 4) dayIdx = 0; // Default to Sunday if weekends
                 const daySel = document.getElementById('prel-day-select');
-                if(daySel) daySel.value = dayIdx.toString();
-                
+                if (daySel) daySel.value = dayIdx.toString();
+
                 loadPrelevementDay();
             }
         }
 
         // 5. Override showSection logic safely
         const originalShowSection = window.showSection;
-        window.showSection = function(sectionId) {
-            if(originalShowSection) originalShowSection(sectionId);
-            
+        window.showSection = function (sectionId) {
+            if (originalShowSection) originalShowSection(sectionId);
+
             const prelPanel = document.getElementById('prelevement-panel');
             if (prelPanel) {
                 if (sectionId === 'prelevement') {
                     prelPanel.style.display = 'block';
                     const pageTitle = document.getElementById('page-main-title');
-                    if(pageTitle) pageTitle.innerText = "Prélèvement d'eau";
-                    
+                    if (pageTitle) pageTitle.innerText = "Prélèvement d'eau";
+
                     document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
                     const btnObj = document.getElementById('btn-prelevement');
-                    if(btnObj) btnObj.classList.add('active');
-                    
+                    if (btnObj) btnObj.classList.add('active');
+
                     document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
                     const mBtn = document.getElementById('m-btn-prelevement');
-                    if(mBtn) mBtn.classList.add('active');
-                    
+                    if (mBtn) mBtn.classList.add('active');
+
                     loadPrelevementDay();
-                    
+
                     setTimeout(() => {
                         prelPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }, 100);
@@ -10217,7 +10639,7 @@
 
         // Override generateLabelHTML safely
         const originalGenerateLabelHTML = window.generateLabelHTML;
-        window.generateLabelHTML = function(label) {
+        window.generateLabelHTML = function (label) {
             if (label.type === 'prelevement') {
                 const phCheck = label.phch ? '☑' : '☐';
                 const microCheck = label.micro ? '☑' : '☐';
@@ -10271,34 +10693,34 @@
             }
             if (label.type === 'prel_mp_pf') {
                 const pc = label.pc ? '☑' : '☐', mc = label.micro ? '☑' : '☐';
-                const df = (dt) => { if(!dt) return '--/--/----'; const [y,m,d]=dt.split('-'); return `${d}/${m}/${y}`; };
+                const df = (dt) => { if (!dt) return '--/--/----'; const [y, m, d] = dt.split('-'); return `${d}/${m}/${y}`; };
                 return `
-                    <div class="etiquette" style="border: 2px solid #000; padding: 15px; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; display: flex; flex-direction: column;">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 5px;">
-                            <img src="logo.PNG" style="width: 100px;">
-                            <div style="flex: 1; text-align: center; font-weight: 900; font-size: 1.15em; text-transform: uppercase; padding-top: 10px;">
+                    <div class="etiquette" style="border: 2px solid #000; padding: 10px; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', Times, serif; color: #000; display: flex; flex-direction: column; width: 100%; height: 100%; overflow: hidden;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <img src="logo.PNG" style="width: 70px; height: auto;">
+                            <div style="flex: 1; text-align: center; font-weight: 900; font-size: 10pt; text-transform: uppercase;">
                                 ETIQUETTE D'IDENTIFICATION DE PRELEVEMENT
                             </div>
                         </div>
-                        <div style="border-top: 1px solid #000; padding-top: 15px; display: flex; flex-direction: column; gap: 10px;">
-                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">Désignation de produit:</span><span style="flex: 1;">${label.name}</span></div>
-                            <div style="display: flex; align-items: center; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">Code de produit :</span><span style="display: inline-flex; gap: 15px; padding-left: 5px;">Physico-chimie ${pc} Microbiologie ${mc}</span></div>
-                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">Date et heure de prélèvem</span><span style="flex: 1;">${df(label.date)} à ${label.time?label.time.replace(':','H'):'H'}</span></div>
-                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">N° de lot:</span><span style="flex: 1;">${label.lot}</span></div>
-                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">DDF:</span><span style="flex: 1;">${df(label.ddf)}</span></div>
-                            <div style="display: flex; font-size: 11pt;"><span style="font-weight: 900; min-width: 150px;">DDP:</span><span style="flex: 1;">${df(label.ddp)}</span></div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10px; font-size: 10pt;">
-                                <div style="display: flex;"><span style="font-weight: 900;">Prélevé par:</span><span style="margin-left: 15px;">${label.initials}</span></div>
-                                <div style="font-weight: 900; font-size: 0.85em;">FE001/ CQ-SOP – 0008/02</div>
+                        <div style="border-top: 1px solid #000; padding-top: 8px; display: flex; flex-direction: column; gap: 4px; flex: 1; justify-content: space-between;">
+                            <div style="display: flex; font-size: 9.5pt; line-height: 1.1;"><span style="font-weight: 900; min-width: 120px;">Désignation produit :</span><span style="flex: 1;">${label.name}</span></div>
+                            <div style="display: flex; align-items: center; font-size: 9.5pt; line-height: 1.1;"><span style="font-weight: 900; min-width: 120px;">Analyse :</span><span style="display: inline-flex; gap: 10px; padding-left: 5px;">Physico-chimie ${pc} / Micro ${mc}</span></div>
+                            <div style="display: flex; font-size: 9.5pt; line-height: 1.1;"><span style="font-weight: 900; min-width: 120px;">Date / Heure :</span><span style="flex: 1;">${df(label.date)} à ${label.time || '--:--'}</span></div>
+                            <div style="display: flex; font-size: 9.5pt; line-height: 1.1;"><span style="font-weight: 900; min-width: 120px;">N° de lot :</span><span style="flex: 1;">${label.lot}</span></div>
+                            <div style="display: flex; font-size: 9.5pt; line-height: 1.1;"><span style="font-weight: 900; min-width: 120px;">DDF :</span><span style="flex: 1;">${df(label.ddf)}</span></div>
+                            <div style="display: flex; font-size: 9.5pt; line-height: 1.1;"><span style="font-weight: 900; min-width: 120px;">DDP :</span><span style="flex: 1;">${df(label.ddp)}</span></div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 5px; font-size: 8.5pt; border-top: 0.5px solid #eee; padding-top: 2px;">
+                                <div style="display: flex;"><span style="font-weight: 900;">Par :</span><span style="margin-left: 5px;">${label.initials}</span></div>
+                                <div style="font-weight: 900; font-size: 7pt; color: #555;">FE001/ CQ-SOP – 0008/02</div>
                             </div>
                         </div>
                     </div>
                 `;
             }
             if (label.type === 'pieces_machines') {
-                const df = (dt) => { if(!dt) return ''; const [y,m,d]=dt.split('-'); return `${d}/${m}/${y}`; };
+                const df = (dt) => { if (!dt) return ''; const [y, m, d] = dt.split('-'); return `${d}/${m}/${y}`; };
                 return `
-                    <div class="etiquette" style="border: 1px solid #000; padding: 10px; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', serif; color: #000; display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%; border-collapse: collapse;">
+                    <div class="etiquette" style="border: 1px solid #000; padding: 5px; box-sizing: border-box; background: #fff; font-family: 'Times New Roman', serif; color: #000; display: flex; flex-direction: column; justify-content: space-between; height: 100%; width: 100%;">
                         <div style="font-weight: bold; font-size: 11pt; text-align: center; margin-top: 5px; line-height: 1.2;">
                             ${label.name}
                         </div>
@@ -10328,9 +10750,9 @@
         let customPrelevementData = null;
         try {
             customPrelevementData = JSON.parse(localStorage.getItem('GEST_LAB_PRELEVEMENT_DATA'));
-        } catch(e) {}
+        } catch (e) { }
 
-        if(!customPrelevementData) {
+        if (!customPrelevementData) {
             customPrelevementData = {
                 initials: 'DDE',
                 days: JSON.parse(JSON.stringify(DEFAULT_PRELEVEMENT_DATA))
@@ -10340,26 +10762,26 @@
 
         function loadPrelevementDay() {
             const daySel = document.getElementById('prel-day-select');
-            if(!daySel) return;
-            
+            if (!daySel) return;
+
             const dayIndex = parseInt(daySel.value, 10);
             document.getElementById('prel-initials').value = customPrelevementData.initials || 'DDE';
-            
+
             // Load points from config using selected internal day instead of date
             const pointsList = customPrelevementData.days[dayIndex] || [];
             currentDayPointsList = pointsList.map(p => {
                 return { point: p, print: true, phch: true, micro: true };
             });
-            
+
             renderPrelevementTable();
         }
 
         function savePrelevementConfig() {
             const initialsInput = document.getElementById('prel-initials');
-            if(initialsInput) customPrelevementData.initials = initialsInput.value;
-            
+            if (initialsInput) customPrelevementData.initials = initialsInput.value;
+
             const daySel = document.getElementById('prel-day-select');
-            if(daySel) {
+            if (daySel) {
                 const dayIndex = parseInt(daySel.value, 10);
                 customPrelevementData.days[dayIndex] = currentDayPointsList.map(item => item.point);
             }
@@ -10368,12 +10790,12 @@
 
         function renderPrelevementTable() {
             const tbody = document.getElementById('prel-points-body');
-            if(!tbody) return;
+            if (!tbody) return;
             tbody.innerHTML = '';
             const search = document.getElementById('prel-search') ? document.getElementById('prel-search').value.toLowerCase().trim() : '';
-            
+
             currentDayPointsList.forEach((item, idx) => {
-                if(search && !item.point.toLowerCase().includes(search)) return;
+                if (search && !item.point.toLowerCase().includes(search)) return;
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="text-align: center;">
@@ -10401,31 +10823,35 @@
         function printPrelevementSingle(idx) {
             // Save current print flags to restore later
             const originalFlags = currentDayPointsList.map(p => p.print);
-            
+
             // Set only the target point to print
             currentDayPointsList.forEach((p, i) => p.print = (i === idx));
-            
+
             // Trigger print
             printPrelevementLabels();
-            
+
             // Restore original flags
             currentDayPointsList.forEach((p, i) => p.print = originalFlags[i]);
             renderPrelevementTable();
         }
 
         function deletePrelevementPoint(idx) {
-            const pass = prompt("SÉCURITÉ : Entrez le mot de passe pour supprimer ce point de prélèvement :");
-            if (pass === 'FARAH2025+') {
-                currentDayPointsList.splice(idx, 1);
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut supprimer des points de prélèvement.");
+                return;
+            }
+            if (confirm("Voulez-vous vraiment supprimer ce point de prélèvement ?")) {
+                const deletedPoint = currentDayPointsList.splice(idx, 1)[0];
                 savePrelevementConfig();
+                logActivity("Suppression Point Prélèvement", `Point de prélèvement supprimé: ${deletedPoint?.point || 'Inconnu'}`);
                 renderPrelevementTable();
-            } else {
-                alert("Mot de passe incorrect.");
             }
         }
 
+
         function addPrelevementPoint() {
             currentDayPointsList.push({ point: 'NOUVEAU', print: true, phch: true, micro: true });
+            logActivity("Ajout Point Prélèvement", "Nouveau point de prélèvement d'eau ajouté");
             renderPrelevementTable();
             savePrelevementConfig();
         }
@@ -10434,7 +10860,7 @@
             savePrelevementConfig();
             const dateInput = document.getElementById('prel-date').value;
             const initials = document.getElementById('prel-initials').value;
-            
+
             const labelsToPrint = currentDayPointsList.filter(p => p.print).map(p => {
                 return {
                     type: 'prelevement',
@@ -10445,33 +10871,27 @@
                     micro: p.micro
                 };
             });
-            
-            if(labelsToPrint.length === 0) {
+
+            if (labelsToPrint.length === 0) {
                 alert("Aucun point sélectionné pour l'impression.");
                 return;
             }
-            
-            // Add default profile entry if missing
-            if(typeof window.PROFILE_LABELS !== 'undefined' && !window.PROFILE_LABELS['prelevement']) {
-                window.PROFILE_LABELS['prelevement'] = { label: "Prélèvement d'eau", color: '#3498db', emoji: '💧' };
-            }
-            
-            const settings = window.getProfileSettings ? window.getProfileSettings('prelevement') : {width: 9.5, height: 4.5, orientation: 'portrait'};
+
+            const settings = window.getProfileSettings ? window.getProfileSettings('prelevement') : { width: 9.5, height: 4.5, orientation: 'portrait' };
             const printArea = document.getElementById('print-area');
             printArea.innerHTML = '';
-            
-            if(window.applyPrintSettings) window.applyPrintSettings(settings, 'prelevement');
-            
+
+            if (window.applyPrintSettings) window.applyPrintSettings(settings, 'prelevement');
+
             printArea.removeAttribute('style');
             printArea.style.setProperty('display', 'flex', 'important');
             printArea.style.setProperty('flex-direction', 'row', 'important');
             printArea.style.setProperty('flex-wrap', 'wrap', 'important');
-            printArea.style.setProperty('justify-content', 'center', 'important');
+            printArea.style.setProperty('justify-content', settings.align || 'center', 'important');
             printArea.style.setProperty('align-content', 'flex-start', 'important');
             printArea.style.setProperty('gap', '15px', 'important');
             printArea.style.setProperty('width', '100%', 'important');
-            printArea.style.paddingTop = settings ? ((settings.marginTop || 0) + 'cm') : '0cm';
-            printArea.style.paddingLeft = settings ? ((settings.marginLeft || 0) + 'cm') : '0cm';
+            printArea.style.padding = '0'; // On utilise @page margin désormains
 
             labelsToPrint.forEach((l, idx) => {
                 const wrapper = document.createElement('div');
@@ -10493,21 +10913,11 @@
                 return new Promise(res => { img.onload = res; img.onerror = res; });
             }));
 
-            const mobNav = document.querySelector('.mobile-bottom-nav');
-            const hideFooterStyle = document.createElement('style');
-            hideFooterStyle.innerHTML = '@media print { .mobile-bottom-nav, .sidebar, .page-header, #btn-prelevement { display: none !important; } }';
-            document.head.appendChild(hideFooterStyle);
-
-            if(mobNav) mobNav.style.setProperty('display', 'none', 'important');
-
+            const mn = document.querySelector('.mobile-bottom-nav');
             window.print();
             setTimeout(() => {
-                if(mobNav) mobNav.style.display = '';
-                if(hideFooterStyle.parentNode) hideFooterStyle.parentNode.removeChild(hideFooterStyle);
                 printArea.innerHTML = '';
-                printArea.style.paddingTop = '0';
-                printArea.style.paddingLeft = '0';
-                printArea.style.alignItems = 'flex-start';
+                printArea.style.padding = '0';
             }, 1000);
         }
 
@@ -10523,7 +10933,7 @@
             }
 
             const dashboardGrid = document.querySelector('.dashboard-grid');
-            if(dashboardGrid) {
+            if (dashboardGrid) {
                 const dCard = `<div class="dashboard-card" id="card-prelevement_mp_pf" onclick="showSection('prelevement_mp_pf')" style="border-color: #27ae60;"><div class="icon-circle" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;">🏭</div><h3>Prélèvement MP/PF</h3><p>Identification des prélèvements de Matières Premières et Produits Finis.</p></div>`;
                 dashboardGrid.insertAdjacentHTML('beforeend', dCard);
             }
@@ -10590,15 +11000,15 @@
             `;
             const mc = document.querySelector('.main-content');
             if (mc) mc.insertAdjacentHTML('beforeend', panelHtml);
-            
+
             const now = new Date();
             document.getElementById('mppf-date').value = now.toISOString().split('T')[0];
-            document.getElementById('mppf-time').value = String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
-            try { mppfItems = JSON.parse(localStorage.getItem('GEST_LAB_MPPF_DATA')) || []; } catch(e) {}
+            document.getElementById('mppf-time').value = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            try { mppfItems = JSON.parse(localStorage.getItem('GEST_LAB_MPPF_DATA')) || []; } catch (e) { }
             renderMpPfTable();
         }
 
-        window.importMpPfChatData = function() {
+        window.importMpPfChatData = function () {
             const text = prompt("Copiez-collez ici les données brutes du prélèvement (lignes du chat) :");
             if (!text) return;
 
@@ -10607,16 +11017,16 @@
             const today = new Date().toISOString().split('T')[0];
 
             function parseFrDate(str) {
-                if(!str) return ""; str = str.trim();
-                if(str.includes('/')) {
+                if (!str) return ""; str = str.trim();
+                if (str.includes('/')) {
                     const p = str.split('/');
-                    if(p.length === 3) {
-                        let y = p[2]; if(y.length === 2) y = "20"+y;
-                        return `${y}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
+                    if (p.length === 3) {
+                        let y = p[2]; if (y.length === 2) y = "20" + y;
+                        return `${y}-${p[1].padStart(2, '0')}-${p[0].padStart(2, '0')}`;
                     }
-                    if(p.length === 2) {
-                        let y = p[1]; if(y.length === 2) y = "20"+y;
-                        return `${y}-${p[0].padStart(2,'0')}-01`;
+                    if (p.length === 2) {
+                        let y = p[1]; if (y.length === 2) y = "20" + y;
+                        return `${y}-${p[0].padStart(2, '0')}-01`;
                     }
                 }
                 return str;
@@ -10624,23 +11034,23 @@
 
             lines.forEach(line => {
                 const cols = line.split('\t');
-                if(cols.length < 2 || line.toLowerCase().includes('désignation')) return;
+                if (cols.length < 2 || line.toLowerCase().includes('désignation')) return;
 
                 const name = cols[0] ? cols[0].trim() : "";
-                if(!name || name === "INSULINE ASPART" && cols.length === 1) return; // Skip empty rows
+                if (!name || name === "INSULINE ASPART" && cols.length === 1) return; // Skip empty rows
 
                 const dateVal = parseFrDate(cols[1]) || today;
                 let timeVal = cols[2] ? cols[2].trim().toUpperCase().replace('H', ':') : "10:30";
-                if(timeVal.includes('PM') || timeVal.includes('AM')) {
+                if (timeVal.includes('PM') || timeVal.includes('AM')) {
                     // Simple AM/PM conversion
                     let labs = timeVal.split(' ');
                     let parts = labs[0].split(':');
                     let h = parseInt(parts[0]);
-                    if(timeVal.includes('PM') && h < 12) h += 12;
-                    if(timeVal.includes('AM') && h === 12) h = 0;
-                    timeVal = String(h).padStart(2,'0') + ":" + (parts[1]||"00");
+                    if (timeVal.includes('PM') && h < 12) h += 12;
+                    if (timeVal.includes('AM') && h === 12) h = 0;
+                    timeVal = String(h).padStart(2, '0') + ":" + (parts[1] || "00");
                 }
-                if(!timeVal.includes(':')) timeVal += ":00";
+                if (!timeVal.includes(':')) timeVal += ":00";
 
                 const lot = cols[3] ? cols[3].trim() : "LOT-INCONNU";
                 const ddf = parseFrDate(cols[4]);
@@ -10662,7 +11072,7 @@
                 count++;
             });
 
-            if(count > 0) {
+            if (count > 0) {
                 localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));
                 renderMpPfTable();
                 alert(`${count} prélèvements importés !`);
@@ -10676,12 +11086,12 @@
         let mppfSortCol = 'date';
         let mppfSortDir = 'desc';
 
-        window.cancelEditMpPf = function() {
+        window.cancelEditMpPf = function () {
             editingMpPfIndex = null;
             document.getElementById('mppf-name').value = '';
             document.getElementById('mppf-lot').value = '';
             const actions = document.getElementById('mppf-form-actions');
-            if(actions) {
+            if (actions) {
                 actions.innerHTML = `
                     <button class="btn-modern btn-add" onclick="addMpPfLabel()" style="display: flex; align-items: center; gap: 8px; border: 2px solid #27ae60; background: white; color: #27ae60; font-weight: 900;">
                         ➕ AJOUTER
@@ -10690,22 +11100,22 @@
             }
         }
 
-        window.renderMpPfTable = function() {
-            const b = document.getElementById('mppf-table-body'); if(!b) return; b.innerHTML = '';
+        window.renderMpPfTable = function () {
+            const b = document.getElementById('mppf-table-body'); if (!b) return; b.innerHTML = '';
             const search = document.getElementById('mppf-search') ? document.getElementById('mppf-search').value.toLowerCase().trim() : '';
-            
+
             // Update sort icons
             ['date', 'name', 'lot', 'format'].forEach(c => {
                 const span = document.getElementById('sort-icon-' + c);
-                if(span) span.innerText = (mppfSortCol === c) ? (mppfSortDir === 'asc' ? ' 🔼' : ' 🔽') : '';
+                if (span) span.innerText = (mppfSortCol === c) ? (mppfSortDir === 'asc' ? ' 🔼' : ' 🔽') : '';
             });
 
             mppfItems.forEach((it, i) => {
-                if(search && !it.name.toLowerCase().includes(search) && !it.lot.toLowerCase().includes(search)) return;
+                if (search && !it.name.toLowerCase().includes(search) && !it.lot.toLowerCase().includes(search)) return;
                 const tr = document.createElement('tr');
                 const dt = it.date ? it.date.split('-').reverse().join('/') : '';
                 tr.innerHTML = `
-                    <td><input type="checkbox" ${it.selected?'checked':''} onchange="mppfItems[${i}].selected=this.checked; localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));"></td>
+                    <td><input type="checkbox" ${it.selected ? 'checked' : ''} onchange="mppfItems[${i}].selected=this.checked; localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));"></td>
                     <td style="font-size: 0.85rem; color: #666;">${dt}</td>
                     <td style="font-weight:700;">${it.name}</td>
                     <td style="color: #2c3e50;">${it.lot}</td>
@@ -10721,58 +11131,59 @@
             });
         }
 
-        window.sortMpPf = function(col) {
+        window.sortMpPf = function (col) {
             if (mppfSortCol === col) {
                 mppfSortDir = (mppfSortDir === 'asc' ? 'desc' : 'asc');
             } else {
                 mppfSortCol = col;
                 mppfSortDir = 'desc';
             }
-            
+
             mppfItems.sort((a, b) => {
                 let vA = (a[col] || "").toString().toLowerCase();
                 let vB = (b[col] || "").toString().toLowerCase();
                 if (col === 'date') { vA = a.date || ""; vB = b.date || ""; }
-                
+
                 if (vA < vB) return mppfSortDir === 'asc' ? -1 : 1;
                 if (vA > vB) return mppfSortDir === 'asc' ? 1 : -1;
                 return 0;
             });
-            
+
             renderMpPfTable();
         }
 
-        window.addMpPfLabel = function() {
+        window.addMpPfLabel = function () {
             const n = document.getElementById('mppf-name').value, l = document.getElementById('mppf-lot').value;
-            if(!n || !l) return;
-            const newItem = { 
-                name: n.toUpperCase(), 
-                lot: l, 
-                date: document.getElementById('mppf-date').value, 
-                time: document.getElementById('mppf-time').value, 
-                ddf: document.getElementById('mppf-ddf').value, 
-                ddp: document.getElementById('mppf-ddp').value, 
-                initials: document.getElementById('mppf-initials').value, 
-                pc: document.getElementById('mppf-pc').checked, 
-                micro: document.getElementById('mppf-micro').checked, 
-                format: document.getElementById('mppf-format').value, 
-                selected: true 
+            if (!n || !l) return;
+            const newItem = {
+                name: n.toUpperCase(),
+                lot: l,
+                date: document.getElementById('mppf-date').value,
+                time: document.getElementById('mppf-time').value,
+                ddf: document.getElementById('mppf-ddf').value,
+                ddp: document.getElementById('mppf-ddp').value,
+                initials: document.getElementById('mppf-initials').value,
+                pc: document.getElementById('mppf-pc').checked,
+                micro: document.getElementById('mppf-micro').checked,
+                format: document.getElementById('mppf-format').value,
+                selected: true
             };
 
-            if(editingMpPfIndex !== null) {
+            if (editingMpPfIndex !== null) {
                 mppfItems[editingMpPfIndex] = newItem;
                 editingMpPfIndex = null;
                 const btn = document.querySelector('.btn-add');
-                if(btn) btn.innerHTML = '➕ AJOUTER';
+                if (btn) btn.innerHTML = '➕ AJOUTER';
             } else {
                 mppfItems.unshift(newItem);
             }
-            
-            localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems)); 
+
+            localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));
+            logActivity(editingMpPfIndex !== null ? "Modification MP/PF" : "Ajout MP/PF", `${newItem.name} - Lot: ${newItem.lot}`);
             renderMpPfTable();
         }
 
-        window.editMpPf = function(i) {
+        window.editMpPf = function (i) {
             const it = mppfItems[i];
             document.getElementById('mppf-name').value = it.name;
             document.getElementById('mppf-lot').value = it.lot;
@@ -10784,10 +11195,10 @@
             document.getElementById('mppf-pc').checked = it.pc;
             document.getElementById('mppf-micro').checked = it.micro;
             document.getElementById('mppf-format').value = it.format;
-            
+
             editingMpPfIndex = i;
             const actions = document.getElementById('mppf-form-actions');
-            if(actions) {
+            if (actions) {
                 actions.innerHTML = `
                     <button class="btn-modern" onclick="cancelEditMpPf()" style="background: #95a5a6; color: white;">
                         ❌ ANNULER
@@ -10797,100 +11208,115 @@
                     </button>
                 `;
             }
-            
+
             document.getElementById('prelevement_mp_pf-panel').scrollIntoView({ behavior: 'smooth' });
         }
 
-        window.previewMpPf = function(i) {
+        window.previewMpPf = function (i) {
             const it = { ...mppfItems[i], type: 'prel_mp_pf' };
             const previewOverlay = document.createElement('div');
             previewOverlay.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000; display:flex; align-items:center; justify-content:center; flex-direction:column;";
-            
+
             const closeBtn = document.createElement('button');
             closeBtn.innerText = "FERMER";
             closeBtn.style = "margin-bottom:20px; padding:10px 20px; background:#e74c3c; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;";
             closeBtn.onclick = () => document.body.removeChild(previewOverlay);
-            
+
             const container = document.createElement('div');
             container.style = "background:white; padding:10px; border-radius:10px;";
             container.innerHTML = generateLabelHTML(it);
-            
+
             previewOverlay.appendChild(closeBtn);
             previewOverlay.appendChild(container);
             document.body.appendChild(previewOverlay);
         }
 
-        window.printSingleMpPf = function(i) {
+        window.printSingleMpPf = async function (i) {
             const it = { ...mppfItems[i], type: 'prel_mp_pf' };
-            const s = window.getProfileSettings ? window.getProfileSettings('prel_mp_pf') : {width: 10, height: 6, orientation: 'portrait'};
+            const s = window.getProfileSettings('prel_mp_pf');
             const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
-            if(window.applyPrintSettings) window.applyPrintSettings(s, 'prel_mp_pf');
-            
-            const w = document.createElement('div'); 
-            w.style.display = 'inline-flex'; 
+            if (window.applyPrintSettings) window.applyPrintSettings(s, 'prel_mp_pf');
+
+            pa.style.setProperty('display', 'flex', 'important');
+            pa.style.setProperty('flex-direction', 'column', 'important');
+            pa.style.setProperty('align-items', s.align || 'flex-start', 'important');
+            pa.style.setProperty('width', '100%', 'important');
+            pa.style.padding = '0';
+
+            const w = document.createElement('div');
+            w.style.display = 'inline-flex';
+            w.style.width = (it.format === 'mp' ? (s.width || 10) * 0.7 : (s.width || 10)) + 'cm';
+            w.style.height = (it.format === 'mp' ? (s.height || 6) * 0.7 : (s.height || 6)) + 'cm';
             w.innerHTML = generateLabelHTML(it);
-            const et = w.querySelector('.etiquette'); 
-            if(et) {
-                let sc = (it.format === 'mp' ? 0.7 : 1.0); 
-                et.style.width = ((s.width || 10) * sc) + 'cm'; 
-                et.style.minHeight = ((s.height || 6) * sc) + 'cm';
+            const et = w.querySelector('.etiquette');
+            if (et) {
+                et.style.width = '100%';
+                et.style.height = '100%';
+                et.style.boxSizing = 'border-box';
             }
             pa.appendChild(w);
-            
+
+            await Promise.all([...pa.querySelectorAll('img')].map(img => img.complete ? Promise.resolve() : new Promise(res => img.onload = img.onerror = res)));
             window.print();
             setTimeout(() => { pa.innerHTML = ''; }, 1000);
         }
 
-        window.deleteMpPf = function(i) { 
-            if(prompt("SÉCURITÉ: Mot de passe ?")==='FARAH2025+') { 
-                mppfItems.splice(i,1); 
-                localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems)); 
-                renderMpPfTable(); 
-            } 
+        window.deleteMpPf = function (i) {
+            if (currentUser.role !== 'admin') {
+                alert("Accès refusé. Seul un administrateur peut supprimer des prélèvements.");
+                return;
+            }
+            if (confirm("Voulez-vous vraiment supprimer ce prélèvement ?")) {
+                const deletedItem = mppfItems.splice(i, 1)[0];
+                localStorage.setItem('GEST_LAB_MPPF_DATA', JSON.stringify(mppfItems));
+                logActivity("Suppression MP/PF", `${deletedItem.name} - Lot: ${deletedItem.lot} supprimé`);
+                renderMpPfTable();
+            }
         }
 
-        window.toggleAllMpPf = function(c) { 
-            mppfItems.forEach(i => i.selected = c.checked); 
-            renderMpPfTable(); 
+
+        window.toggleAllMpPf = function (c) {
+            mppfItems.forEach(i => i.selected = c.checked);
+            renderMpPfTable();
         }
 
         // --- DASHBOARD SORTING FOR ADMINS ---
-        window.moveDashboardCard = function(id, dir) {
+        window.moveDashboardCard = function (id, dir) {
             const grid = document.querySelector('.dashboard-grid');
             const cards = Array.from(grid.children);
             const index = cards.findIndex(c => c.getAttribute('data-id') === id || c.id === id);
-            if(index === -1) return;
-            
-            if(dir === 'up' && index > 0) {
-                grid.insertBefore(cards[index], cards[index-1]);
-            } else if(dir === 'down' && index < cards.length - 1) {
-                grid.insertBefore(cards[index+1], cards[index]);
+            if (index === -1) return;
+
+            if (dir === 'up' && index > 0) {
+                grid.insertBefore(cards[index], cards[index - 1]);
+            } else if (dir === 'down' && index < cards.length - 1) {
+                grid.insertBefore(cards[index + 1], cards[index]);
             }
             saveDashboardOrder();
         };
 
-        window.saveDashboardOrder = function() {
+        window.saveDashboardOrder = function () {
             const grid = document.querySelector('.dashboard-grid');
-            const order = Array.from(grid.children).map(c => c.id || c.getAttribute('data-id') || c.innerHTML.substring(0,20));
+            const order = Array.from(grid.children).map(c => c.id || c.getAttribute('data-id') || c.innerHTML.substring(0, 20));
             localStorage.setItem('GEST_LAB_DASHBOARD_ORDER', JSON.stringify(order));
         };
 
-        window.loadDashboardOrder = function() {
+        window.loadDashboardOrder = function () {
             const order = JSON.parse(localStorage.getItem('GEST_LAB_DASHBOARD_ORDER'));
-            if(!order) return;
+            if (!order) return;
             const grid = document.querySelector('.dashboard-grid');
             const cards = Array.from(grid.children);
             order.forEach(id => {
-                const card = cards.find(c => (c.id || c.getAttribute('data-id') || c.innerHTML.substring(0,20)) === id);
-                if(card) grid.appendChild(card);
+                const card = cards.find(c => (c.id || c.getAttribute('data-id') || c.innerHTML.substring(0, 20)) === id);
+                if (card) grid.appendChild(card);
             });
         };
 
-        window.initDashboardSortUI = function() {
-            if(!currentUser || currentUser.role !== 'admin') return;
+        window.initDashboardSortUI = function () {
+            if (!currentUser || currentUser.role !== 'admin') return;
             const grid = document.querySelector('.dashboard-grid');
             Array.from(grid.children).forEach(card => {
-                if(card.querySelector('.sort-controls')) return;
+                if (card.querySelector('.sort-controls')) return;
                 const controls = document.createElement('div');
                 controls.className = 'sort-controls';
                 controls.style = "position:absolute; bottom:5px; left:5px; display:flex; gap:5px; opacity:0; transition:opacity 0.3s; z-index:10;";
@@ -10909,10 +11335,10 @@
         setTimeout(() => {
             // Assign IDs to existing cards for sorting
             const grid = document.querySelector('.dashboard-grid');
-            if(grid) {
-                const defaultIds = ['milieux','petri','inventory','rapport','history','sterilisation','logbook','about','feedback','souchier','classeur','export','admin','admindb','diagnostic'];
+            if (grid) {
+                const defaultIds = ['milieux', 'petri', 'inventory', 'rapport', 'history', 'sterilisation', 'logbook', 'about', 'feedback', 'souchier', 'classeur', 'export', 'admin', 'admindb', 'diagnostic'];
                 Array.from(grid.children).forEach((c, idx) => {
-                    if(!c.id) c.id = 'card-' + (defaultIds[idx] || idx);
+                    if (!c.id) c.id = 'card-' + (defaultIds[idx] || idx);
                 });
                 loadDashboardOrder();
                 initDashboardSortUI();
@@ -10921,51 +11347,49 @@
 
         async function printAllMpPf() {
             const l = mppfItems.filter(i => i.selected).map(i => ({ ...i, type: 'prel_mp_pf' }));
-            if(!l.length) return alert("Sélectionnez au moins un lot.");
-            
-            const s = window.getProfileSettings ? window.getProfileSettings('prel_mp_pf') : {width: 10, height: 6, orientation: 'portrait'};
+            if (!l.length) return alert("Sélectionnez au moins un lot.");
+
+            const s = window.getProfileSettings ? window.getProfileSettings('prel_mp_pf') : { width: 10, height: 6, orientation: 'portrait' };
             const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
-            if(window.applyPrintSettings) window.applyPrintSettings(s, 'prel_mp_pf');
-            
+            if (window.applyPrintSettings) window.applyPrintSettings(s, 'prel_mp_pf');
+
             // Force grid regrouping for MP labels specifically
-            Object.assign(pa.style, { 
-                display: 'flex', 
-                flexDirection: 'row', 
-                flexWrap: 'wrap', 
-                justifyContent: 'flex-start', 
-                alignContent: 'flex-start',
-                gap: '8px', 
-                paddingTop: (s.marginTop || 0) + 'cm', 
-                paddingLeft: (s.marginLeft || 0) + 'cm' 
-            });
+            pa.style.setProperty('display', 'flex', 'important');
+            pa.style.setProperty('flex-direction', 'row', 'important');
+            pa.style.setProperty('flex-wrap', 'wrap', 'important');
+            pa.style.setProperty('justify-content', s.align || 'flex-start', 'important');
+            pa.style.setProperty('align-content', 'flex-start', 'important');
+            pa.style.setProperty('gap', '8px', 'important');
+            pa.style.setProperty('width', '100%', 'important');
+            pa.style.padding = '0';
 
             l.forEach(item => {
-                const w = document.createElement('div'); 
-                w.style.display = 'inline-flex'; 
+                const w = document.createElement('div');
+                w.style.display = 'inline-flex';
+                let sc = (item.format === 'mp' ? 0.7 : 1.0);
+                w.style.width = ((s.width || 10) * sc) + 'cm';
+                w.style.height = ((s.height || 6) * sc) + 'cm';
+                w.style.pageBreakInside = 'avoid';
+
                 w.innerHTML = generateLabelHTML(item);
-                const et = w.querySelector('.etiquette'); 
-                if(et) {
-                    let sc = (item.format === 'mp' ? 0.7 : 1.0); 
-                    et.style.width = ((s.width || 10) * sc) + 'cm'; 
-                    et.style.minHeight = ((s.height || 6) * sc) + 'cm';
-                    if(item.format === 'mp') {
+                const et = w.querySelector('.etiquette');
+                if (et) {
+                    et.style.width = '100%';
+                    et.style.height = '100%';
+                    et.style.boxSizing = 'border-box';
+                    if (item.format === 'mp') {
                         et.style.fontSize = '8.5pt';
-                        et.style.margin = '2px';
                     }
                 }
-                w.style.pageBreakInside = 'avoid'; 
                 pa.appendChild(w);
             });
 
             await Promise.all([...pa.querySelectorAll('img')].map(i => i.complete ? Promise.resolve() : new Promise(r => i.onload = i.onerror = r)));
-            
-            const mn = document.querySelector('.mobile-bottom-nav'); 
-            if(mn) mn.style.setProperty('display', 'none', 'important');
-            
-            window.print(); 
-            setTimeout(() => { 
-                if(mn) mn.style.display = ''; 
-                pa.innerHTML = ''; 
+
+            const mn = document.querySelector('.mobile-bottom-nav');
+            window.print();
+            setTimeout(() => {
+                pa.innerHTML = '';
             }, 1000);
         }
 
@@ -10982,6 +11406,32 @@
             "WFI"
         ];
 
+        async function printSinglePiece(idx) {
+            const lot = document.getElementById('pieces-lot').value || '';
+            const date = document.getElementById('pieces-date').value || '';
+            const initials = document.getElementById('pieces-initials').value || '';
+            const obj = { name: MACHINES_PARTS[idx], lot, date, initials, type: 'pieces_machines' };
+
+            const s = getProfileSettings('pieces_machines');
+            const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
+            applyPrintSettings(s, 'pieces_machines');
+
+            pa.style.setProperty('display', 'flex', 'important');
+            pa.style.setProperty('flex-direction', 'column', 'important');
+            pa.style.setProperty('align-items', s.align || 'flex-start', 'important');
+            pa.style.padding = '0';
+
+            const w = document.createElement('div');
+            w.style.width = (s.width || 3.5) + 'cm';
+            w.style.height = (s.height || 2.5) + 'cm';
+            w.innerHTML = generateLabelHTML(obj);
+            pa.appendChild(w);
+
+            await Promise.all([...pa.querySelectorAll('img')].map(i => i.complete ? Promise.resolve() : new Promise(r => i.onload = i.onerror = r)));
+            window.print();
+            setTimeout(() => { pa.innerHTML = ''; }, 1000);
+        }
+
         function initPiecesMachinesTab() {
             const btnHtml = `<button class="sidebar-btn" id="btn-pieces_machines" onclick="showSection('pieces_machines')" style="display:flex; align-items:center;"><span class="icon">⚙️</span><span style="font-weight: 700;">Pièces Machines</span></button>`;
             const mppfBtn = document.getElementById('btn-prelevement_mp_pf');
@@ -10991,7 +11441,7 @@
                 mobileNav.insertAdjacentHTML('beforeend', `<button onclick="showSection('pieces_machines')" class="mobile-nav-btn" id="m-btn-pieces_machines"><span class="nav-icon">⚙️</span><span>Pièces</span></button>`);
             }
             const dashboardGrid = document.querySelector('.dashboard-grid');
-            if(dashboardGrid) {
+            if (dashboardGrid) {
                 dashboardGrid.insertAdjacentHTML('beforeend', `<div class="dashboard-card" id="card-pieces_machines" onclick="showSection('pieces_machines')" style="border-color: #34495e;"><div class="icon-circle" style="background: rgba(52, 73, 94, 0.1); color: #34495e;">⚙️</div><h3>Pièces Machines</h3><p>Étiquetage des pièces et accessoires de machines (Tubes, aiguilles, joints...).</p></div>`);
             }
 
@@ -11024,11 +11474,11 @@
                 </div>
             `;
             document.querySelector('.main-content').insertAdjacentHTML('beforeend', panelHtml);
-            
+
             const savedLot = localStorage.getItem('GEST_LAB_PIECES_LOT') || '';
             const savedInit = localStorage.getItem('GEST_LAB_PIECES_INITIALS') || '';
             const savedDate = localStorage.getItem('GEST_LAB_PIECES_DATE') || '';
-            
+
             document.getElementById('pieces-lot').value = savedLot;
             document.getElementById('pieces-initials').value = savedInit;
             document.getElementById('pieces-date').value = savedDate;
@@ -11040,10 +11490,15 @@
             const tbody = document.getElementById('pieces-body');
             tbody.innerHTML = MACHINES_PARTS.map((p, i) => `
                 <tr>
-                    <td style="text-align:center;"><input type="checkbox" class="piece-checkbox" checked data-name="${p}"></td>
-                    <td style="font-weight:700;">${p}</td>
                     <td style="text-align:center;">
-                        <button onclick="deletePiece(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer;">🗑️</button>
+                        <input type="checkbox" class="piece-checkbox" checked data-name="${p}">
+                    </td>
+                    <td>
+                        <input type="text" value="${p}" onchange="MACHINES_PARTS[${i}] = this.value; renderPiecesTable();" style="width: 100%; border: 1px solid #e2e8f0; padding: 6px; border-radius: 6px; font-weight: 700;">
+                    </td>
+                    <td style="text-align:center; display: flex; gap: 5px; justify-content: center; padding: 10px 0;">
+                        <button onclick="printSinglePiece(${i})" style="background:none; border:none; color:#3498db; cursor:pointer; font-size: 1.1rem;">🖨️</button>
+                        <button onclick="deletePiece(${i})" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-size: 1.1rem;">🗑️</button>
                     </td>
                 </tr>
             `).join('');
@@ -11054,13 +11509,15 @@
             const name = prompt("Nom de la nouvelle pièce :");
             if (name && name.trim()) {
                 MACHINES_PARTS.push(name.trim());
+                logActivity("Ajout Pièce Machine", `Nouvelle pièce ajoutée: ${name.trim()}`);
                 renderPiecesTable();
             }
         }
 
         function deletePiece(idx) {
             if (confirm("Supprimer cette pièce de la liste ?")) {
-                MACHINES_PARTS.splice(idx, 1);
+                const p = MACHINES_PARTS.splice(idx, 1)[0];
+                logActivity("Suppression Pièce Machine", `Pièce supprimée de la liste: ${p}`);
                 renderPiecesTable();
             }
         }
@@ -11078,60 +11535,45 @@
                 lot, date, initials, type: 'pieces_machines'
             }));
 
-            if(!items.length) return alert("Sélectionnez au moins une pièce.");
-            
-            const s = window.getProfileSettings ? window.getProfileSettings('pieces_machines') : {width: 4, height: 4, orientation: 'portrait'};
+            if (!items.length) return alert("Sélectionnez au moins une pièce.");
+
+            const s = window.getProfileSettings ? window.getProfileSettings('pieces_machines') : { width: 3.5, height: 2.5, orientation: 'portrait' };
             const pa = document.getElementById('print-area'); pa.innerHTML = ''; pa.removeAttribute('style');
-            if(window.applyPrintSettings) window.applyPrintSettings(s, 'pieces_machines');
-            
-            Object.assign(pa.style, { 
-                display: 'block', 
-                paddingTop: (s.marginTop || 0) + 'cm', paddingLeft: (s.marginLeft || 0) + 'cm' 
+            if (window.applyPrintSettings) window.applyPrintSettings(s, 'pieces_machines');
+
+            // Override global column layout with row-wrap for multi-column labels
+            pa.style.setProperty('display', 'flex', 'important');
+            pa.style.setProperty('flex-flow', 'row wrap', 'important');
+            pa.style.setProperty('justify-content', s.align || 'flex-start', 'important');
+            pa.style.setProperty('align-content', 'flex-start', 'important');
+            pa.style.setProperty('gap', '0', 'important');
+            pa.style.setProperty('width', '100%', 'important');
+            pa.style.padding = '0';
+
+            items.forEach((item) => {
+                const wrapper = document.createElement('div');
+                wrapper.style.display = 'inline-flex';
+                wrapper.style.width = s.width + 'cm';
+                wrapper.style.height = s.height + 'cm';
+                wrapper.style.pageBreakInside = 'avoid';
+                wrapper.style.boxSizing = 'border-box';
+                wrapper.style.border = '0.5px solid #000'; // Bordure légère pour découpe
+
+                wrapper.innerHTML = window.generateLabelHTML(item);
+                const et = wrapper.querySelector('.etiquette');
+                if (et) {
+                    et.style.width = '100%';
+                    et.style.height = '100%';
+                    et.style.border = 'none';
+                    et.style.boxSizing = 'border-box';
+                }
+                pa.appendChild(wrapper);
             });
 
-            // Using a real table for perfect border-collapse like the model
-            const table = document.createElement('table');
-            Object.assign(table.style, {
-                borderCollapse: 'collapse',
-                width: '17.5cm', 
-                backgroundColor: '#fff',
-                tableLayout: 'fixed',
-                border: '1px solid #000'
-            });
-            pa.appendChild(table);
+            await Promise.all([...pa.querySelectorAll('img')].map(i => i.complete ? Promise.resolve() : new Promise(r => i.onload = i.onerror = r)));
 
-            let row;
-            items.forEach((item, idx) => {
-                if (idx % 5 === 0) row = table.insertRow();
-                const cell = row.insertCell();
-                Object.assign(cell.style, {
-                    width: '3.5cm',
-                    height: '4.5cm',
-                    border: '1px solid #000', // One continuous line
-                    padding: '0',
-                    margin: '0',
-                    boxSizing: 'border-box',
-                    verticalAlign: 'top'
-                });
-                
-                cell.innerHTML = `
-                    <div style="height: 100%; width: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 10px; box-sizing: border-box; font-family: 'Times New Roman', serif;">
-                        <div style="font-weight: bold; font-size: 11pt; text-align: center; margin-top: 5px; line-height: 1.2;">
-                            ${item.name}
-                        </div>
-                        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 10pt; font-weight: bold; margin-bottom: 5px;">
-                            <div>Lot : <span style="font-weight: normal; margin-left: 5px;">${item.lot || ''}</span></div>
-                            <div>Date : <span style="font-weight: normal; margin-left: 5px;">${(item.date ? item.date.split('-').reverse().join('/') : '')}</span></div>
-                            <div>Fait par : <span style="font-weight: normal; margin-left: 5px;">${item.initials || ''}</span></div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            const mn = document.querySelector('.mobile-bottom-nav'); 
-            if(mn) mn.style.setProperty('display', 'none', 'important');
-            window.print(); 
-            setTimeout(() => { if(mn) mn.style.display = ''; pa.innerHTML = ''; }, 1000);
+            window.print();
+            setTimeout(() => { pa.innerHTML = ''; }, 1000);
         }
 
         function startModules() { initPrelevementTab(); initPrelevementMpPfTab(); initPiecesMachinesTab(); }
