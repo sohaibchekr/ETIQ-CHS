@@ -2008,7 +2008,8 @@
                         <span class="icon">👥</span>
                         <span style="font-weight: 700;">Membres</span>
                     </button>
-                    <button class="sidebar-btn" id="btn-activity" data-module="activity" onclick="showSection('activity')"
+                    <button class="sidebar-btn" id="btn-activity" data-module="activity"
+                        onclick="showSection('activity')"
                         style="display:flex; align-items:center; margin-top: 8px; background: rgba(48,116,199,0.05); border: 1px dashed rgba(48,116,199,0.2);">
                         <span class="icon">👣</span>
                         <span style="font-weight: 700;">Audit Activité</span>
@@ -2041,6 +2042,9 @@
                 <!-- DARK MODE TOGGLE (Sidebar) -->
                 <button class="sidebar-btn" onclick="toggleDarkMode()" style="margin-top:auto;">
                     <span class="icon" id="dark-mode-icon">🌙</span> <span id="dark-mode-text">Mode Sombre</span>
+                </button>
+                <button class="sidebar-btn" onclick="logout()" style="color: #e74c3c; font-weight: bold;">
+                    <span class="icon">🔐</span> <span>Se déconnecter</span>
                 </button>
             </div>
 
@@ -2115,8 +2119,8 @@
                             ℹ️ À propos
                         </button>
                         <button class="btn-modern" onclick="logout()"
-                            style="color:var(--text-light); background: rgba(255,255,255,0.7);">
-                            ✖ Quitter
+                            style="color: #e74c3c; background: #fff; border: 1.5px solid #e74c3c; font-weight: bold;">
+                            🔐 Se déconnecter
                         </button>
                         <button class="btn-modern" onclick="toggleDarkMode()" title="Mode Sombre"
                             style="background: var(--glass-bg); padding: 10px;">
@@ -2133,12 +2137,15 @@
 
                 <!-- BOUTON RETOUR EN HAUT -->
                 <button id="backToTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-                    style="position: fixed; bottom: 90px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;" title="Retour en haut">
+                    style="position: fixed; bottom: 90px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: none; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;"
+                    title="Retour en haut">
                     🔝
                 </button>
                 <!-- BOUTON ALLER EN BAS -->
-                <button id="scrollToBottomBtn" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})"
-                    style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;" title="Aller en bas">
+                <button id="scrollToBottomBtn"
+                    onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})"
+                    style="position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; background: #3074c7; color: white; border-radius: 50%; border: none; cursor: pointer; display: flex; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3); font-size: 20px; align-items: center; justify-content: center;"
+                    title="Aller en bas">
                     ⬇️
                 </button>
 
@@ -2843,7 +2850,8 @@
                 <h2 style="color: #3074c7;">👣 Audit des Activités & Traçabilité</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <button class="btn-modern" onclick="exportActivityCsv()"
-                        style="background: #2ecc71; color: white; padding: 10px 18px; font-weight: 700;" title="Sauvegarder les logs d'activité localement">
+                        style="background: #2ecc71; color: white; padding: 10px 18px; font-weight: 700;"
+                        title="Sauvegarder les logs d'activité localement">
                         💾 Sauvegarder (CSV)
                     </button>
                     <button class="btn-modern" onclick="exportTableToPdf('activity-panel')"
@@ -2856,9 +2864,10 @@
                     </button>
                 </div>
             </div>
-            
+
             <div style="margin-bottom: 20px; position:relative;">
-                <span style="position:absolute; left: 15px; top:50%; transform:translateY(-50%); color:#94a3b8;">🔍</span>
+                <span
+                    style="position:absolute; left: 15px; top:50%; transform:translateY(-50%); color:#94a3b8;">🔍</span>
                 <input type="text" id="activitySearchInput" placeholder="Rechercher par membre, action ou date..."
                     onkeyup="renderActivityTable()"
                     style="width: 100%; padding: 12px 12px 12px 45px; border-radius: 12px; border: 1px solid #e2e8f0; background: white; outline:none; font-size:1rem;">
@@ -3433,12 +3442,16 @@
                         <option value="portrait">Portrait ↑</option>
                         <option value="landscape">Paysage →</option>
                     </select>
+                    <button class="btn-modern" onclick="openProfileSettings('logbook')"
+                        style="background: #7f8c8d; color: white; height: 38px; padding: 8px 12px; font-size: 0.85rem; border: none; border-radius: 8px; cursor: pointer;">
+                        ⚙️ Calibration
+                    </button>
                     <button class="btn-modern btn-print"
                         onclick="document.getElementById('logbook-grid').scrollIntoView({behavior: 'smooth', block: 'start'}); generateDetailedReport('logbook')"
                         style="background: #9b59b6; height: 38px;">
                         📋 Aperçu État
                     </button>
-                    <button class="btn-modern btn-print" onclick="window.print()"
+                    <button class="btn-modern btn-print" onclick="generateDetailedReport('logbook')"
                         style="background: #34495e; height: 38px;">
                         🖨️ Imprimer la fiche
                     </button>
@@ -3927,7 +3940,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, onSnapshot, query, orderBy, where, deleteDoc, doc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, onSnapshot, query, orderBy, where, deleteDoc, doc, updateDoc, setDoc, getDoc, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // Firebase configuration
@@ -4409,7 +4422,7 @@
             });
             if (typeof loadPrintSettings === 'function') loadPrintSettings();
         });
-        
+
         // --- AUDIT / ACTIVITY LOGS ---
         window.logActivity = async function (action, details) {
             if (!currentUser) return;
@@ -4431,13 +4444,26 @@
 
         let activityLogs = [];
         window.refreshActivityLogs = async function () {
+            const tbody = document.getElementById('activityTableBody');
+            if (tbody) tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">Chargement des données...</td></tr>';
             try {
-                const q = query(collection(db, 'activity_logs'), orderBy('timestamp', 'desc'), limit(100));
+                // On retire orderBy('timestamp', 'desc') car il nécessite un index Firestore qui peut être manquant.
+                // On récupère les 100 derniers et on trie en mémoire.
+                const q = query(collection(db, 'activity_logs'), limit(100));
                 const snapshot = await getDocs(q);
                 activityLogs = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
+                
+                // Tri en mémoire par timestamp décroissant
+                activityLogs.sort((a, b) => {
+                    const tA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+                    const tB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+                    return tB - tA;
+                });
+                
                 renderActivityTable();
             } catch (e) {
                 console.error("Error fetching activity logs:", e);
+                if (tbody) tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#e74c3c;">Erreur lors du chargement : ${e.message}</td></tr>`;
             }
         };
 
@@ -4461,18 +4487,18 @@
 
             tbody.innerHTML = filtered.map(log => {
                 const date = new Date(log.timestamp);
-                const dateStr = date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = !isNaN(date.getTime()) ? (date.toLocaleDateString('fr-FR') + ' ' + date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })) : (log.timestamp || '---');
                 const actionStr = log.action || 'INCONNU';
                 const actionColor = actionStr.toUpperCase().includes('SUPPRESSION') ? '#e53e3e' : (actionStr.toUpperCase().includes('AJOUT') ? '#38a169' : '#3074c7');
                 const roleColor = log.role === 'admin' ? '#805ad5' : '#718096';
 
-                return `/* ... existing template styles ... */
+                return `
                     <tr style="border-bottom: 1px solid #edf2f7; transition: background 0.2s;">
-                        <td style="font-weight:600; color:#4a5568;">${dateStr}</td>
-                        <td style="font-weight:700; color:#2d3748;">${log.userName || 'SYSTEM'}</td>
-                        <td style="font-weight:800; color:${actionColor}; text-transform:uppercase;">${actionStr}</td>
-                        <td style="color:#4a5568; font-size:0.85rem; line-height:1.4;">${log.details || '-'}</td>
-                        <td style="text-align:center;"><span style="background:${roleColor}; color:white; padding:2px 8px; border-radius:12px; font-size:0.7rem; font-weight:bold;">${(log.role || 'user').toUpperCase()}</span></td>
+                        <td style="font-weight:600; color:#4a5568; padding: 12px 8px;">${dateStr}</td>
+                        <td style="font-weight:700; color:#2d3748; padding: 12px 8px;">${log.userName || log.user || 'SYSTEM'}</td>
+                        <td style="font-weight:800; color:${actionColor}; text-transform:uppercase; padding: 12px 8px;">${actionStr}</td>
+                        <td style="color:#4a5568; font-size:0.85rem; line-height:1.4; padding: 12px 8px;">${log.details || '-'}</td>
+                        <td style="text-align:center; padding: 12px 8px;"><span style="background:${roleColor}; color:white; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold;">${(log.role || 'user').toUpperCase()}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -5422,7 +5448,7 @@
             const btnTop = document.getElementById('backToTopBtn');
             const btnBottom = document.getElementById('scrollToBottomBtn');
             const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
-            
+
             if (btnTop) {
                 if (scrollPos > 300) {
                     btnTop.style.display = "flex";
@@ -5430,7 +5456,7 @@
                     btnTop.style.display = "none";
                 }
             }
-            
+
             if (btnBottom) {
                 const maxScroll = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 // Cacher quand on est tout près du bas
@@ -7495,10 +7521,12 @@
             const dataPool = isInv ? inventoryData : labels;
             const searchId = isInv ? 'inventorySearchInput' : (currentSection === 'history' ? 'historySearchInput' : 'searchInput');
             if (type === 'logbook') {
-                const orientation = document.getElementById('logbook-orientation-select')?.value || 'portrait';
+                const logbookSettings = getProfileSettings('logbook');
+                const dropOrientation = document.getElementById('logbook-orientation-select')?.value || 'portrait';
+                const orientation = logbookSettings.orientation || dropOrientation;
                 const isLandscape = orientation === 'landscape';
-                const gridCols = isLandscape ? 6 : 4;
-                const numCases = isLandscape ? 42 : 40;
+                const gridCols = isLandscape ? 5 : 4;
+                const numCases = isLandscape ? 40 : 40;
 
                 const targets = [
                     { key: 'TSA', match: (c) => c.includes('TRY'), days: 30, buffer: 3, display: 'TSA' },
@@ -7507,25 +7535,35 @@
                 ];
 
                 let reportHtml = `
-                        <div style="padding: 5mm; font-family: 'Times New Roman', Times, serif; background: white; color: black; max-width: 100%;">
-                            <div style="text-align: center; border-bottom: 2.5px solid #3074c7; padding-bottom: 10px; margin-bottom: 15px;">
-                                <h1 style="color: #3074c7; margin: 0; font-size: 1.4rem; text-transform: uppercase;">SUIVRE NUMÉRO D'ACTION</h1>
-                                <p style="color: #555; margin: 4px 0; font-size: 0.82rem;">Fiche générée le ${new Date().toLocaleDateString('fr-FR')}</p>
+                        <div style="padding: 10mm; font-family: 'Times New Roman', Times, serif; background: white; color: black; width: 100%; box-sizing: border-box;">
+                            <div style="text-align: center; border-bottom: 3px solid #3074c7; padding-bottom: 15px; margin-bottom: 25px;">
+                                <h1 style="color: #3074c7; margin: 0; font-size: 1.8rem; text-transform: uppercase;">SUIVRE NUMÉRO D'ACTION</h1>
+                                <p style="color: #555; margin: 8px 0; font-size: 0.95rem;">Fiche générée le ${new Date().toLocaleDateString('fr-FR')}</p>
                             </div>
                             
-                            <div style="display: flex; gap: 10px; align-items: flex-start;">
+                            <div style="display: flex; gap: 20px; align-items: flex-start; width: 100%;">
                                 <!-- GRILLE DE LOGBOOK (GAUCHE) -->
-                                <div style="flex: 1; display: grid; grid-template-columns: repeat(${gridCols}, 1fr); gap: 4px;">
+                                <div style="flex: 1; display: grid; grid-template-columns: repeat(${gridCols}, 1fr); gap: 6px;">
                     `;
 
                 for (let i = 0; i < numCases; i++) {
                     reportHtml += `
-                            <div style="border: 1.2px solid #000; padding: 2px; background: #fff; display: grid; grid-template-columns: 42px 1fr 22px; grid-template-rows: repeat(5, auto); font-size: 0.62rem; page-break-inside: avoid;">
-                                <div style="border: 0.3px solid #000; padding: 1px 3px; font-weight: bold; background: #f0f0f0;">DATE</div><div style="border: 0.3px solid #000;"></div><div style="grid-column: 3; grid-row: 1 / span 5; border-left: 1.2px solid #000; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.7rem;">FP</div>
-                                <div style="border: 0.3px solid #000; padding: 1px 3px; font-weight: bold; background: #f0f0f0;">LOT</div><div style="border: 0.3px solid #000;"></div>
-                                <div style="border: 0.3px solid #000; padding: 1px 3px; font-weight: bold; background: #f0f0f0;">4</div><div style="border: 0.3px solid #000; background:#fbfbfb"></div>
-                                <div style="border: 0.3px solid #000; padding: 1px 3px; font-weight: bold; background: #f0f0f0;">3</div><div style="border: 0.3px solid #000; background:#fbfbfb"></div>
-                                <div style="border: 0.3px solid #000; padding: 1px 3px; font-weight: bold; background: #f0f0f0;">55</div><div style="border: 0.3px solid #000; background:#fbfbfb"></div>
+                            <div style="border: 1.5px solid #000; padding: 3px; background: #fff; display: grid; grid-template-columns: 48px 1fr 28px; grid-template-rows: repeat(5, 22px); font-size: 0.8rem; page-break-inside: avoid; min-height: 110px;">
+                                <div style="border: 0.5px solid #000; padding: 2px 4px; font-weight: bold; background: #f5f5f5; display: flex; align-items: center;">DATE</div>
+                                <div style="border: 0.5px solid #000;"></div>
+                                <div style="grid-column: 3; grid-row: 1 / span 5; border-left: 1.5px solid #000; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 0.9rem;">FP</div>
+                                
+                                <div style="border: 0.5px solid #000; padding: 2px 4px; font-weight: bold; background: #f5f5f5; display: flex; align-items: center;">LOT</div>
+                                <div style="border: 0.5px solid #000;"></div>
+                                
+                                <div style="border: 0.5px solid #000; padding: 2px 4px; font-weight: bold; background: #f5f5f5; display: flex; align-items: center;">4</div>
+                                <div style="border: 0.5px solid #000;"></div>
+                                
+                                <div style="border: 0.5px solid #000; padding: 2px 4px; font-weight: bold; background: #f5f5f5; display: flex; align-items: center;">3</div>
+                                <div style="border: 0.5px solid #000;"></div>
+                                
+                                <div style="border: 0.5px solid #000; padding: 2px 4px; font-weight: bold; background: #f5f5f5; display: flex; align-items: center;">55</div>
+                                <div style="border: 0.5px solid #000;"></div>
                             </div>
                         `;
                 }
@@ -7534,10 +7572,10 @@
                             </div>
 
                             <!-- RÉCAPITULATIF (DROITE - COMPACT) -->
-                            <div style="width: 160px; flex-shrink: 0; padding-top: 0;">
-                                <div style="border: 1.5px solid #3074c7; border-radius: 6px; overflow: hidden;">
-                                    <h2 style="background: #3074c7; color: white; margin: 0; padding: 6px; font-size: 0.75rem; text-align: center;">CODES VALIDÉS</h2>
-                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.68rem;">
+                            <div style="width: 200px; flex-shrink: 0; padding-top: 0;">
+                                <div style="border: 2px solid #3074c7; border-radius: 8px; overflow: hidden;">
+                                    <h2 style="background: #3074c7; color: white; margin: 0; padding: 8px; font-size: 0.9rem; text-align: center;">CODES VALIDÉS</h2>
+                                    <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
                 `;
 
                 targets.forEach(t => {
@@ -7570,11 +7608,11 @@
 
                     reportHtml += `
                         <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 4px; text-align: left;">
-                                <div style="font-family: monospace; font-weight: bold; font-size: 0.72rem; color: ${statusCol};">${codeVal}</div>
-                                <div style="font-size: 0.58rem; color: #666;">${intervalVal}</div>
+                            <td style="padding: 6px; text-align: left;">
+                                <div style="font-family: monospace; font-weight: bold; font-size: 0.85rem; color: ${statusCol};">${codeVal}</div>
+                                <div style="font-size: 0.65rem; color: #666;">${intervalVal}</div>
                             </td>
-                            <td style="padding: 4px; background: #f8f9fa; font-weight: bold; color: #3074c7; width: 40px; text-align: right; border-left: 1px solid #eee;">${t.key}</td>
+                            <td style="padding: 6px; background: #f8f9fa; font-weight: bold; color: #3074c7; width: 50px; text-align: right; border-left: 1px solid #eee;">${t.key}</td>
                         </tr>
                     `;
                 });
@@ -7582,8 +7620,8 @@
                 reportHtml += `
                                     </table>
                                 </div>
-                                <div style="margin-top: 15px; font-size: 0.6rem; color: #7f8c8d; line-height: 1.2;">
-                                    <p><b></b> <br></p>
+                                <div style="margin-top: 15px; font-size: 0.7rem; color: #7f8c8d; line-height: 1.2;">
+                                    <p><b>Note</b> : Suivi des prélèvements.</p>
                                 </div>
                             </div>
                         </div>
@@ -7592,7 +7630,10 @@
 
                 const printArea = document.getElementById('print-area');
                 printArea.innerHTML = reportHtml;
-                applyPrintSettings({ orientation: orientation, marginTop: 1, marginLeft: 1 }, 'report');
+                logbookSettings.orientation = orientation;
+                if (logbookSettings.marginTop === undefined) logbookSettings.marginTop = 1;
+                if (logbookSettings.marginLeft === undefined) logbookSettings.marginLeft = 1;
+                applyPrintSettings(logbookSettings, 'logbook');
                 window.print();
                 setTimeout(() => { printArea.innerHTML = ''; }, 1000);
                 return;
@@ -8066,7 +8107,8 @@
             inventory: { label: 'Inventaire', color: '#6c3483', emoji: '📦' },
             prelevement: { label: "Prélèvement d'eau", color: '#3498db', emoji: '💧' },
             prel_mp_pf: { label: "Prélèvement MP/PF", color: '#27ae60', emoji: '🔬' },
-            report: { label: 'Rapports État (A4)', color: '#9b59b6', emoji: '📋' }
+            report: { label: 'Rapports État (A4)', color: '#9b59b6', emoji: '📋' },
+            logbook: { label: "Suivre numéro d'action (A4)", color: '#3074c7', emoji: '📖' }
         };
 
         function getProfileSettings(profileKey) {
@@ -8074,7 +8116,7 @@
             let defaults = '{"width":11.9,"height":7.4,"marginTop":0,"marginLeft":0,"align":"flex-start","orientation":"portrait","paperType":"standard"}';
 
             // Paramètres standards pour les rapports A4
-            if (profileKey === 'report') {
+            if (profileKey === 'report' || profileKey === 'logbook') {
                 defaults = '{"width":21,"height":29.7,"marginTop":1,"marginLeft":1,"align":"center","orientation":"landscape","paperType":"standard"}';
             } else if (profileKey === 'pieces_machines') {
                 defaults = '{"width":3.5,"height":2.5,"marginTop":0,"marginLeft":0,"align":"center","orientation":"portrait","paperType":"standard"}';
@@ -8422,7 +8464,7 @@
                 const action = log.action || 'INCONNU';
                 const details = log.details || '-';
                 const role = log.role || 'user';
-                
+
                 const row = [dateStr, userName, action, details, role]
                     .map(val => `"${(val || '').toString().replace(/"/g, '""')}"`).join(",");
                 csvContent += row + "\\n";
