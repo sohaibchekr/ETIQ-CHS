@@ -1105,6 +1105,8 @@
             padding: 4px 8px;
             gap: 2px;
             transition: color 0.2s;
+            flex-shrink: 0;
+            min-width: 60px;
         }
 
         .mobile-bottom-nav button.active {
@@ -1284,14 +1286,22 @@
                 height: 65px;
                 z-index: 4000;
                 border-top: 1px solid rgba(0, 0, 0, 0.1);
-                justify-content: space-around;
+                justify-content: flex-start;
                 align-items: center;
-                padding: 0 2px;
+                padding: 0 10px;
+                gap: 8px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .mobile-bottom-nav::-webkit-scrollbar {
+                display: none; /* Hide scrollbar for clean look */
             }
 
             .mobile-nav-btn {
-                padding: 4px 2px !important;
-                font-size: 0.6rem !important;
+                padding: 4px 5px !important;
+                font-size: 0.65rem !important;
+                flex-shrink: 0;
+                min-width: 65px;
             }
 
             .bulk-action-bar {
@@ -2547,7 +2557,7 @@
                         <div class="dashboard-card" data-module="about" onclick="openAboutModal()"
                             style="border-color: #34495e;">
                             <div class="icon-circle" style="overflow:hidden; background: #f0f2f5;">
-                                <img src="sohaib.jpeg?v=1.2"
+                                <img src="https://raw.githubusercontent.com/sohaibchekr/ETIQ-CHS/main/sohaib.jpeg"
                                     onerror="this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=34495e&color=fff'"
                                     style="width:100%; height:100%; object-fit:cover;">
                             </div>
@@ -9300,6 +9310,7 @@
                 let msg = "Une erreur est survenue.";
                 if (error.code === 'auth/wrong-password') msg = "Mot de passe incorrect.";
                 else if (error.code === 'auth/user-not-found') msg = "Utilisateur non trouvé.";
+                else if (error.code === 'auth/invalid-credential') msg = "Email ou mot de passe incorrect.";
                 else if (error.code === 'auth/invalid-email') msg = "Format d'email invalide.";
                 else if (error.code === 'auth/weak-password') msg = "Le mot de passe est trop court.";
                 else if (error.code === 'auth/email-already-in-use') msg = "Cet email est déjà utilisé.";
