@@ -195,7 +195,119 @@
             }
         }
 
+        /* ----- SHORTCUT HELP MODAL ----- */
+        .shortcut-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 50000;
+            animation: fadeInShortcut 0.3s ease;
+        }
+
+        .shortcut-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            width: 92%;
+            max-width: 500px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            color: var(--text-dark);
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .shortcut-card h2 {
+            margin-bottom: 20px;
+            color: #3074c7;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+        }
+
+        .shortcut-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .shortcut-group-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 3px;
+        }
+
+        .shortcut-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .shortcut-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .shortcut-label {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .shortcut-keys {
+            display: flex;
+            gap: 4px;
+        }
+
+        .shortcut-key {
+            background: #fff;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: inherit;
+            font-weight: 800;
+            border: 1.5px solid #cbd5e0;
+            border-bottom-width: 3px;
+            font-size: 0.75rem;
+            color: #2d3748;
+            min-width: 24px;
+            text-align: center;
+        }
+
+        @keyframes fadeInShortcut {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* ----- NAVIGATION (Sidebar Glassmorphism) ----- */
+
         .sidebar {
             width: 260px;
             border-right: 1px solid var(--glass-border);
@@ -1492,6 +1604,63 @@
             }
         }
 
+        /* ----- FEEDBACK STYLES ----- */
+        .star.selected {
+            color: #f1c40f !important;
+            transform: scale(1.1);
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .review-card:hover {
+            transform: translateX(5px);
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .review-name {
+            font-weight: 700;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+
+        .review-stars {
+            color: #f1c40f;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .review-comment {
+            font-style: italic;
+            color: #4a5568;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            border-left: 3px solid #e2e8f0;
+            padding-left: 10px;
+        }
+
+        .review-date {
+            font-size: 0.7rem;
+            color: #a0aec0;
+            text-align: right;
+        }
+
         /* Styles pour le Suivi Logbook */
         .logbook-container {
             display: flex;
@@ -1774,6 +1943,59 @@
             font-weight: 800;
         }
 
+        /* --- FEEDBACK STARS & REVIEWS --- */
+        .star.selected {
+            color: #f1c40f !important;
+            transform: scale(1.2);
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: left;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(5px);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .review-name {
+            font-weight: 800;
+            color: #2d3748;
+            font-size: 0.9rem;
+        }
+
+        .review-stars {
+            color: #f1c40f;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .review-comment {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-style: italic;
+            line-height: 1.4;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .review-date {
+            font-size: 0.7rem;
+            color: #a0aec0;
+            margin-top: 8px;
+            text-align: right;
+        }
+
         @media print {
 
             .sidebar,
@@ -1940,7 +2162,7 @@
                 <button class="sidebar-btn" id="btn-dashboard" data-module="dashboard"
                     onclick="showSection('dashboard')" style="display:flex; align-items:center;">
                     <span class="icon">🏠</span>
-                    <span style="font-weight: 700;">Tableau de bord</span>
+                    <span style="font-weight: 700;">Tableau de bord (Alt+D)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('dashboard')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
@@ -1954,35 +2176,35 @@
                             </path>
                         </svg>
                     </span>
-                    <span style="font-weight: 700;">Milieux de culture</span>
+                    <span style="font-weight: 700;">Milieux de culture (Alt+M)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('milieux')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
                 <button class="sidebar-btn" id="btn-petri" data-module="petri" onclick="showSection('petri')"
                     style="display:flex; align-items:center;">
                     <span class="icon">🧫</span>
-                    <span style="font-weight: 700;">Boîtes Petri</span>
+                    <span style="font-weight: 700;">Boîtes Petri (Alt+P)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('petri')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
                 <button class="sidebar-btn" id="btn-inventory" data-module="inventory"
                     onclick="showSection('inventory')" style="display:flex; align-items:center;">
                     <span class="icon">📦</span>
-                    <span style="font-weight: 700;">Inventaire</span>
+                    <span style="font-weight: 700;">Inventaire (Alt+I)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('inventory')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
                 <button class="sidebar-btn" id="btn-rapport" data-module="rapport" onclick="showSection('rapport')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📊</span>
-                    <span style="font-weight: 700;">Rapport Stock</span>
+                    <span style="font-weight: 700;">Rapport Stock (Alt+R)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('rapport')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
                 <button class="sidebar-btn" id="btn-sterilisation" data-module="sterilisation"
                     onclick="showSection('sterilisation')" style="display:flex; align-items:center;">
                     <span class="icon">🌡️</span>
-                    <span style="font-weight: 700;">Stérilisation</span>
+                    <span style="font-weight: 700;">Stérilisation (Alt+S)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('sterilisation')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
@@ -1996,7 +2218,7 @@
                 <button class="sidebar-btn" id="btn-history" data-module="history" onclick="showSection('history')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📜</span>
-                    <span style="font-weight: 700;">Historique</span>
+                    <span style="font-weight: 700;">Historique (Alt+H)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('history')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
@@ -2018,14 +2240,14 @@
                 <button class="sidebar-btn" id="btn-classeur" data-module="classeur" onclick="showSection('classeur')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📁</span>
-                    <span style="font-weight: 700;">Étiquettes Classeurs</span>
+                    <span style="font-weight: 700;">Étiquettes Classeurs (Alt+C)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('classeur')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
                 <button class="sidebar-btn" id="btn-logbook" data-module="logbook" onclick="showSection('logbook')"
                     style="display:flex; align-items:center;">
                     <span class="icon">📖</span>
-                    <span style="font-weight: 700;">Suivre numéro d'action</span>
+                    <span style="font-weight: 700;">Suivre numéro d'action (Alt+L)</span>
                     <span class="popout-hint" onclick="event.stopPropagation(); popoutSection('logbook')"
                         title="Ouvrir dans une fenêtre séparée">↗️</span>
                 </button>
@@ -2047,6 +2269,84 @@
                     <span class="icon">🔐</span> <span>Se déconnecter</span>
                 </button>
             </div>
+
+            <script>
+                // --- SYSTÈME DE RACCOURCIS CLAVIER ---
+                function toggleShortcutHelp() {
+                    const modal = document.getElementById('shortcut-help-modal');
+                    if (modal) {
+                        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+                    }
+                }
+
+                window.addEventListener('keydown', function (e) {
+                    // Ne pas déclencher si l'utilisateur tape dans un champ (sauf pour Ctrl+S, Ctrl+P, Esc)
+                    const isTyping = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+
+                    // Raccourcis Alt + Touche (Navigation)
+                    if (e.altKey && !e.ctrlKey && !e.shiftKey) {
+                        const key = e.key.toLowerCase();
+                        const map = {
+                            'd': 'dashboard',
+                            'm': 'milieux',
+                            'p': 'petri',
+                            'i': 'inventory',
+                            's': 'sterilisation',
+                            'l': 'logbook',
+                            'c': 'classeur',
+                            'h': 'history',
+                            'r': 'rapport',
+                            'a': 'admin'
+                        };
+                        if (map[key]) {
+                            e.preventDefault();
+                            if (typeof showSection === 'function') showSection(map[key]);
+                        }
+                    }
+
+                    // Ctrl + S (Enregistrer / Ajouter)
+                    if (e.ctrlKey && e.key.toLowerCase() === 's') {
+                        e.preventDefault();
+                        const addBtn = document.getElementById('mainAddBtn') || document.querySelector('.btn-submit');
+                        if (addBtn && addBtn.offsetParent !== null) addBtn.click();
+                    }
+
+                    // Ctrl + P (Imprimer)
+                    if (e.ctrlKey && e.key.toLowerCase() === 'p') {
+                        e.preventDefault();
+                        if (typeof currentSection !== 'undefined') {
+                            if (['milieux', 'petri', 'sterilisation', 'inventory', 'classeur'].includes(currentSection)) {
+                                if (typeof printLabelsByType === 'function') printLabelsByType(currentSection);
+                            } else {
+                                window.print();
+                            }
+                        }
+                    }
+
+                    // Ctrl + Shift + D (Mode Sombre)
+                    if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'd') {
+                        e.preventDefault();
+                        if (typeof toggleDarkMode === 'function') toggleDarkMode();
+                    }
+
+                    // Escape (Annuler / Fermer Modal)
+                    if (e.key === 'Escape') {
+                        const shortcutModal = document.getElementById('shortcut-help-modal');
+                        if (shortcutModal && shortcutModal.style.display === 'flex') {
+                            toggleShortcutHelp();
+                        } else {
+                            const clearBtn = document.getElementById('mainClearBtn');
+                            if (clearBtn && clearBtn.offsetParent !== null) clearBtn.click();
+                        }
+                    }
+
+                    // F1 ou ? (Aide)
+                    if (e.key === 'F1' || (e.key === '?' && !isTyping)) {
+                        e.preventDefault();
+                        toggleShortcutHelp();
+                    }
+                });
+            </script>
 
             <!-- CONTENU PRINCIPAL -->
             <div class="main-content">
@@ -2122,9 +2422,13 @@
                             style="color: #e74c3c; background: #fff; border: 1.5px solid #e74c3c; font-weight: bold;">
                             🔐 Se déconnecter
                         </button>
-                        <button class="btn-modern" onclick="toggleDarkMode()" title="Mode Sombre"
+                        <button class="btn-modern" onclick="toggleDarkMode()" title="Mode Sombre (Ctrl+Shift+D)"
                             style="background: var(--glass-bg); padding: 10px;">
                             🌓
+                        </button>
+                        <button class="btn-modern" onclick="toggleShortcutHelp()" title="Raccourcis Clavier (F1 / ?)"
+                            style="background: #3074c7; color: white; padding: 10px;">
+                            ⌨️
                         </button>
                     </div>
                     <div id="expiry-alert-btn" style="display:none;">
@@ -2658,11 +2962,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
-                        Ajouter l'étiquette
+                        Ajouter l'étiquette (Ctrl+S)
                     </button>
                     <button class="btn-modern" id="mainClearBtn" onclick="clearMainForm()"
                         style="background: #f7fafc; color: #e74c3c; border: 1px solid #fed7d7;">
-                        ❌ Annuler
+                        ❌ Annuler (Esc)
                     </button>
                     <button class="btn-modern btn-add" id="cancelEditBtn" onclick="cancelEdit()"
                         style="display:none; border-color:#e74c3c; color:#e74c3c;">
@@ -3873,31 +4177,70 @@
     <!-- MODAL ABOUT ME -->
     <div id="about-modal" class="modal"
         style="display:none; position:fixed; z-index:100000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.7); backdrop-filter: blur(10px); align-items:center; justify-content:center;">
-        <div class="glass-card" style="width:90%; max-width:450px; text-align:center; padding:40px; position:relative;">
+        <div class="glass-card" style="width:90%; max-width:550px; text-align:center; padding:30px; position:relative; max-height:90vh; display:flex; flex-direction:column;">
             <button onclick="closeAboutModal()"
-                style="position:absolute; top:15px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer; color:var(--text-light);">&times;</button>
-            <div
-                style="width:130px; height:130px; border-radius:50%; margin:0 auto 20px auto; border:4px solid white; box-shadow:0 10px 25px rgba(0,0,0,0.15); overflow:hidden; background:#f0f2f5; display:flex; align-items:center; justify-content:center;">
-                <img src="sohaib.jpeg?v=1.2" alt="Sohaib Chekri"
-                    onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=3074c7&color=fff&size=200'"
-                    style="width:100%; height:100%; object-fit:cover;">
-            </div>
-            <h2 style="color:#3074c7; margin-bottom:10px; font-weight:900; letter-spacing:-0.5px;">Sohaib Chekri</h2>
-            <p
-                style="font-weight:700; color:#4a5568; margin-bottom:15px; text-transform:uppercase; font-size:0.8rem; letter-spacing:1px;">
-                Développeur Full-Stack au service de la Microbiologie</p>
-            <div
-                style="text-align:left; font-style: italic; color:var(--text-dark); background:rgba(255,255,255,0.5); padding:20px; border-radius:15px; font-size:0.95rem; line-height:1.6; border:1px solid var(--glass-border); margin-bottom:20px;">
-                "Construite avec détermination, efforts et sacrifices personnels, cette application traduit une volonté
-                forte d’apporter une solution concrète et performante au laboratoire."
-            </div>
-            <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
-                <span style="font-size:1.5rem; cursor:help;" title="Expertise Firebase">🔥</span>
-                <span style="font-size:1.5rem; cursor:help;" title="Ingénierie Logicielle">💻</span>
-                <span style="font-size:1.5rem; cursor:help;" title="Contrôle Qualité">🧬</span>
+                style="position:absolute; top:15px; right:15px; border:none; background:none; font-size:1.5rem; cursor:pointer; color:var(--text-light); z-index: 10;">&times;</button>
+            
+            <div style="overflow-y: auto; overflow-x: hidden; padding-right: 10px;">
+                <div
+                    style="width:110px; height:110px; border-radius:50%; margin:0 auto 15px auto; border:4px solid white; box-shadow:0 10px 25px rgba(0,0,0,0.15); overflow:hidden; background:#f0f2f5; display:flex; align-items:center; justify-content:center; flex-shrink: 0;">
+                    <img src="https://raw.githubusercontent.com/sohaibchekr/ETIQ-CHS/main/sohaib.jpeg" alt="Sohaib Chekri"
+                        onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Sohaib+Chekri&background=3074c7&color=fff&size=200'"
+                        style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <h2 style="color:#3074c7; margin-bottom:5px; font-weight:900; letter-spacing:-0.5px;">Sohaib Chekri</h2>
+                <p
+                    style="font-weight:700; color:#4a5568; margin-bottom:15px; text-transform:uppercase; font-size:0.75rem; letter-spacing:1px;">
+                    Développeur Full-Stack au service de la Microbiologie</p>
+                <div
+                    style="text-align:left; font-style: italic; color:var(--text-dark); background:rgba(255,255,255,0.5); padding:15px; border-radius:15px; font-size:0.85rem; line-height:1.6; border:1px solid var(--glass-border); margin-bottom:20px;">
+                    "Construite avec détermination, efforts et sacrifices personnels, cette application traduit une volonté
+                    forte d’apporter une solution concrète et performante au laboratoire."
+                </div>
+
+                <div style="text-align: left; background: rgba(255,255,255,0.7); padding: 20px; border-radius: 15px; border: 1px solid var(--glass-border); margin-bottom: 20px;">
+                    <h3 style="color: #2d3748; font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px solid #3074c7; padding-bottom: 5px; display: inline-block;">🚀 Projets et développements</h3>
+                    <ul style="list-style-type: none; padding: 0; margin: 0; font-size: 0.85rem; color: #4a5568; display: flex; flex-direction: column; gap: 10px;">
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>Hémato-Lab</strong> : logiciel de gestion d’un laboratoire d’hématologie (Microsoft Access) <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2019-2023</span></div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>Gestionnaire de rendez-vous</strong> : automatisation des prises de rendez-vous via Excel VBA <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2021-2023</span></div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>Étiq-CHS</strong> : système de génération d’étiquettes et de gestion des données (Access + VBA) <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2023-2025</span></div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>GEST-LAB</strong> : application de gestion globale des activités de laboratoire <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2026</span></div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>ChronoLab</strong> : outil web de suivi du temps et des activités (HTML, CSS, JavaScript) <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2026</span></div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>Gestionnaire d’alertes laboratoire</strong> : système de surveillance et d’alertes en temps réel (HTML, CSS, JavaScript) <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2026</span></div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #3074c7; font-size: 1rem; line-height: 1.2;">•</span>
+                            <div style="flex: 1;"><strong>Vérificateur Temp & Humi</strong> : script Python assurant la surveillance des conditions environnementales avec détection d’anomalies <span style="display: inline-block; background: #e2e8f0; color: #4a5568; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 5px; white-space: nowrap;">2025</span></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div style="display:flex; justify-content:center; gap:15px; margin-top:10px;">
+                    <span style="font-size:1.5rem; cursor:help;" title="Expertise Firebase">🔥</span>
+                    <span style="font-size:1.5rem; cursor:help;" title="Ingénierie Logicielle">💻</span>
+                    <span style="font-size:1.5rem; cursor:help;" title="Contrôle Qualité">🧬</span>
+                </div>
             </div>
         </div>
     </div>
+
 
     <!-- MODAL FEEDBACK / AVIS (Hebdomadaire) -->
     <div id="feedback-modal" class="modal"
@@ -3932,6 +4275,32 @@
                     style="flex:2; background:#3074c7; color:white; border:none; padding:15px; border-radius:12px; cursor:pointer; font-weight:800; opacity:0.5;"
                     disabled>Envoyer</button>
             </div>
+
+            <button onclick="viewAllFeedbacks()"
+                style="margin-top: 15px; background: none; border: none; color: #3074c7; font-weight: 700; cursor: pointer; text-decoration: underline; font-size: 0.9rem;">
+                👁️ Consulter les avis des autres
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL LISTE DES AVIS -->
+    <div id="reviews-modal" class="modal"
+        style="display:none; position:fixed; z-index:100002; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.6); backdrop-filter: blur(8px); align-items:center; justify-content:center;">
+        <div class="glass-card"
+            style="width:95%; max-width:500px; padding:30px; max-height: 80vh; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color:#2d3748; margin: 0;">💬 Avis de la communauté</h2>
+                <button onclick="document.getElementById('reviews-modal').style.display='none'"
+                    style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+
+            <div id="reviews-list-container" style="overflow-y: auto; flex: 1; padding-right: 10px;">
+                <!-- Rempli par JS -->
+                <div style="text-align: center; padding: 20px; color: #718096;">Chargement des avis...</div>
+            </div>
+
+            <button onclick="document.getElementById('reviews-modal').style.display='none'"
+                style="margin-top: 20px; width: 100%; background: #3074c7; color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 700;">Fermer</button>
         </div>
     </div>
 
@@ -3989,22 +4358,32 @@
             const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : '';
             const searchLower = searchTerm ? normalizeStr(searchTerm) : '';
             const todayStr = new Date().toISOString().split('T')[0];
-
             const summary = {};
-            const qtyRegex = /^(\d+)\s*(flacons?|u|units?|petri|boites?|pcs|pce|fl)?/i;
 
             if (inventoryData) {
+                const countUnits = ["flacon", "unit", "petri", "boite", "pcs", "pce", "fl", "u"];
+                const measureUnits = ["ml", "gr", "mg", "kg", "µl"]; // "g" and "l" handled specially to avoid confusion
+
                 for (let i = 0; i < inventoryData.length; i++) {
                     const item = inventoryData[i];
                     const desig = (item.designation || 'INCONNU').toUpperCase();
                     const note = (item.observations || item.note || '').toLowerCase();
                     const quantityLower = (item.quantity || '').toLowerCase();
+                    const status = (item.status || '').toLowerCase();
+                    const locationLower = (item.location || '').toLowerCase();
 
-                    if (note.includes('entamé') || note.includes('entame') || quantityLower.includes('entame') ||
-                        note.includes('périmé') || note.includes('perime') || quantityLower.includes('perime') ||
-                        note.includes('epuisé') || note.includes('epuise') || quantityLower.includes('epuise') ||
-                        note.includes('dons') || quantityLower.includes('dons')) continue;
+                    // Exclusion rigoureuse des ouverts, périmés, épuisés, dons
+                    // Regex insensible aux accents pour plus de fiabilité
+                    const excludeRegex = /entamé|entame|périmé|perime|épuisé|epuisé|epuise|fini|dons/i;
+                    const isExcluded =
+                        excludeRegex.test(status) ||
+                        excludeRegex.test(note) ||
+                        excludeRegex.test(quantityLower) ||
+                        excludeRegex.test(locationLower);
 
+                    if (isExcluded) continue;
+
+                    // Exclure par date d'expiration
                     if (item.expDate && item.expDate < todayStr) continue;
 
                     if (searchLower) {
@@ -4025,9 +4404,34 @@
 
                     let qtyVal = 1;
                     if (item.quantity) {
-                        const qStr = String(item.quantity).trim();
-                        const m = qStr.match(qtyRegex);
-                        if (m) qtyVal = parseInt(m[1], 10);
+                        const qStr = String(item.quantity).trim().toLowerCase();
+
+                        // 1. Chercher d'abord un nombre d'unités explicite (ex: "10 flacons")
+                        // Regex: un nombre suivi d'une unité de comptage
+                        const countRegex = new RegExp(`^(\\d+)\\s*(${countUnits.join('|')})`, 'i');
+                        const mCount = qStr.match(countRegex);
+
+                        if (mCount) {
+                            qtyVal = parseInt(mCount[1], 10) || 1;
+                        } else {
+                            // 2. Si pas d'unité de comptage, vérifier si c'est une mesure (ex: "750 ml")
+                            // Si c'est une mesure de masse/volume, on compte ça comme 1 seul contenant
+                            const hasMeasure = measureUnits.some(u => qStr.includes(u)) ||
+                                /\d+\s*l\b/.test(qStr) || /\d+\s*g\b/.test(qStr);
+
+                            if (hasMeasure) {
+                                qtyVal = 1;
+                            } else {
+                                // 3. Si c'est juste un nombre pur (ex: "10"), on l'utilise
+                                const pureNumMatch = qStr.match(/^(\d+)$/);
+                                if (pureNumMatch) {
+                                    qtyVal = parseInt(pureNumMatch[1], 10) || 1;
+                                } else {
+                                    // 4. Par défaut (ex: "un peu", "Boîte"), c'est 1
+                                    qtyVal = 1;
+                                }
+                            }
+                        }
                     }
                     summary[desig].count += qtyVal;
                     if (item.quantity) summary[desig].details.add(item.quantity);
@@ -4072,12 +4476,13 @@
 
                 // Optimisation : éviter JSON.stringify
                 const note = (item.observations || item.note || '').toLowerCase();
-                const quantityLower = (item.quantity || '').toLowerCase();
+                const searchLower = String(item.quantity || '').toLowerCase();
+                const status = (item.status || '').toLowerCase();
+                const location = (item.location || '').toLowerCase();
 
-                if (note.includes('entamé') || note.includes('entame') || quantityLower.includes('entame')) return false;
-                if (note.includes('périmé') || note.includes('perime') || quantityLower.includes('perime')) return false;
-                if (note.includes('epuisé') || note.includes('epuise') || quantityLower.includes('epuise')) return false;
-                if (note.includes('dons') || quantityLower.includes('dons')) return false;
+                const excludeRegex = /entamé|entame|périmé|perime|épuisé|epuisé|epuise|fini|dons/i;
+                if (excludeRegex.test(note) || excludeRegex.test(searchLower) || excludeRegex.test(status) || excludeRegex.test(location)) return false;
+
                 if (item.expDate && item.expDate < todayStr) return false;
 
                 return true;
@@ -4452,14 +4857,14 @@
                 const q = query(collection(db, 'activity_logs'), limit(100));
                 const snapshot = await getDocs(q);
                 activityLogs = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
-                
+
                 // Tri en mémoire par timestamp décroissant
                 activityLogs.sort((a, b) => {
                     const tA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
                     const tB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
                     return tB - tA;
                 });
-                
+
                 renderActivityTable();
             } catch (e) {
                 console.error("Error fetching activity logs:", e);
@@ -5007,6 +5412,24 @@
                     if (pass.length < 6) { alert("Le mot de passe doit faire au moins 6 caractères."); return; }
 
                     const normalizedEmail = email.toLowerCase();
+                    
+                    // Création de l'utilisateur dans Firebase Auth SANS déconnecter l'admin
+                    try {
+                        const secondaryApp = initializeApp(firebaseConfig, "Secondary_" + Date.now());
+                        const secondaryAuth = getAuth(secondaryApp);
+                        await createUserWithEmailAndPassword(secondaryAuth, normalizedEmail, pass);
+                        await signOut(secondaryAuth);
+                    } catch (authErr) {
+                        if (authErr.code === 'auth/email-already-in-use') {
+                            // S'il existe déjà, ce n'est pas grave, on va juste écraser ses rôles
+                            console.warn("L'utilisateur existe déjà dans l'authentification.");
+                        } else {
+                            console.error("Erreur de création Auth:", authErr);
+                            alert("Erreur lors de la création du compte d'authentification : " + authErr.message);
+                            return; // On arrête l'inscription si l'auth échoue
+                        }
+                    }
+
                     await setDoc(doc(db, "users", normalizedEmail), {
                         email: normalizedEmail, nom: nom.toUpperCase(), prenom, fonction,
                         role, status: 'approved',
@@ -5017,7 +5440,7 @@
                         updatedAt: new Date().toISOString()
                     });
                     logActivity("Ajout Membre", `Nouveau membre ${nom} ${prenom} (${email}) ajouté avec rôle ${role}`);
-                    alert("Membre ajouté avec succès. Il devra créer son compte avec cet email pour y accéder.");
+                    alert("Membre ajouté avec succès. Son compte est créé et prêt à être utilisé !");
                 } else {
                     await updateDoc(doc(db, "users", editingUserEmail), {
                         nom: nom.toUpperCase(), prenom, fonction, role,
@@ -5030,7 +5453,7 @@
                 }
                 // closeMemberModal(); // Désactivé à la demande de l'utilisateur ("pas de fentre fermer")
             } catch (err) {
-
+                console.error("Firestore error:", err);
                 alert("Erreur: " + err.message);
             }
         }
@@ -5828,6 +6251,7 @@
             }
         });
 
+        window.showSection = showSection;
         function showSection(sectionId) {
             // Check granular permissions for non-admins
             if (currentUser && currentUser.role !== 'admin' && !['dashboard', 'history', 'expiry', 'about', 'feedback', 'diagnostic'].includes(sectionId)) {
@@ -7391,7 +7815,38 @@
                     <div style="display: flex; flex-direction: column; gap: 20px;">
                         ${labelsHtml}
                     </div>
-                </body>
+                    <!-- MODAL D'AIDE AUX RACCOURCIS -->
+        <div id="shortcut-help-modal" class="shortcut-modal" onclick="if(event.target === this) toggleShortcutHelp()">
+            <div class="shortcut-card">
+                <h2><span>⌨️</span> Raccourcis Clavier</h2>
+                <div class="shortcut-list">
+                    <div class="shortcut-group-title">Navigation Globale</div>
+                    <div class="shortcut-item"><span class="shortcut-label">Tableau de Bord</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">D</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Milieux de Culture</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">M</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Boîtes Petri</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">P</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Inventaire</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">I</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Stérilisation</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">S</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Suivre n° d'action</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">L</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Étiquettes Classeurs</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">C</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Historique</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">H</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Rapport Stock</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">R</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Administration</span><div class="shortcut-keys"><span class="shortcut-key">Alt</span><span class="shortcut-key">A</span></div></div>
+                    
+                    <div class="shortcut-group-title">Actions Formulaire</div>
+                    <div class="shortcut-item"><span class="shortcut-label">Ajouter / Enregistrer</span><div class="shortcut-keys"><span class="shortcut-key">Ctrl</span><span class="shortcut-key">S</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Annuler / Effacer</span><div class="shortcut-keys"><span class="shortcut-key">Esc</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Imprimer (Aperçu)</span><div class="shortcut-keys"><span class="shortcut-key">Ctrl</span><span class="shortcut-key">P</span></div></div>
+                    
+                    <div class="shortcut-group-title">Système</div>
+                    <div class="shortcut-item"><span class="shortcut-label">Mode Sombre</span><div class="shortcut-keys"><span class="shortcut-key">Ctrl</span><span class="shortcut-key">Shift</span><span class="shortcut-key">D</span></div></div>
+                    <div class="shortcut-item"><span class="shortcut-label">Aide Raccourcis</span><div class="shortcut-keys"><span class="shortcut-key">F1</span> ou <span class="shortcut-key">?</span></div></div>
+                </div>
+                <button class="btn-modern" onclick="toggleShortcutHelp()" style="margin-top:20px; width:100%; justify-content:center; background:#f7fafc; color:#3074c7; border:1.5px solid #3074c7;">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </body>
                 </html>
             `);
             docFrame.close();
@@ -10297,6 +10752,7 @@
 
         let currentRating = 0;
 
+        window.setRating = setRating;
         function setRating(val) {
             currentRating = val;
             const stars = document.querySelectorAll('.star');
@@ -10311,6 +10767,7 @@
             }
         }
 
+        window.submitFeedback = submitFeedback;
         async function submitFeedback() {
             if (currentRating === 0) return;
             const comment = document.getElementById('feedback-comment').value;
@@ -10355,6 +10812,7 @@
         function openAboutModal() { document.getElementById('about-modal').style.display = 'flex'; }
         function closeAboutModal() { document.getElementById('about-modal').style.display = 'none'; }
 
+        window.openFeedbackModal = openFeedbackModal;
         function openFeedbackModal() {
             currentRating = 0;
             const stars = document.querySelectorAll('.star');
@@ -10369,14 +10827,71 @@
             document.getElementById('feedback-modal').style.display = 'flex';
         }
 
+        window.closeFeedbackModal = closeFeedbackModal;
         function closeFeedbackModal() {
             document.getElementById('feedback-modal').style.display = 'none';
             // Si l'utilisateur ferme, on retarde quand même pour ne pas le spammer immédiatement
             localStorage.setItem('lastFeedbackShown', Date.now());
         }
 
-        // Appeler le check du feedback hebdo
-        checkWeeklyFeedback();
+        window.viewAllFeedbacks = viewAllFeedbacks;
+        async function viewAllFeedbacks() {
+            const container = document.getElementById('reviews-list-container');
+            if (!container) return;
+
+            container.innerHTML = '<div style="text-align: center; padding: 20px; color: #718096;"><div class="spinner" style="width:30px; height:30px; margin: 0 auto 10px auto;"></div>Chargement des avis...</div>';
+            document.getElementById('reviews-modal').style.display = 'flex';
+
+            try {
+                let q;
+                try {
+                    // Tentative avec tri (nécessite un index Firestore)
+                    q = query(collection(db, "app_feedback"), orderBy("timestamp", "desc"), limit(50));
+                } catch (e) {
+                    // Fallback sans tri si l'index manque
+                    q = query(collection(db, "app_feedback"), limit(50));
+                }
+
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<div style="text-align: center; padding: 20px; color: #718096;">Aucun avis pour le moment. Soyez le premier !</div>';
+                    return;
+                }
+
+                let feedbacks = [];
+                querySnapshot.forEach(doc => feedbacks.push(doc.data()));
+
+                // Si on a dû utiliser le fallback, on trie en mémoire
+                feedbacks.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+
+                let html = '';
+                feedbacks.forEach((data) => {
+                    const rating = Math.floor(Number(data.rating) || 0);
+                    const stars = '★'.repeat(Math.min(5, Math.max(0, rating))) + '☆'.repeat(Math.max(0, 5 - rating));
+                    const date = data.timestamp ? new Date(data.timestamp).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '---';
+
+                    html += `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <span class="review-name">${data.userName || 'Anonyme'}</span>
+                                <span class="review-stars">${stars}</span>
+                            </div>
+                            ${data.comment ? `<div class="review-comment">"${data.comment}"</div>` : ''}
+                            <div class="review-date">${date}</div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            } catch (err) {
+                console.error("Error fetching feedbacks:", err);
+                container.innerHTML = `<div style="text-align: center; padding: 20px; color: #e74c3c;">
+                    <p>Erreur lors du chargement des avis.</p>
+                    <p style="font-size: 0.7rem; margin-top: 10px;">${err.message}</p>
+                </div>`;
+            }
+        }
+
 
         async function rescueLostSouchierData() {
             if (!confirm("Voulez-vous restaurer les données du souchier à partir de la sauvegarde d'hier ?")) return;
@@ -10511,6 +11026,31 @@
 
         loadPrintSettings();
         generateLogbookGrid();
+        window.checkWeeklyFeedback = checkWeeklyFeedback;
+        checkWeeklyFeedback();
+        Object.assign(window, {
+            showSection, popoutSection, toggleDarkMode, toggleMobileSidebar,
+            handleAuth, toggleAuthMode, logout, togglePasswordVisibility,
+            toggleCustomFonction, startCamera, takeSnapshot, handlePhotoSelect,
+            refreshActivityLogs, exportActivityCsv, toggleMemberCustomFonction,
+            saveMember, closeMemberModal, startMemberCamera, takeMemberSnapshot,
+            handleMemberPhotoSelect, toggleMPassVisibility, switchFirebaseProject,
+            importChatData, globalDataRescue, rescueLostSouchierData,
+            updatePrintPreview, savePrintSettings, handleAdminImportFile,
+            cleanDataManual, renderAdminDbTable, handleSort, toggleSelectAll,
+            exportToCsv, generateDetailedReport, openProfileSettings,
+            openBarcodeScanner, renderTable, renderHistoryTable,
+            updateExpiryAlertStatus, printLabelsByType,
+            saveSouche, closeSoucheModal, closeBarcodeScanner, closeRapportModal,
+            closeAboutModal, openAboutModal, previewLabel, exportSinglePdf,
+            printSingleLabel, editLabel, deleteLabel, bulkPrint, bulkExport,
+            bulkDelete, clearBulkSelection, souchierToggleAll, souchierBulkPrint,
+            souchierBulkExport, souchierBulkDelete, souchierClearSelection,
+            toggleSouchierView, renderSouchierHistory, autoFillSoucheCode,
+            calculateSoucheExpDate, clearSoucheForm, saveAndPrintSouche,
+            clearMainForm, expandSidebar, collapseSidebar,
+            setRating, submitFeedback, openFeedbackModal, closeFeedbackModal, viewAllFeedbacks
+        });
     </script>
     <div
         style="margin-top: 20px; padding: 10px; text-align: center; width: 100%; border-top: 1px solid rgba(0,0,0,0.02); opacity: 0.1; pointer-events: none;">
@@ -11355,7 +11895,7 @@
         };
 
         window.initDashboardSortUI = function () {
-            if (!currentUser || currentUser.role !== 'admin') return;
+            if (!window.currentUser || window.currentUser.role !== 'admin') return;
             const grid = document.querySelector('.dashboard-grid');
             Array.from(grid.children).forEach(card => {
                 if (card.querySelector('.sort-controls')) return;
@@ -11473,7 +12013,9 @@
             window.print();
             setTimeout(() => { pa.innerHTML = ''; }, 1000);
         }
+        window.printSinglePiece = printSinglePiece;
 
+        window.initPiecesMachinesTab = initPiecesMachinesTab;
         function initPiecesMachinesTab() {
             const btnHtml = `<button class="sidebar-btn" id="btn-pieces_machines" onclick="showSection('pieces_machines')" style="display:flex; align-items:center;"><span class="icon">⚙️</span><span style="font-weight: 700;">Pièces Machines</span></button>`;
             const mppfBtn = document.getElementById('btn-prelevement_mp_pf');
