@@ -4784,6 +4784,39 @@
                 });
             window.souchierLabels = souchierLabels;
 
+            // Auto-correction des labels mal orthographiés ou avec de mauvais codes (ex: P.aeruginosa avec code de C.sporogenes)
+            snapshot.docs.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                let needsUpdate = false;
+                const updateData = {};
+                
+                let name = data.designation || '';
+                // Correction des noms
+                if (name === 'P.aerugonosa' || name === 'P.aerugunosa' || name === 'P.acruginosa') {
+                    updateData.designation = 'P.aeruginosa';
+                    name = 'P.aeruginosa';
+                    needsUpdate = true;
+                }
+                if (name === 'S.typhimirium') {
+                    updateData.designation = 'S.typhimurium';
+                    name = 'S.typhimurium';
+                    needsUpdate = true;
+                }
+                
+                // Correction du code LSRCLS004 (C.sporogenes) qui s'est glissé sur P.aeruginosa
+                if (name === 'P.aeruginosa' && data.code === 'LSRCLS004') {
+                    updateData.code = 'LSRPSA004';
+                    needsUpdate = true;
+                }
+
+                if (needsUpdate) {
+                    try {
+                        const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                        await updateDoc(doc(db, "labels", docSnap.id), updateData);
+                    } catch(e) {}
+                }
+            });
+
             if (typeof renderTable === 'function') renderTable();
             if (typeof renderHistoryTable === 'function') renderHistoryTable();
             if (typeof updateExpiryAlertStatus === 'function') updateExpiryAlertStatus();
@@ -4806,6 +4839,25 @@
         onSnapshot(collection(db, "souches"), (snapshot) => {
             souches = snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id }));
             window.souches = souches;
+
+            // Auto-correction des noms mal orthographiés dans la base de données (Firestore)
+            snapshot.docs.forEach(async (docSnap) => {
+                const data = docSnap.data();
+                const oldName = data.name || '';
+                let newName = oldName;
+                // Correction des fautes courantes
+                if (oldName === 'P.aerugonosa' || oldName === 'P.aerugunosa') newName = 'P.aeruginosa';
+                if (oldName === 'S.typhimirium') newName = 'S.typhimurium';
+                if (oldName === 'C.sporogenese') newName = 'C.sporogenes';
+                
+                if (newName !== oldName) {
+                    try {
+                        const { doc, updateDoc } = await import("https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js");
+                        await updateDoc(doc(db, "souches", docSnap.id), { name: newName });
+                    } catch(e) { console.error("Erreur auto-correction:", e); }
+                }
+            });
+
             // Tri par updatedAt
             souches.sort((a, b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
 
@@ -5694,16 +5746,32 @@
             }
             if (confirm("Supprimer cette étiquette ?")) {
                 const isInv = (currentSection === 'inventory');
-                const dataPool = isInv ? inventoryData : labels;
-                const item = dataPool.find(l => l.id == id);
-                if (!item || !item.docId) {
+                // Pool étendu incluant le souchier
+                const pools = [
+                    { data: inventoryData, col: "inventory" },
+                    { data: labels, col: "labels" },
+                    { data: souchierLabels || [], col: "labels" }
+                ];
+                
+                let target = null;
+                let colName = "labels";
+                
+                for(const p of pools) {
+                    const found = p.data.find(l => l.docId === id || (l.id && l.id == id));
+                    if (found) {
+                        target = found;
+                        colName = p.col;
+                        break;
+                    }
+                }
+
+                if (!target || !target.docId) {
                     alert("Erreur: Document non trouvé.");
                     return;
                 }
                 try {
-                    const colName = isInv ? "inventory" : "labels";
-                    await deleteDoc(doc(db, colName, item.docId));
-                    logActivity("Suppression Étiquette", `${item.designation || 'Sans nom'} (${item.code || 'n/a'}) supprimé de ${colName}`);
+                    await deleteDoc(doc(db, colName, target.docId));
+                    logActivity("Suppression Étiquette", `${target.designation || 'Sans nom'} (${target.code || 'n/a'}) supprimé`);
                 } catch (err) {
                     alert("Erreur lors de la suppression.");
                 }
@@ -9924,19 +9992,20 @@
                 'A.brasiliensis': 'LSRASB004',
                 'S.aureus': 'LSRSTA004',
                 'C.albicans': 'LSRCAA004',
-                'C.sporogenese': 'LSRCLS004',
+                'C.sporogenes': 'LSRCLS004',
                 'P.aeruginosa': 'LSRPSA004',
-                'S.typhimirium': 'LSRSAT004'
+                'S.typhimurium': 'LSRSAT004'
             };
 
             if (mappings[name]) {
                 const codeInput = document.getElementById('s-form-code');
                 if (codeInput) codeInput.value = mappings[name];
-            }
-
-            const souche = souches.find(s => s.name === name);
-            if (souche) {
-                document.getElementById('s-form-code').value = souche.code || '';
+            } else {
+                const souche = souches.find(s => s.name === name);
+                if (souche) {
+                    const codeInput = document.getElementById('s-form-code');
+                    if (codeInput) codeInput.value = souche.code || '';
+                }
             }
         }
 
@@ -10935,7 +11004,7 @@
                     ]
                 },
                 {
-                    name: "S.typhimirium", code: "LSRSAT004", cryos: [
+                    name: "S.typhimurium", code: "LSRSAT004", cryos: [
                         { n: 1, r: "2025-09-29", e: "2025-11-10" },
                         { n: 2, r: "2025-11-10", e: "2025-12-22" },
                         { n: 3, r: "2025-12-24", e: "2026-02-04" },
@@ -10953,7 +11022,7 @@
                     ]
                 },
                 {
-                    name: "C.sporogenese", code: "LSRCLS004", cryos: [
+                    name: "C.sporogenes", code: "LSRCLS004", cryos: [
                         { n: 1, r: "2025-09-03", e: "2025-10-15" },
                         { n: 2, r: "2025-09-27", e: "2025-11-08" },
                         { n: 3, r: "2025-11-10", e: "2025-12-22" },
@@ -11059,6 +11128,7 @@
             souchierBulkExport, souchierBulkDelete, souchierClearSelection,
             toggleSouchierView, renderSouchierHistory, autoFillSoucheCode,
             calculateSoucheExpDate, clearSoucheForm, saveAndPrintSouche,
+            editSouche, deleteSouche, repiquerCryotube, printSoucheLabels, openSoucheModal,
             clearMainForm, expandSidebar, collapseSidebar,
             setRating, submitFeedback, openFeedbackModal, closeFeedbackModal, viewAllFeedbacks
         });
